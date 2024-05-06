@@ -1,0 +1,5 @@
+.vs
+.vscode
+.angular
+dist
+node_modules
