@@ -1,17 +1,23 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
-  template: `
-    <h1>Welcome to {{title}}!</h1>
+import { ApiService } from './Services/api.service';
 
-    <router-outlet />
-  `,
-  styles: [],
+@Component({
+	selector: 'app-root',
+	standalone: true,
+	imports: [RouterOutlet],
+	templateUrl: "app.component.html",
+	styleUrl: "app.component.css",
+	providers: [ApiService]
 })
 export class AppComponent {
-  title = 'baklava';
+	title = 'baklava';
+
+	constructor(private apiService: ApiService) {
+		this.apiService.getReservations().subscribe((data) => {
+			var p : HTMLParagraphElement = document.getElementById('test') as HTMLParagraphElement;
+			p.innerHTML = data.toString();
+		});
+	}
 }
