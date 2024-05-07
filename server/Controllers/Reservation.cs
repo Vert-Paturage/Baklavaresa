@@ -12,4 +12,6 @@ namespace Api.Controllers
 			return Ok(new { message = "Get all reservations" });
 		}
 	}
+
+	
 }
