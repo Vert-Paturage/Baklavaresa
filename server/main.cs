@@ -15,7 +15,6 @@ builder.Services.AddCors(options =>
                       });
 });
 
-
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -31,8 +30,6 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 
-
 app.UseCors(MyAllowSpecificOrigins);
-
 
 app.Run();
