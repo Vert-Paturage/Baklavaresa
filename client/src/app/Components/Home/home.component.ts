@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { ApiService } from '../../Services/api.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
 	selector: 'app-home',
