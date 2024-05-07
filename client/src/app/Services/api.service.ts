@@ -6,6 +6,6 @@ export class ApiService {
 	constructor(private http: HttpClient) {}
 
 	getReservations() {
-		return this.http.get<string>('https://localhost:7167/Reservation');
+		return this.http.get<string>('http://localhost:5017/Reservation');
 	}
 }

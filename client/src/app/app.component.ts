@@ -17,30 +17,17 @@ export class AppComponent {
 	reservations!: string;
 
 	constructor(private apiService: ApiService) {
-		// this.apiService.getReservations().subscribe(
-		//   (data) => {
-		// 	// Mettre à jour le contenu de l'élément HTML avec l'identifiant "test"
-		// 	// var p : HTMLParagraphElement = document.getElementById('test') as HTMLParagraphElement;
-		// 	// p.innerHTML = data.toString();
-		// 	console.log(data);
-		//   },
-		//   (error) => {
-		// 	console.error('Erreur lors de la récupération des réservations : ', error);
-		// 	// Gérer l'erreur ici
-		//   }
-		// );
-
-		this.apiService.getReservations()
-      .pipe(
-        catchError(error => {
-          console.error('Erreur lors de la récupération des réservations : ', error);
-          // Gérer l'erreur ici
-          throw error;
-        })
-      )
-      .subscribe(data => {
-        this.reservations = data;
-        // Utilisez this.reservations comme vous le feriez avec les données récupérées
-      });
+		this.apiService.getReservations().subscribe(
+		  (data) => {
+			//Mettre à jour le contenu de l'élément HTML avec l'identifiant "test"
+			var p : HTMLParagraphElement = document.getElementById('test') as HTMLParagraphElement;
+			p.innerHTML = data.toString();
+			console.log(data);
+		  },
+		  (error) => {
+			console.error('Erreur lors de la récupération des réservations : ', error);
+			// Gérer l'erreur ici
+		  }
+		);
 	  }
 }
