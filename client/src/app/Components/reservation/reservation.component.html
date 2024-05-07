@@ -17,8 +17,11 @@
                             <div class="collapse-content bg-blue-600 text-primary-content peer-checked:bg-blue-300 peer-checked:text-secondary-content"> 
                                 <div class="px-4 py-2">
                                     <div class="grid grid-cols-4 gap-4">
-                                        <button *ngFor="let horaire of horairesDisponibles[date]" class="bg-blue-500 text-white rounded-md px-4 py-2">
+                                        <button *ngFor="let horaire of horairesDisponibles[date]" class="bg-blue-500 text-white rounded-md px-4 py-2" 
+                                        [ngClass]="{'bg-blue-800 text-white font-bold': horaireSelected === horaire, 'bg-blue-500 text-white': horaireSelected !== horaire}"
+                                        (click)="selectHoraire(horaire)">
                                             {{ horaire }}
+                                            
                                         </button>
                                     </div>
                                 </div>
@@ -29,9 +32,9 @@
             <div class="bg-white p-4 shadow-md">
                 
                     <h1 class="text-2xl font-bold mb-4">Coordonnées :</h1>
-               
+                    <form [formGroup]="coordonneesForm" (ngSubmit)="onSubmit()">
                     <div>
-                        <form [formGroup]="coordonneesForm" (ngSubmit)="onSubmit()">
+                        
                     <!-- Champs pour le prénom -->
                     <div class="mb-4">
                         <label for="prenom" class="block mb-1">Prénom :</label>
@@ -58,12 +61,12 @@
                             L'adresse mail est obligatoire.
                           </div>
                     </div>
-                </form>
                 </div>
                 <div class=" text-black flex justify-end">
                     <button class="bg-pink-500 text-white px-4 py-2 rounded-lg disabled:bg-gray-200 disabled:text-gray-400"
                     [disabled]="coordonneesForm.invalid">Réserver</button>
                 </div>
+            </form>
             </div>
             
         </div>

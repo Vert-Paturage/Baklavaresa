@@ -19,6 +19,12 @@ export class ReservationComponent implements OnInit {
   datesDisponibles: string[] = []; // Initialise le tableau des dates disponibles
   horairesDisponibles: { [date: string]: string[] } = {}; // Initialise un objet pour stocker les horaires disponibles pour chaque date
 
+  horaireSelected: string | null = null;
+
+  selectHoraire(horaire: string) {
+      this.horaireSelected = horaire;
+  }
+
   ngOnInit(): void {
     
     this.datesDisponibles = ['2024-05-07', '2024-05-08', '2024-05-09']; 
@@ -29,16 +35,15 @@ export class ReservationComponent implements OnInit {
     this.coordonneesForm = this.formBuilder.group({
       prenom: ['', Validators.required],
       nom: ['', Validators.required],
-      adresse: ['', Validators.required]
+      email: ['', Validators.required]
     });
   }
 
   onSubmit() {
     if (this.coordonneesForm.valid) {
-        console.log(this.coordonneesForm.value, this.coordonneesForm.valid);
-        
-        this.coordonneesForm.reset(); 
+      
         alert('Votre réservation a été ajoutée avec succès !');  
+        this.coordonneesForm.reset(); 
     } else {
       alert('Veuillez remplir correctement tous les champs du formulaire.');
     }
