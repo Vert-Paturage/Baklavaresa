@@ -1,26 +1,62 @@
-<p>reservation works!</p>
+<div class="p-8">
+    <div class="mt-6 mx-auto max-w-7xl px-6">
+        <div class="container">
+            <div class="grid grid-cols-1 sm:grid-cols-2 my-3 gap-8">
+                <form class="space-y-8">
+                    <div class="flex flex-col">
+                        <label class="text-lg">Nombre de personnes :</label>
+                        <input type="number" [(ngModel)]="nombrePersonnes" name="nombrePersonnes" class="border-2 rounded-md p-2" min="1" max="30"/>
+                    </div>
+            
+                    <div *ngFor="let date of datesDisponibles">
+                        <div class="collapse bg-base-200">
+                            <input type="checkbox" class="peer" /> 
+                            <div class="collapse-title bg-blue-600 text-primary-content peer-checked:bg-blue-300 peer-checked:text-secondary-content">
+                                {{ date }}
+                            </div>
+                            <div class="collapse-content bg-blue-600 text-primary-content peer-checked:bg-blue-300 peer-checked:text-secondary-content"> 
+                                <div class="px-4 py-2">
+                                    <div class="grid grid-cols-4 gap-4">
+                                        <button *ngFor="let horaire of horairesDisponibles[date]" class="bg-blue-500 text-white rounded-md px-4 py-2">
+                                            {{ horaire }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            <div class="bg-white p-4 shadow-md">
+                
+                    <h1 class="text-2xl font-bold mb-4">Coordonnées :</h1>
+               
+                    <div>
+                        <form>
+                    <!-- Champs pour le prénom -->
+                    <div class="mb-4">
+                        <label for="prenom" class="block mb-1">Prénom :</label>
+                        <input type="text" id="prenom" name="prenom" class="border border-gray-300 rounded-md p-2 w-full">
+                    </div>
 
-<form>
-    <!-- Input pour le nombre de personnes -->
-    <label>Nombre de personnes :</label>
-    <input type="number" [(ngModel)]="nombrePersonnes" name="nombrePersonnes">
-  
+                    <!-- Champs pour le nom -->
+                    <div class="mb-4">
+                        <label for="nom" class="block mb-1">Nom :</label>
+                        <input type="text" id="nom" name="nom" class="border border-gray-300 rounded-md p-2 w-full">
+                    </div>
 
-    <div *ngFor="let date of datesDisponibles">
-        <div class="collapse bg-base-200">
-            <input type="checkbox" class="peer" /> 
-            <div class="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
-                {{ date }}
+                    <!-- Champs pour l'adresse e-mail -->
+                    <div class="mb-4">
+                        <label for="email" class="block mb-1">Adresse e-mail :</label>
+                        <input type="email" id="email" name="email" class="border border-gray-300 rounded-md p-2 w-full">
+                    </div>
+                </form>
+                </div>
+                <div class=" text-black flex justify-end">
+                    <button class="bg-pink-500 text-white px-4 py-2 rounded-lg">Réserver</button>
+                </div>
             </div>
-            <div class="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content"> 
-            <p>hello</p>
-            <div class="flex flex-col"> <button *ngFor="let horaire of horairesDisponibles[date]">
-                {{ horaire }}
-              </button>
-            </div>
-            </div>
+            
         </div>
     </div>
-  </form>
-  
-
+</div>
+</div>

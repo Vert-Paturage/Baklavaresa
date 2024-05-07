@@ -20,7 +20,7 @@ export class ReservationComponent implements OnInit {
   ngOnInit(): void {
     
     this.datesDisponibles = ['2024-05-07', '2024-05-08', '2024-05-09']; 
-    this.horairesDisponibles['2024-05-07'] = ['10:00', '12:00', '15:00']; 
+    this.horairesDisponibles['2024-05-07'] = ['10:00', '12:00', '15:00', '16:00', '17:00']; 
     this.horairesDisponibles['2024-05-08'] = ['11:00', '13:00', '16:00']; 
     this.horairesDisponibles['2024-05-09'] = ['09:00', '14:00', '17:00'];
   }
