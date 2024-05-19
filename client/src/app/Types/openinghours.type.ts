@@ -2,10 +2,10 @@ import { Time } from '@angular/common';
 
 type OpeningHours = {
 	day: string;
-	MorningOpening: Time;
-	MorningClosing: Time;
-	AfternoonOpening: Time;
-	AfternoonClosing: Time;
+	morningOpening: Time;
+	morningClosing: Time;
+	afternoonOpening: Time;
+	afternoonClosing: Time;
 };
 
 export default OpeningHours;
