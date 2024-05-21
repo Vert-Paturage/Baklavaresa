@@ -2,7 +2,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 
-namespace SendMailExample;
+namespace Data;
 
 public class Mailer
 {
