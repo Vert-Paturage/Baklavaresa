@@ -6,14 +6,15 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class ApiService {
-  getDatesDisponibles(): Observable<string[]> {
-    throw new Error('Method not implemented.');
-  }
 	constructor(private http: HttpClient) {}
 
-  reserve(reservation: Reservation): Observable<Horaire> {
-    return this.http.post<Horaire>('/api/Reservation', reservation);
-  }
+	getDatesDisponibles(): Observable<string[]> {
+		throw new Error('Method not implemented.');
+	}
+
+  	reserve(reservation: Reservation): Observable<Horaire> {
+    	return this.http.post<Horaire>('/api/Reservation', reservation);
+  	}
 
 	getReservations() {
 		return this.http.get<string>('/api/Reservation');
@@ -23,8 +24,9 @@ export class ApiService {
 		return this.http.get<string>(`/api/Reservation/${id}`);
 	}
 
-	postReservation(reservation: any) {
-		return this.http.post<string>('/api/Reservation', reservation);
+	// Ca fonctionne
+	createReservation(reservation: Reservation) {
+		return this.http.post<string>('/api/Reservation/CreateReservation', reservation);
 	}
 
 	deleteReservation(id: number) {

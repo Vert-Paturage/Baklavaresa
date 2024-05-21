@@ -1,12 +1,14 @@
-import ContactDetails from './contactDetail.type';
 import Table from './table.type';
+import Schedule from './schedule.type';
 
 type Reservation = {
-    id: number;
-	date: Date;
-	peopleNumber: number;
-    contactDetails: ContactDetails;
-    tables: Table[];
+    ID: number;
+	Date: Schedule;
+	NumberOfPeople: number;
+	Tables: Table[];
+    FirstName: string;
+	LastName: string;
+	Email: string;
 };
 
 export default Reservation;

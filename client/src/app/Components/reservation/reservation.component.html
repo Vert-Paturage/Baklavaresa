@@ -19,7 +19,7 @@
                   <div class="grid grid-cols-4 gap-4" *ngIf="(horairesDisponibles$ | async) as horairesDisponibles">
                     <button *ngFor="let horaire of horairesDisponibles[date]" class="bg-blue-500 text-white rounded-md px-4 py-2"
                       [ngClass]="{'bg-blue-800 text-white font-bold': horaireSelected === horaire, 'bg-blue-500 text-white': horaireSelected !== horaire}"
-                      (click)="selectHoraire(horaire)">
+                      (click)="selectHoraire(date, horaire)">
                       {{ horaire }}
                     </button>
                   </div>
