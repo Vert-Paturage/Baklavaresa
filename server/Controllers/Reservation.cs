@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Models.DataModels;
-
 using Data;
 
 namespace Api.Controllers
@@ -47,7 +46,8 @@ namespace Api.Controllers
 			Console.WriteLine(reservation.Date.ToString());
 			//ajout dans le json
 			DataManipulation.InsertReservation(reservation);
-
+			Mailer m = new Mailer();
+        	m.SendEmail(reservation.Email.ToString());
 			return Ok(reservation);
 		}
 	}	
