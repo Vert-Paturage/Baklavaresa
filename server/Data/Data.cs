@@ -1,7 +1,7 @@
-using SendMailExample.Models.DataModels;
+using Models.DataModels;
 using static Newtonsoft.Json.JsonConvert;
 
-namespace SendMailExample.Data;
+namespace Data;
 
 public class Data
 {
