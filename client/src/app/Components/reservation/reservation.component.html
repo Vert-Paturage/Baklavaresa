@@ -8,7 +8,7 @@
             <input type="number" [(ngModel)]="nombrePersonnes" name="nombrePersonnes" class="border-2 rounded-md p-2" min="1" max="30"/>
           </div>
 
-          <div *ngFor="let date of datesDisponibles">
+          <div *ngFor="let date of (datesDisponibles$ | async)">
             <div class="collapse bg-base-200">
               <input type="checkbox" class="peer" />
               <div class="collapse-title bg-blue-600 text-primary-content peer-checked:bg-blue-300 peer-checked:text-secondary-content">
@@ -16,7 +16,7 @@
               </div>
               <div class="collapse-content bg-blue-600 text-primary-content peer-checked:bg-blue-300 peer-checked:text-secondary-content">
                 <div class="px-4 py-2">
-                  <div class="grid grid-cols-4 gap-4">
+                  <div class="grid grid-cols-4 gap-4" *ngIf="(horairesDisponibles$ | async) as horairesDisponibles">
                     <button *ngFor="let horaire of horairesDisponibles[date]" class="bg-blue-500 text-white rounded-md px-4 py-2"
                       [ngClass]="{'bg-blue-800 text-white font-bold': horaireSelected === horaire, 'bg-blue-500 text-white': horaireSelected !== horaire}"
                       (click)="selectHoraire(horaire)">
