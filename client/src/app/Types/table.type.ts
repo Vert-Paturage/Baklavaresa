@@ -1,8 +1,7 @@
 
 type Table = {
-    tableNumber: number;
-    seat: number;
-    isOccupied: boolean;
+    ID: number;
+    Capacity: number;
 };
 
 export default Table;

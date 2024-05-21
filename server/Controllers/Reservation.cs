@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Models.DataModels;
+
+using Data;
 
 namespace Api.Controllers
 {
@@ -22,6 +25,30 @@ namespace Api.Controllers
 		public IActionResult GetTables()
 		{
 			return Ok(new { message = tables });
+		}
+		
+		/*
+		[HttpPost]
+		public IActionResult Reservation([FromBody] dynamic reservation)
+		{
+			var schedules = new List<Schedule>() {
+				new Schedule { Date = new DateOnly(2021, 10, 1), Time = "12:00" },
+				new Schedule { Date = new DateOnly(2021, 10, 1), Time = "14:00" },
+				new Schedule { Date = new DateOnly(2021, 10, 1), Time = "16:00" },
+				new Schedule { Date = new DateOnly(2021, 10, 1), Time = "18:00" },
+				new Schedule { Date = new DateOnly(2021, 10, 1), Time = "20:00" }
+			};
+			return Ok(new { message = schedules });
+		}*/
+
+		[HttpPost]
+		public IActionResult CreateReservation([FromBody] Reservation reservation)
+		{
+			Console.WriteLine(reservation.Date.ToString());
+			//ajout dans le json
+			DataManipulation.InsertReservation(reservation);
+
+			return Ok(reservation);
 		}
 	}	
 }
