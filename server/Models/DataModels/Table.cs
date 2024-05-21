@@ -1,4 +1,4 @@
-namespace SendMailExample.Models.DataModels;
+namespace Models.DataModels;
 
 public class Table
 {

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SendMailExample.Models.DataModels;
+using Models.DataModels;
 
 namespace Api.Controllers
 {
@@ -36,6 +36,6 @@ namespace Api.Controllers
 				new Schedule { Date = new DateOnly(2021, 10, 1), Time = "20:00" }
 			};
 			return Ok(new { message = schedules });
-		}	
+		}
 	}	
 }

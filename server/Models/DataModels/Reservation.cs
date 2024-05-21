@@ -1,10 +1,11 @@
-namespace SendMailExample.Models.DataModels;
+namespace Models.DataModels;
 
 public class Reservation
 {
-    public DateTime Date { get; set; }
-    public int TableId { get; set; }
+	public int ID { get; set; }
+    public Schedule Date { get; set; }
     public int NumberOfPeople { get; set; }
+	public List<Table> Tables { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }

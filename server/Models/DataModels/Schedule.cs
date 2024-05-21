@@ -1,7 +1,7 @@
-namespace SendMailExample.Models.DataModels;
+namespace Models.DataModels;
 
 public class Schedule
 {
     public DateOnly Date { get; set; }
-    public String Time { get; set; }
+    public string Time { get; set; }
 }
