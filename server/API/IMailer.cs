@@ -1,4 +1,4 @@
-namespace Data;
+namespace API;
 
 public interface IMailer
 {

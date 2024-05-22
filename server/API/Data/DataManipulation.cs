@@ -1,7 +1,7 @@
-using Models.DataModels;
+using API.Models.DataModels;
 using static Newtonsoft.Json.JsonConvert;
 
-namespace Data;
+namespace API.Data;
 
 public class DataManipulation : IDataManipulation
 {

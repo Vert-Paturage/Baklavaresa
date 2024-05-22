@@ -1,8 +1,8 @@
+using API.Data;
+using API.Models.DataModels;
 using Microsoft.AspNetCore.Mvc;
-using Models.DataModels;
-using Data;
 
-namespace Api.Controllers
+namespace API.Controllers
 {
 	public class ReservationController : Controller
 	{
@@ -13,7 +13,8 @@ namespace Api.Controllers
 			_mailer = mailer;
 			_dataManipulation = dataManipulation;
 		}
-		dynamic tables = new[]
+
+		readonly dynamic _tables = new[]
 		{
 			new { Id = 1, Seat = 2, IsOccupied = false },
 			new { Id = 2, Seat = 2, IsOccupied = false },
@@ -30,7 +31,7 @@ namespace Api.Controllers
 		[HttpGet]
 		public IActionResult GetTables()
 		{
-			return Ok(new { message = tables });
+			return Ok(new { message = _tables });
 		}
 		
 		/*
@@ -53,7 +54,7 @@ namespace Api.Controllers
 			Console.WriteLine(reservation.Date.ToString());
 			//ajout dans le json
 			_dataManipulation.InsertReservation(reservation);
-        	_mailer.SendMail(reservation.Email.ToString());
+        	_mailer.SendMail(reservation.Email);
 			return Ok(reservation);
 		}
 	}	

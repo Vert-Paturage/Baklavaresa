@@ -1,6 +1,6 @@
-using Models.DataModels;
+using API.Models.DataModels;
 
-namespace Data;
+namespace API.Data;
 
 public interface IDataManipulation
 {
