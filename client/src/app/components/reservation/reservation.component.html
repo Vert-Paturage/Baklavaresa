@@ -5,10 +5,10 @@
         <form class="space-y-8">
           <div class="flex flex-col">
             <label class="text-lg">Nombre de personnes :</label>
-            <input type="number" [(ngModel)]="nombrePersonnes" name="nombrePersonnes" class="border-2 rounded-md p-2" min="1" max="30"/>
+            <input type="number" [(ngModel)]="numberOfPerson" name="numberOfPerson" class="border-2 rounded-md p-2" min="1" max="30"/>
           </div>
 
-          <div *ngFor="let date of (datesDisponibles$ | async)">
+          <div *ngFor="let date of (availableDate$ | async)">
             <div class="collapse bg-base-200">
               <input type="checkbox" class="peer" />
               <div class="collapse-title bg-blue-600 text-primary-content peer-checked:bg-blue-300 peer-checked:text-secondary-content">
@@ -16,10 +16,10 @@
               </div>
               <div class="collapse-content bg-blue-600 text-primary-content peer-checked:bg-blue-300 peer-checked:text-secondary-content">
                 <div class="px-4 py-2">
-                  <div class="grid grid-cols-4 gap-4" *ngIf="(horairesDisponibles$ | async) as horairesDisponibles">
-                    <button *ngFor="let horaire of horairesDisponibles[date]" class="bg-blue-500 text-white rounded-md px-4 py-2"
-                      [ngClass]="{'bg-blue-800 text-white font-bold': horaireSelected === horaire, 'bg-blue-500 text-white': horaireSelected !== horaire}"
-                      (click)="selectHoraire(date, horaire)">
+                  <div class="grid grid-cols-4 gap-4" *ngIf="(availableSchedule$ | async) as availableSchedule">
+                    <button *ngFor="let horaire of availableSchedule[date]" class="bg-blue-500 text-white rounded-md px-4 py-2"
+                      [ngClass]="{'bg-blue-800 text-white font-bold': scheduleSelected === horaire, 'bg-blue-500 text-white': scheduleSelected !== horaire}"
+                      (click)="selectSchedule(date, horaire)">
                       {{ horaire }}
                     </button>
                   </div>
@@ -31,14 +31,14 @@
         <div class="bg-white p-4 shadow-md">
 
           <h1 class="text-2xl font-bold mb-4">Coordonnées :</h1>
-          <form [formGroup]="coordonneesForm" (ngSubmit)="onSubmit()">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div>
 
               <!-- Champs pour le prénom -->
               <div class="mb-4">
                 <label for="prenom" class="block mb-1">Prénom :</label>
                 <input type="text" id="prenom" name="prenom" formControlName="prenom" class="border border-gray-300 rounded-md p-2 w-full">
-                <div *ngIf="coordonneesForm.get('prenom')?.invalid && (coordonneesForm.get('prenom')?.dirty || coordonneesForm.get('prenom')?.touched)" class="error-message text-red-500 text-sm mt-1">
+                <div *ngIf="form.get('prenom')?.invalid && (form.get('prenom')?.dirty || form.get('prenom')?.touched)" class="error-message text-red-500 text-sm mt-1">
                   Le prénom est obligatoire.
                 </div>
               </div>
@@ -47,7 +47,7 @@
               <div class="mb-4">
                 <label for="nom" class="block mb-1">Nom :</label>
                 <input type="text" id="nom" name="nom" formControlName="nom" class="border border-gray-300 rounded-md p-2 w-full">
-                <div *ngIf="coordonneesForm.get('nom')?.invalid && (coordonneesForm.get('nom')?.dirty || coordonneesForm.get('nom')?.touched)" class="error-message text-red-500 text-sm mt-1">
+                <div *ngIf="form.get('nom')?.invalid && (form.get('nom')?.dirty || form.get('nom')?.touched)" class="error-message text-red-500 text-sm mt-1">
                   Le nom est obligatoire.
                 </div>
               </div>
@@ -56,14 +56,14 @@
               <div class="mb-4">
                 <label for="email" class="block mb-1">Adresse e-mail :</label>
                 <input type="email" id="email" name="email" formControlName="email" class="border border-gray-300 rounded-md p-2 w-full">
-                <div *ngIf="coordonneesForm.get('email')?.invalid && (coordonneesForm.get('email')?.dirty || coordonneesForm.get('email')?.touched)" class="error-message text-red-500 text-sm mt-1">
+                <div *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)" class="error-message text-red-500 text-sm mt-1">
                   L'adresse mail est obligatoire.
                 </div>
               </div>
             </div>
             <div class=" text-black flex justify-end">
               <button class="bg-pink-500 text-white px-4 py-2 rounded-lg disabled:bg-gray-200 disabled:text-gray-400"
-                [disabled]="coordonneesForm.invalid">Réserver</button>
+                [disabled]="form.invalid">Réserver</button>
             </div>
           </form>
         </div>
