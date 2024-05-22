@@ -4,13 +4,13 @@ using MimeKit;
 
 namespace Data;
 
-public class Mailer
+public class Mailer: IMailer
 {
-    public void SendEmail(string email)
+    public void SendMail(string content)
     {
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("Baklava", "Baklava@gmail.com"));
-        message.To.Add(new MailboxAddress("", email));
+        message.To.Add(new MailboxAddress("", content));
         message.Subject = "Réservation Baklavarésa";
         message.Body = new TextPart("plain") { Text = "Merci pour votre réservation" };
 
