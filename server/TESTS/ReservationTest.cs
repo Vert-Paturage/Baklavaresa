@@ -2,7 +2,7 @@ using Api.Controllers;
 using Data;
 using Models.DataModels;
 
-namespace test;
+namespace TESTS;
 
 public class ReservationTest
 {

@@ -1,6 +1,6 @@
 using Data;
 
-namespace test;
+namespace TESTS;
 
 public class FakeMailer: IMailer
 {

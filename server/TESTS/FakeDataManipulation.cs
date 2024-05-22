@@ -1,7 +1,7 @@
 using Data;
 using Models.DataModels;
 
-namespace test;
+namespace TESTS;
 
 public class FakeDataManipulation: IDataManipulation
 {
