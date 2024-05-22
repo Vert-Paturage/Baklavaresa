@@ -1,7 +1,7 @@
-type ContactDetails = {
+type Contact = {
     firstName: string;
     lastName: string;
     email: string;
 };
 
-export default ContactDetails;
+export default Contact;
