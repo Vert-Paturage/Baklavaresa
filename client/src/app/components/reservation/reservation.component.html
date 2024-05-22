@@ -18,7 +18,7 @@
                 <div class="px-4 py-2">
                   <div class="grid grid-cols-4 gap-4" *ngIf="(availableSchedule$ | async) as availableSchedule">
                     <button *ngFor="let horaire of availableSchedule[date]" class="bg-blue-500 text-white rounded-md px-4 py-2"
-                      [ngClass]="{'bg-blue-800 text-white font-bold': scheduleSelected === horaire, 'bg-blue-500 text-white': scheduleSelected !== horaire}"
+                      [ngClass]="{'bg-blue-800 text-white font-bold': (scheduleSelected === horaire && dateSelected === date), 'bg-blue-500 text-white': (scheduleSelected !== horaire && dateSelected !== date) || (scheduleSelected === horaire && dateSelected !== date) || (scheduleSelected !== horaire && dateSelected === date)}"
                       (click)="selectSchedule(date, horaire)">
                       {{ horaire }}
                     </button>
