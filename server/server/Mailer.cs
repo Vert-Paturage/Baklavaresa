@@ -4,9 +4,9 @@ using MimeKit;
 
 namespace Data;
 
-public class Mailer
+public class Mailer: IMailer
 {
-    public void SendEmail(string email)
+    public void SendMail(string email)
     {
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("Baklava", "Baklava@gmail.com"));

@@ -1,6 +1,6 @@
 namespace Models.DataModels;
 
-public class Reservation
+public record Reservation
 {
 	public int ID { get; set; }
     public Schedule Date { get; set; }

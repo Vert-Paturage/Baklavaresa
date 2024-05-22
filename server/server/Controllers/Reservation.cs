@@ -6,6 +6,13 @@ namespace Api.Controllers
 {
 	public class ReservationController : Controller
 	{
+		private IDataManipulation _dataManipulation;
+		private IMailer _mailer;
+		public ReservationController(IMailer mailer, IDataManipulation dataManipulation)
+		{
+			_mailer = mailer;
+			_dataManipulation = dataManipulation;
+		}
 		dynamic tables = new[]
 		{
 			new { Id = 1, Seat = 2, IsOccupied = false },
@@ -45,9 +52,8 @@ namespace Api.Controllers
 		{
 			Console.WriteLine(reservation.Date.ToString());
 			//ajout dans le json
-			DataManipulation.InsertReservation(reservation);
-			Mailer m = new Mailer();
-        	m.SendEmail(reservation.Email.ToString());
+			_dataManipulation.InsertReservation(reservation);
+        	_mailer.SendMail(reservation.Email.ToString());
 			return Ok(reservation);
 		}
 	}	

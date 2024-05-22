@@ -1,3 +1,5 @@
+using Data;
+
 var  MyAllowSpecificOrigins = "AllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,10 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
+
+//builder.Services.AddScoped<IMailer,Mailer>();
+builder.Services.AddSingleton<IMailer,Mailer>();
+builder.Services.AddScoped<IDataManipulation,DataManipulation>();
 
 var app = builder.Build();
 

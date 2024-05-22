@@ -3,15 +3,15 @@ using static Newtonsoft.Json.JsonConvert;
 
 namespace Data;
 
-public class DataManipulation
+public class DataManipulation : IDataManipulation
 {
-    public static List<Table> GetTablesByCapacity(int capacity)
+    public List<Table> GetTablesByCapacity(int capacity)
     {
         var tables = DeserializeObject<List<Table>>(File.ReadAllText("Data/Tables.json"));
         return tables != null ? tables.Where(t => t.Capacity == capacity).ToList() : new List<Table>();
     }
 
-	public static void InsertReservation(Reservation reservation)
+	public void InsertReservation(Reservation reservation)
 	{
 		var reservations = DeserializeObject<List<Reservation>>(File.ReadAllText("Data/Reservations.json"));
 		if (reservations == null)
