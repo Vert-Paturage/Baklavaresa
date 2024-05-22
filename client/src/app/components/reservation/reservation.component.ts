@@ -22,16 +22,16 @@ export class ReservationComponent implements OnInit {
   availableSchedule$: BehaviorSubject<{ [date: string]: string[] }> = new BehaviorSubject<{ [date: string]: string[] }>({}); // Initialise un objet pour stocker les horaires disponibles pour chaque date
 
   dateSelected: string | null = null;
-  horaireSelected: string | null = null;
+  scheduleSelected: string | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService
   ) {}
 
-  selectHoraire(date: string, horaire: string) {
+  selectSchedule(date: string, horaire: string) {
     this.dateSelected = date;
-    this.horaireSelected = horaire;
+    this.scheduleSelected = horaire;
   }
 
   ngOnInit(): void {
@@ -56,7 +56,7 @@ export class ReservationComponent implements OnInit {
         ID : 0,
         Date : {
           Date: this.dateSelected as string,
-          Time: this.horaireSelected as string
+          Time: this.scheduleSelected as string
         },
         NumberOfPeople : this.numberOfPerson,
         Tables : [],
