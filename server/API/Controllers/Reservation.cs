@@ -57,5 +57,12 @@ namespace API.Controllers
         	_mailer.SendMail(reservation.Email);
 			return Ok(reservation);
 		}
+		[HttpPost]
+		public IActionResult DeleteReservation([FromBody] int id)
+		{
+			Console.WriteLine(id.ToString());
+			_dataManipulation.DeleteReservation(id);
+			return Ok("Reservation deleted" + id.ToString());
+		}
 	}	
 }
