@@ -3,6 +3,8 @@
 .idea
 
 .angular
+.idea
+
 dist
 node_modules
 
