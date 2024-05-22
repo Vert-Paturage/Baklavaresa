@@ -6,11 +6,11 @@ namespace Data;
 
 public class Mailer: IMailer
 {
-    public void SendMail(string content)
+    public void SendMail(string email)
     {
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("Baklava", "Baklava@gmail.com"));
-        message.To.Add(new MailboxAddress("", content));
+        message.To.Add(new MailboxAddress("", email));
         message.Subject = "Réservation Baklavarésa";
         message.Body = new TextPart("plain") { Text = "Merci pour votre réservation" };
 
