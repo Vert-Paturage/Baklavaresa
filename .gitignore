@@ -1,6 +1,8 @@
 .vs
 .vscode
 .angular
+.idea
+
 dist
 node_modules
 
