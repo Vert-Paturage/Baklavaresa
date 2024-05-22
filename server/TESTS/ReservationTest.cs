@@ -1,6 +1,5 @@
-using Api.Controllers;
-using Data;
-using Models.DataModels;
+using API.Controllers;
+using API.Models.DataModels;
 
 namespace TESTS;
 

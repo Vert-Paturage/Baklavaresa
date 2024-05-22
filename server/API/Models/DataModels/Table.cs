@@ -1,4 +1,4 @@
-namespace Models.DataModels;
+namespace API.Models.DataModels;
 
 public class Table
 {
