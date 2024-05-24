@@ -8,5 +8,5 @@ export const routes: Routes = [
 	{ path: '', component: HomeComponent },
 	{ path: 'admin', component: AdminComponent },
 	{ path: 'reservation', component: ReservationComponent },
-
+	{ path: '**', redirectTo: '', pathMatch: 'full'}
 ];
