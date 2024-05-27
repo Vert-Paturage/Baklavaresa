@@ -1,0 +1,46 @@
+.hidden {
+	display: none;
+}
+
+#wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+}
+
+#peoplenumbermodule {
+	margin: 1rem;
+	display: flex;
+	flex-direction: column;
+
+	width: fit-content;
+	text-align: center;
+
+	background-color: var(--color-quinary);
+	border-radius: 0.5rem;
+}
+
+#peoplenumberlabel {
+	margin: 1rem 1.5rem;
+	font-size: 1.5rem;
+}
+
+#peoplenumberbuttons {
+	display: flex;
+	justify-content: space-evenly;
+
+	margin: 1rem 1.5rem;
+}
+
+.peoplenumberbutton {
+	padding: 0.5rem 1rem;
+	margin: 0.5rem;
+
+	background-color: var(--color-tertiary);
+	font-size: 1.5rem;
+
+	border: none;
+	border-radius: 0.5rem;
+
+}
