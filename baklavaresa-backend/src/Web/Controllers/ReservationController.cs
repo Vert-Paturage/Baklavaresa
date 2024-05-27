@@ -35,7 +35,7 @@ public class ReservationController: ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(e.StackTrace);
         }
     }
 }

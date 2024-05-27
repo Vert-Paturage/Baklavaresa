@@ -10,7 +10,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.SetupDatabase($"Data Source={builder.Configuration.GetConnectionString("Database")}");
+
 builder.Services.ApplicationMediator();
+builder.Services.InfrastructureDependencies();
 
 var app = builder.Build();
 

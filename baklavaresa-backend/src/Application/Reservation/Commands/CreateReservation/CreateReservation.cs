@@ -9,12 +9,7 @@ public class CreateReservationCommandHandler(IReservationRepository reservationR
     private readonly IReservationRepository _reservationRepository = reservationRepository;
     public Task<Unit> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
-        Domain.Entities.Reservation reservation = new()
-        {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Email = request.Email
-        };
+        Domain.Entities.Reservation reservation = new Domain.Entities.Reservation(request.FirstName, request.LastName, request.Email);
         // WARNING: MEUCH ??!
         _reservationRepository.Create(reservation);
         return Unit.Task;
