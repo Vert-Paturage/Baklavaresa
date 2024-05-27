@@ -1,3 +1,6 @@
+using Application;
+using Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.SetupDatabase($"Data Source={builder.Configuration.GetConnectionString("Database")}");
+builder.Services.ApplicationMediator();
 
 var app = builder.Build();
 

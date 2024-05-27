@@ -1,16 +1,13 @@
+using Domain.Repositories;
+
 namespace Application.Reservation.Commands.CreateReservation;
 
-public record CreateReservationCommand: IRequest<int>
-{
-    public string FirstName { get; init; } 
-    public string LastName { get; init; }
-    public string Email { get; init; }
-}
+public record CreateReservationCommand(string FirstName, string LastName, string Email) : IRequest<Unit>;
 
-public class CreateReservationCommandHandler : IRequestHandler<CreateReservationCommand, int>
+public class CreateReservationCommandHandler(IReservationRepository reservationRepository) : IRequestHandler<CreateReservationCommand, Unit>
 {
-    private readonly IDatabase
-    public Task<int> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
+    private readonly IReservationRepository _reservationRepository = reservationRepository;
+    public Task<Unit> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
         Domain.Entities.Reservation reservation = new()
         {
@@ -18,6 +15,8 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
             LastName = request.LastName,
             Email = request.Email
         };
-        
+        // WARNING: MEUCH ??!
+        _reservationRepository.Create(reservation);
+        return Unit.Task;
     }
 }
