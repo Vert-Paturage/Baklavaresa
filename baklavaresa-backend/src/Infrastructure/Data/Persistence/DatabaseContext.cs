@@ -18,4 +18,5 @@ public class DatabaseContext: DbContext
     }
     
     internal DbSet<ReservationDatabase> Reservations { get; set; }
+    internal DbSet<TableDatabase> Tables { get; set; }
 }

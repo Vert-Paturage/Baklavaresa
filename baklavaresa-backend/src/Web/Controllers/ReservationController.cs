@@ -21,7 +21,7 @@ public class ReservationController: ControllerBase
     [HttpPost("Create")]
     public async Task<IActionResult> CreateReservation(CreateReservation input)
     {
-        var command = new CreateReservationCommand(input.FirstName, input.LastName, input.Email);
+        var command = new CreateReservationCommand(input.FirstName, input.LastName, input.Email, input.Schedule);
         try
         {
             await _mediator.Send(command);
@@ -34,7 +34,7 @@ public class ReservationController: ControllerBase
     }
     
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetReservation(int id, [FromServices] IReservationRepository repository)
+    public async Task<IActionResult> GetReservation(int id)
     {
         var query = new GetReservationByIdQuery(id);
         try
@@ -46,5 +46,36 @@ public class ReservationController: ControllerBase
         {
             return BadRequest(e.Message);
         }
+    }
+    
+    [HttpGet("AvailableSlots/{day}")]
+    public async Task<IActionResult> GetAvailableSlots(GetReservationByDay input)
+    {
+        /*var query = new GetAvailableSlotsQuery(input);
+        try
+        {
+            var timeSlots = await _mediator.Send(query);
+            return Ok(timeSlots);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }*/
+        return Ok();
+    }
+    [HttpGet("AvailableSlots/{month}")]
+    public async Task<IActionResult> GetAvailableSlots(GetReservationByMonth input)
+    {
+        /*var query = new GetAvailableSlotsQuery(input);
+        try
+        {
+            var timeSlots = await _mediator.Send(query);
+            return Ok(timeSlots);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }*/
+        return Ok();
     }
 }

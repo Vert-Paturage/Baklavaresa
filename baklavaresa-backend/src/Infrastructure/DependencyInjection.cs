@@ -1,6 +1,4 @@
-using System.Security.Cryptography.X509Certificates;
 using Domain.Repositories;
-using Infrastructure.Data;
 using Infrastructure.Data.Persistence;
 using Infrastructure.Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,5 +22,6 @@ public static class DependencyInjection
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<ITableRepository, TableRepository>();
     }
 }
