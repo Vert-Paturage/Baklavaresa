@@ -1,5 +1,5 @@
 using Application.Reservation.Commands.CreateReservation;
-using Domain.Entities;
+using Application.Reservation.Queries.GetReservationById;
 using Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +18,6 @@ public class ReservationController: ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("Hello")]
-    public Task<string> Hello()
-    {
-        return Task.FromResult("Hello World!");
-    } 
-    
     [HttpPost("Create")]
     public async Task<IActionResult> CreateReservation(CreateReservation input)
     {
@@ -35,7 +29,22 @@ public class ReservationController: ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.StackTrace);
+            return BadRequest(e.Message);
+        }
+    }
+    
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetReservation(int id, [FromServices] IReservationRepository repository)
+    {
+        var query = new GetReservationByIdQuery(id);
+        try
+        {
+            var reservation = await _mediator.Send(query);
+            return Ok(reservation);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
         }
     }
 }

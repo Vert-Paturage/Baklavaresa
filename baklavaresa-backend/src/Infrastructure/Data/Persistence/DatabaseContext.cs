@@ -1,8 +1,5 @@
-using Domain.Entities;
 using Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Update;
 
 namespace Infrastructure.Data.Persistence;
 

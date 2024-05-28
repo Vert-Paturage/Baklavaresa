@@ -14,4 +14,14 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         _context.Reservations.Add(dbReservation);
         return context.SaveChangesAsync();
     }
+
+    public Task<Reservation> GetById(int id)
+    {
+        var dbReservation = _context.Reservations.Find(id);
+        if (dbReservation == null)
+        {
+            throw new Domain.Exceptions.Reservation.ReservationNotFoundException(id);
+        }
+        return Task.FromResult(dbReservation.ToDomainModel());
+    }
 }
