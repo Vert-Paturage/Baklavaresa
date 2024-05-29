@@ -10,6 +10,10 @@
 	font-size: 2.5rem;
 }
 
+#title:hover {
+	cursor: pointer;
+}
+
 #menu {
 	display: flex;
 	justify-content: center;
