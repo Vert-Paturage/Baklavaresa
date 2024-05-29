@@ -15,6 +15,7 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
         var tables = await _tableRepository.GetAll();
         for (var day = 1; day <= DateTime.DaysInMonth(request.Month.Year, request.Month.Month); day++)
         {
+            var slots = new List<DateTime>();
             for (var hour = 10; hour <= 20; hour++)
             {
                 var date = new DateTime(request.Month.Year, request.Month.Month, day, hour, 0, 0);
@@ -24,12 +25,18 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
                 // Get all tables not in reservedTables
                 var availableTables = tables.Where(t => !reservedTables.Contains(t.Id)).ToList();
                 // Get all tables that can accommodate the number of people
-                var availableTablesForNumberOfPeople = availableTables.Where(t => t.Capacity >= request.NumberOfPeople).ToList();
+                var availableTablesForNumberOfPeople = availableTables.Where(t => t.Capacity == request.NumberOfPeople).ToList();
                 // If no tables are available, skip to the next date
                 if (availableTablesForNumberOfPeople.Count == 0) continue;
-                // else add the date to availableSlots 
-                availableSlots.Add(new AvailableSlotsDto { Day = date, Slots = availableTablesForNumberOfPeople.Select(t => date) });
+                // else add the date to slots 
+                slots.Add(new DateTime(request.Month.Year, request.Month.Month, day, hour, 0, 0));
             }  
+            availableSlots.Add(
+                new AvailableSlotsDto()
+                {
+                    Day = new DateTime(request.Month.Year, request.Month.Month, day),
+                    Slots = slots 
+                });
         }
         return availableSlots;
     }
