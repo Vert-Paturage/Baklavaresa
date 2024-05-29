@@ -32,5 +32,26 @@
 }
 
 #links a {
+	position: relative;
 	padding: 0 1rem;
+}
+
+#links a::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -1rem; /* Distance initiale par rapport au lien */
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: currentColor;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+#links a:hover::after,
+#links a.active-link::after {
+    bottom: -0.5rem; /* Distance finale par rapport au lien */
+    opacity: 1;
 }
