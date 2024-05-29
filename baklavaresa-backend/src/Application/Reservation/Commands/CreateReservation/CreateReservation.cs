@@ -9,7 +9,7 @@ public record CreateReservationCommand(
     string Email,
     DateTime Date,
     int NumberOfPeople,
-    IList<Table> Tables
+    Table Table
     ) : IRequest<Unit>;
 
 public class CreateReservationCommandHandler(IReservationRepository reservationRepository) : IRequestHandler<CreateReservationCommand, Unit>
@@ -18,7 +18,7 @@ public class CreateReservationCommandHandler(IReservationRepository reservationR
     public Task<Unit> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
         var reservation = new Domain.Entities.Reservation(request.FirstName, request.LastName, request.Email,
-            request.Date, request.NumberOfPeople, request.Tables);
+            request.Date, request.NumberOfPeople, request.Table);
         _reservationRepository.Create(reservation);
         return Unit.Task;
     }

@@ -14,8 +14,5 @@ internal sealed class TableConfiguration: IEntityTypeConfiguration<TableDatabase
             .ValueGeneratedOnAdd();
         builder.Property(t => t.Capacity)
             .IsRequired();
-        builder.HasOne(t => t.Reservation)
-            .WithMany(r => r.Tables)
-            .HasForeignKey(t => t.ReservationId);
     }
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240529202437_Initial")]
-    partial class Initial
+    [Migration("20240529204946_Second")]
+    partial class Second
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,30 +61,20 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ReservationId");
 
                     b.ToTable("Tables");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.TableDatabase", b =>
-                {
-                    b.HasOne("Infrastructure.Data.Entities.ReservationDatabase", "Reservation")
-                        .WithMany("Tables")
-                        .HasForeignKey("ReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reservation");
-                });
-
             modelBuilder.Entity("Infrastructure.Data.Entities.ReservationDatabase", b =>
                 {
-                    b.Navigation("Tables");
+                    b.HasOne("Infrastructure.Data.Entities.TableDatabase", "Table")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Table");
                 });
 #pragma warning restore 612, 618
         }

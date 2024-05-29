@@ -9,7 +9,7 @@ internal class ReservationDatabase: DataEntity<Reservation>
     public string LastName { get; set; }
     public string Email { get; set; }
     public DateTime Date { get; set; }
-    public IList<TableDatabase> Tables { get; set; }
+    public TableDatabase Table { get; set; }
     public int NumberOfPeople { get; set; }
     
     public ReservationDatabase() { }
@@ -24,11 +24,12 @@ internal class ReservationDatabase: DataEntity<Reservation>
         LastName = domainModel.LastName;
         Email = domainModel.Email;
         Date = domainModel.Date;
+        NumberOfPeople = domainModel.NumberOfPeople;
+        Table = new TableDatabase(domainModel.Table);
     }
 
     public override Reservation ToDomainModel()
     {
-        var tables = Tables.Select(t => t.ToDomainModel()).ToList();
-        return new Reservation(Id, FirstName, LastName, Email, Date, NumberOfPeople, tables);
+        return new Reservation(Id, FirstName, LastName, Email, Date, NumberOfPeople, Table.ToDomainModel());
     }
 }
