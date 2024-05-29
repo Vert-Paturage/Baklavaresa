@@ -26,21 +26,21 @@
 				</div>
 			</div>
 
-			@if (SelectedDay != null)
+			<!--@if (SelectedDay != null)
 			{
 				<div id="schedulemodule">
 					@for (schedule of Schedules; track $index) {
 						<button class="schedule">{{schedule}}</button>
 					}
 				</div>
-			}
+			}-->
 		}
 	</div>
 
 	<div id="recap">
 		@if (Calendar.PeopleNumber != 0)
 		{
-			<p>Réservation pour {{Calendar.PeopleNumber}} personnes @if(this.SelectedDay != null) {le {{this.displayDate(SelectedDay)}} @if(this.SelectedSchedule != null) {à {{this.SelectedSchedule}}}}</p>
+			<p>Réservation pour {{Calendar.PeopleNumber}} personnes @if(this.SelectedDay != null) {le {{this.displayDate(this.SelectedDay)}} @if(this.SelectedSchedule != null) {à {{this.SelectedSchedule}}}}</p>
 		}
 	</div>
 </div>

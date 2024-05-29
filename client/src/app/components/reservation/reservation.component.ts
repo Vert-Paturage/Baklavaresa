@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ApiService } from '../../services/api.service';
 
-import Schedule from '../../types/schedule.type';
 import Calendar from '../../types/calendar.type';
-import Day from '../../types/day.type';
 
 @Component({
 	selector: 'app-reservation',
@@ -24,11 +22,10 @@ export class ReservationComponent {
 	MaxPeopleNumberPerReservation: number = 8;
 
 	Calendar: Calendar;
-	SelectedDay: Day | null = null;
-	SelectedSchedule: Schedule | null = null;
+	SelectedDay: number | null = null;
+	SelectedSchedule: Date | null = null;
 
-	Days: Day[] = [];
-	Schedules: Schedule[] = [];
+	Days: Map<Date, Date[]> = new Map();
 
 	constructor(private apiService: ApiService) {
 		const today: Date = new Date();
@@ -47,43 +44,46 @@ export class ReservationComponent {
 		}
 		this.Calendar.PeopleNumber = buttonValue;
 		this.SelectedDay = null;
-		this.getDays(this.Calendar);
+		this.getCalendar(this.Calendar);
 		this.renderDays();
 	}
 
-	onDateSelected(day: Day) {
+	onDateSelected(day: number) {
 		this.SelectedDay = day;
 	}
 
 	// API
 
-	getDays(calendar: Calendar): void {
-		this.Days = this.apiService.getDays(calendar);
+	getCalendar(calendar: Calendar): void {
+		this.Days = this.apiService.getCalendar(calendar);
 	}
 
 	// Render
 
 	renderDays() {
-		let offset: number = this.Days[0].index;
+		let offset: number = this.Days.keys().next().value.getDay();
 		if(offset == 0) {
 			offset = 7;
 		}
 
+		//TODO: refaire tout dans une classe
+
 		let daysGrid: HTMLElement | null = document.getElementById('daysgrid');
+		console.log(daysGrid);
 		if(daysGrid != null) {
 			daysGrid.innerHTML = '<p>L</p><p>M</p><p>M</p><p>J</p><p>V</p><p>S</p><p>D</p>';
-			for(let i = 0; i < this.Days.length; i++) {
-				let day: Day = this.Days[i];
+			for(let i = 0; i < Array.from(this.Days.keys()).length; i++) { //vérifier si on peut pas faire mieux
+				let day: number = i+1;
 				let dayButton: HTMLElement = document.createElement('button');
-				dayButton.id = `day${day.day}`;
+				dayButton.id = `day${day}`;
 				if(dayButton.id == 'day1') {
 					dayButton.style.gridColumnStart = `${offset}`;
 				}
 				dayButton.classList.add('day');
-				if(!day.hasRoom) {
-					dayButton.classList.add('dayHasNoRoom')
+				if(Array.from(this.Days.entries()).at(i)?.[1].length === 0) {
+					dayButton.classList.add('dayHasNoRoom');
 				}
-				dayButton.innerHTML = `${day.day}`;
+				dayButton.innerHTML = `${day}`;
 				dayButton.onclick = () => this.onDateSelected(day);
 				daysGrid.appendChild(dayButton);
 			}
@@ -125,7 +125,8 @@ export class ReservationComponent {
 		return dayNames[dayIndex];
 	}
 
-	displayDate(day: Day): string {
-		return `${this.getDayName(day.index)} ${day.day} ${this.getMonthName(day.month)} ${day.year}`;
+	displayDate(day: number): string {
+		const date: Date = Array.from(this.Days.keys()).at(day-1) as Date;
+		return `${this.getDayName(date.getDay())} ${date.getDate()} ${this.getMonthName(date.getMonth())} ${date.getFullYear()}`;
 	}
 }
