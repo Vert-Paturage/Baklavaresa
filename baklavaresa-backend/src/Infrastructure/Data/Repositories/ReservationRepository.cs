@@ -14,7 +14,6 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         _context.Reservations.Add(dbReservation);
         return context.SaveChangesAsync();
     }
-
     public Task<Reservation> GetById(int id)
     {
         var dbReservation = _context.Reservations.Find(id);
@@ -24,10 +23,16 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         }
         return Task.FromResult(dbReservation.ToDomainModel());
     }
-
-    public Task<List<Reservation>> GetAllForMonth(DateTime day)
+    public Task<IList<Reservation>> GetAllForMonth(DateTime month)
     {
-        var dbReservation = _context.Reservations.Where(r => r.Date.Day == day.Day).ToList();
-        return Task.FromResult(dbReservation.Select(r => r.ToDomainModel()).ToList());
+        var dbReservation = _context.Reservations.Where(r => r.Date.Month == month.Month).ToList();
+        return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
+    }
+
+    public Task<IList<Reservation>> GetReservationsByDate(DateTime slot)
+    {
+        var slotEnd = slot.AddHours(1);
+        var dbReservation = _context.Reservations.Where(r => r.Date >= slot && r.Date < slotEnd).ToList();
+        return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
 }

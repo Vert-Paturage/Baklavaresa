@@ -26,8 +26,8 @@ internal sealed class ReservationConfiguration: IEntityTypeConfiguration<Reserva
         builder.Property(t => t.NumberOfPeople)
             .IsRequired();
         builder.HasOne(t => t.Table)
-            .WithMany()
-            .HasForeignKey(t => t.Id)
+            .WithOne()
+            .HasForeignKey<ReservationDatabase>(t => t.TableId)
             .OnDelete(DeleteBehavior.Restrict);
 
     }

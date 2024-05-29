@@ -45,13 +45,14 @@ namespace Infrastructure.Migrations
                         column: x => x.TableId,
                         principalTable: "Tables",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_TableId",
                 table: "Reservations",
-                column: "TableId");
+                column: "TableId",
+                unique: true);
         }
 
         /// <inheritdoc />

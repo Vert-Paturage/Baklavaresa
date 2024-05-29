@@ -9,6 +9,7 @@ internal class ReservationDatabase: DataEntity<Reservation>
     public string LastName { get; set; }
     public string Email { get; set; }
     public DateTime Date { get; set; }
+    public int TableId { get; set; }
     public TableDatabase Table { get; set; }
     public int NumberOfPeople { get; set; }
     
@@ -25,7 +26,7 @@ internal class ReservationDatabase: DataEntity<Reservation>
         Email = domainModel.Email;
         Date = domainModel.Date;
         NumberOfPeople = domainModel.NumberOfPeople;
-        Table = new TableDatabase(domainModel.Table);
+        TableId = domainModel.Table.Id;
     }
 
     public override Reservation ToDomainModel()

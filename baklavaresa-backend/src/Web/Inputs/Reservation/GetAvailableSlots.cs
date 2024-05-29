@@ -1,7 +1,7 @@
 namespace Web.Inputs.Reservation;
 
-public class GetReservationByDay
+public record GetAvailableSlots
 {
     public int NumberOfPeople { get; set; }
-    public string Day { get; set; }
+    public DateTime Month { get; set; } 
 }

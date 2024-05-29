@@ -44,7 +44,13 @@ namespace Infrastructure.Migrations
                     b.Property<int>("NumberOfPeople")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("TableId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TableId")
+                        .IsUnique();
 
                     b.ToTable("Reservations");
                 });
@@ -66,8 +72,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Data.Entities.ReservationDatabase", b =>
                 {
                     b.HasOne("Infrastructure.Data.Entities.TableDatabase", "Table")
-                        .WithMany()
-                        .HasForeignKey("Id")
+                        .WithOne()
+                        .HasForeignKey("Infrastructure.Data.Entities.ReservationDatabase", "TableId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

@@ -1,4 +1,5 @@
 using Application.Reservation.Commands.CreateReservation;
+using Application.Reservation.Queries.GetAvailableSlots;
 using Application.Reservation.Queries.GetReservationById;
 using Domain.Repositories;
 using MediatR;
@@ -48,35 +49,26 @@ public class ReservationController: ControllerBase
             return BadRequest(e.Message);
         }
     }
-    
-    [HttpGet("AvailableSlots/{day}")]
-    public async Task<IActionResult> GetAvailableSlots(GetReservationByDay input)
+    [HttpPost("GetAvailableSlots")]
+    public async Task<IActionResult> GetAvailableSlots(Inputs.Reservation.GetAvailableSlots input)
     {
-        /*var query = new GetAvailableSlotsQuery(input);
+        if (input.NumberOfPeople <= 0)
+        {
+            return BadRequest("Number of people must be greater than 0");
+        }
+        var query = new GetAvailableSlotsQuery(input.NumberOfPeople, input.Month);
         try
         {
-            var timeSlots = await _mediator.Send(query);
-            return Ok(timeSlots);
+            var availableSlots = await _mediator.Send(query);
+            if (!availableSlots.Any())
+            {
+                return NotFound();
+            }
+            return Ok(availableSlots);
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
-        }*/
-        return Ok();
-    }
-    [HttpGet("AvailableSlots/{month}")]
-    public async Task<IActionResult> GetAvailableSlots(GetReservationByMonth input)
-    {
-        /*var query = new GetAvailableSlotsQuery(input);
-        try
-        {
-            var timeSlots = await _mediator.Send(query);
-            return Ok(timeSlots);
+            return BadRequest(e.StackTrace);
         }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }*/
-        return Ok();
-    }
+    } 
 }
