@@ -25,9 +25,9 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         return Task.FromResult(dbReservation.ToDomainModel());
     }
 
-    public Task<List<Reservation>> GetAllByDay(DateTime day)
+    public Task<List<Reservation>> GetAllForMonth(DateTime day)
     {
-        var dbReservation = _context.Reservations.Where(r => r.Schedule.Day == day.Day).ToList();
+        var dbReservation = _context.Reservations.Where(r => r.Date.Day == day.Day).ToList();
         return Task.FromResult(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
 }

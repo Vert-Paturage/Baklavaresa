@@ -21,7 +21,8 @@ public class ReservationController: ControllerBase
     [HttpPost("Create")]
     public async Task<IActionResult> CreateReservation(CreateReservation input)
     {
-        var command = new CreateReservationCommand(input.FirstName, input.LastName, input.Email, input.Schedule);
+        var command = new CreateReservationCommand(input.FirstName,
+            input.LastName, input.Email, input.Date, input.NumberOfPeople, input.Tables);
         try
         {
             await _mediator.Send(command);

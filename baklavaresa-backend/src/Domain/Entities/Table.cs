@@ -11,6 +11,8 @@ public class Table
         Capacity = capacity;
     }
     
+    public Table() { }
+    
     public Table(int capacity)
     {
         Capacity = capacity;

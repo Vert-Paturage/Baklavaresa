@@ -6,5 +6,5 @@ public interface IReservationRepository
 {
     public Task Create(Reservation reservation);
     public Task<Reservation> GetById(int id);
-    Task<List<Reservation>> GetAllByDay(DateTime day);
+    Task<List<Reservation>> GetAllForMonth(DateTime day);
 }

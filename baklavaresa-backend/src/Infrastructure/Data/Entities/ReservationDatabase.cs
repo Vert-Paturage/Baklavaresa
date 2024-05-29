@@ -8,7 +8,9 @@ internal class ReservationDatabase: DataEntity<Reservation>
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
-    public DateTime Schedule { get; set; }
+    public DateTime Date { get; set; }
+    public IList<TableDatabase> Tables { get; set; }
+    public int NumberOfPeople { get; set; }
     
     public ReservationDatabase() { }
     public ReservationDatabase(Reservation domainModel) : base(domainModel)
@@ -21,11 +23,12 @@ internal class ReservationDatabase: DataEntity<Reservation>
         FirstName = domainModel.FirstName;
         LastName = domainModel.LastName;
         Email = domainModel.Email;
-        Schedule = domainModel.Schedule;
+        Date = domainModel.Date;
     }
 
     public override Reservation ToDomainModel()
     {
-        return new Reservation(Id, FirstName, LastName, Email, Schedule);
+        var tables = Tables.Select(t => t.ToDomainModel()).ToList();
+        return new Reservation(Id, FirstName, LastName, Email, Date, NumberOfPeople, tables);
     }
 }

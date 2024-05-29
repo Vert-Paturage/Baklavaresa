@@ -1,6 +1,21 @@
+using Domain.Entities;
+using Infrastructure.Data.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 namespace Infrastructure.Data.Configurations;
 
-public class TableConfiguration
+internal sealed class TableConfiguration: IEntityTypeConfiguration<TableDatabase>
 {
-    
+    public void Configure(EntityTypeBuilder<TableDatabase> builder)
+    {
+        builder.Property(t => t.Id)
+            .IsRequired()
+            .ValueGeneratedOnAdd();
+        builder.Property(t => t.Capacity)
+            .IsRequired();
+        builder.HasOne(t => t.Reservation)
+            .WithMany(r => r.Tables)
+            .HasForeignKey(t => t.ReservationId);
+    }
 }
