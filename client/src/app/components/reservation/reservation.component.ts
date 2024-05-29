@@ -45,7 +45,9 @@ export class ReservationComponent {
 		this.Calendar.PeopleNumber = buttonValue;
 		this.SelectedDay = null;
 		this.getCalendar(this.Calendar);
-		this.renderDays();
+		setTimeout(() => {
+			this.renderDays();
+		}, 1); // 8-) attention dos d'ane
 	}
 
 	onDateSelected(day: number) {
