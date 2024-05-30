@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 
 import Calendar from '../../types/calendar.type';
-import { map } from 'rxjs';
+import Day from '../../types/day.type';
 
 @Component({
 	selector: 'app-reservation',
@@ -26,7 +26,7 @@ export class ReservationComponent {
 	SelectedDay: number | null = null;
 	SelectedSchedule: Date | null = null;
 
-	Days: Map<Date, Date[]> = new Map();
+	Days: Day[] = [];
 
 	constructor(private apiService: ApiService) {
 		const today: Date = new Date();
@@ -52,6 +52,7 @@ export class ReservationComponent {
 
 	onDateSelected(day: number) {
 		this.SelectedDay = day;
+		console.log(this.Days[day-1].day);
 	}
 
 	// API
@@ -65,8 +66,7 @@ export class ReservationComponent {
 	// Render
 
 	renderDays() {
-		console.log(typeof this.Days.values().next().value.day);
-		let offset: number = 0;
+		let offset: number = this.Days[0].day.getDay();
 		if(offset == 0) {
 			offset = 7;
 		}
@@ -84,7 +84,7 @@ export class ReservationComponent {
 					dayButton.style.gridColumnStart = `${offset}`;
 				}
 				dayButton.classList.add('day');
-				if(Array.from(this.Days.entries()).at(i)?.[1].length === 0) {
+				if(this.Days[i].slots.length === 0) {
 					dayButton.classList.add('dayHasNoRoom');
 				}
 				dayButton.innerHTML = `${day}`;
@@ -130,7 +130,7 @@ export class ReservationComponent {
 	}
 
 	displayDate(day: number): string {
-		const date: Date = Array.from(this.Days.keys()).at(day-1) as Date;
+		const date: Date = this.Days[day-1].day;
 		return `${this.getDayName(date.getDay())} ${date.getDate()} ${this.getMonthName(date.getMonth())} ${date.getFullYear()}`;
 	}
 }

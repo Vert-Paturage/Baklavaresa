@@ -1,12 +1,9 @@
-import Table from './table.type';
-
 type Reservation = {
-    ID: number;
-	NumberOfPeople: number;
-	Tables: Table[];
-    FirstName: string;
+	FirstName: string;
 	LastName: string;
 	Email: string;
+	Date: Date;
+	NumberOfPeople: number;
 };
 
 export default Reservation;
