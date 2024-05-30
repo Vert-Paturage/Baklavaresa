@@ -1,17 +1,16 @@
-using Application.Reservation.Queries.GetAvailableSlotsByDay;
 using Domain.Repositories;
 
 namespace Application.Reservation.Queries.GetAvailableSlots;
 
-public record GetAvailableSlotsQuery(int NumberOfPeople, DateTime Month): IRequest<IEnumerable<AvailableSlotsDto>>;
+public record GetAvailableSlotsQuery(int NumberOfPeople, DateTime Month): IRequest<AvailableSlotsDto>;
 
-internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationRepository, ITableRepository tableRepository) : IRequestHandler<GetAvailableSlotsQuery, IEnumerable<AvailableSlotsDto>>
+internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationRepository, ITableRepository tableRepository) : IRequestHandler<GetAvailableSlotsQuery, AvailableSlotsDto>
 {
     private readonly IReservationRepository _reservationRepository = reservationRepository;
     private readonly ITableRepository _tableRepository = tableRepository;
-    public async Task<IEnumerable<AvailableSlotsDto>> Handle(GetAvailableSlotsQuery request, CancellationToken cancellationToken)
+    public async Task<AvailableSlotsDto> Handle(GetAvailableSlotsQuery request, CancellationToken cancellationToken)
     {
-        var availableSlots = new List<AvailableSlotsDto>();
+        var availableSlots = new AvailableSlotsDto();
         var tablesForSlots = new Dictionary<DateTime, IList<int>>();
         var tables = await _tableRepository.GetAll();
         for (var day = 1; day <= DateTime.DaysInMonth(request.Month.Year, request.Month.Month); day++)
@@ -35,13 +34,8 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
                 tablesForSlots[slotDate] = availableTablesForNumberOfPeople.Select(t => t.Id).ToList();
                 slots.Add(new DateTime(request.Month.Year, request.Month.Month, day, hour, 0, 0));
             }  
-            availableSlots.Add(
-                new AvailableSlotsDto()
-                {
-                    Day = new DateTime(request.Month.Year, request.Month.Month, day),
-                    Slots = slots, 
-                    Tables = tablesForSlots
-                });
+            var key = new DateTime(request.Month.Year, request.Month.Month, day);
+            availableSlots[key] = slots;
         }
         return availableSlots;
     }
