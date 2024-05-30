@@ -47,7 +47,7 @@ export class ReservationComponent {
 		this.getCalendar(this.Calendar);
 		setTimeout(() => {
 			this.renderDays();
-		}, 1); // 8-) attention dos d'ane
+		}, 100); // 8-) attention dos d'ane
 	}
 
 	onDateSelected(day: number) {
@@ -57,17 +57,16 @@ export class ReservationComponent {
 	// API
 
 	getCalendar(calendar: Calendar): void {
-		this.apiService.getCalendar(calendar).subscribe(map	=> {
+		this.apiService.getCalendar(calendar).subscribe(map => {
 			this.Days = map;
 		});
-		console.log('Retour :');
-		console.log(this.Days);
 	}
 
 	// Render
 
 	renderDays() {
-		let offset: number = this.Days.keys().next().value.getDay();
+		console.log(typeof this.Days.values().next().value.day);
+		let offset: number = 0;
 		if(offset == 0) {
 			offset = 7;
 		}
@@ -75,7 +74,6 @@ export class ReservationComponent {
 		//TODO: refaire tout dans une classe
 
 		let daysGrid: HTMLElement | null = document.getElementById('daysgrid');
-		console.log(daysGrid);
 		if(daysGrid != null) {
 			daysGrid.innerHTML = '<p>L</p><p>M</p><p>M</p><p>J</p><p>V</p><p>S</p><p>D</p>';
 			for(let i = 0; i < Array.from(this.Days.keys()).length; i++) { //vérifier si on peut pas faire mieux
