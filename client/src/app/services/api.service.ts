@@ -14,11 +14,7 @@ export class ApiService {
 	}
 
 	getCalendar(calendar: Calendar): Observable<Map<Date, Date[]>> {
-		const params = new HttpParams();
-		params.set('NumberOfPeople', calendar.PeopleNumber.toString());
-		params.set('Month', calendar.Date.toISOString());
-		console.log('Params: ' + params.toString());
-		return this.http.get<Map<Date, Date[]>>('/api/Reservation/GetAvailableSlots', {params});
+		return this.http.post<Map<Date, Date[]>>('/api/Reservation/GetAvailableSlots', {NumberOfPeople: calendar.PeopleNumber, Date: calendar.Date});
 	}
 
 	getCalendarStub(calendar: Calendar): Map<Date, Date[]> {
