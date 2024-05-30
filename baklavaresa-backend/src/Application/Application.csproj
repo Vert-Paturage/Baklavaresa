@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <Folder Include="Reservation\EventHandlers\" />
+      <Folder Include="Table\Queries\" />
     </ItemGroup>
 
     <ItemGroup>

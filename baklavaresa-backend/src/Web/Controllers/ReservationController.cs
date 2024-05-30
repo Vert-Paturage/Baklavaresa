@@ -1,5 +1,6 @@
 using Application.Reservation.Commands.CreateReservation;
-using Domain.Entities;
+using Application.Reservation.Queries.GetAvailableSlots;
+using Application.Reservation.Queries.GetReservationById;
 using Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,16 +19,11 @@ public class ReservationController: ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("Hello")]
-    public Task<string> Hello()
-    {
-        return Task.FromResult("Hello World!");
-    } 
-    
     [HttpPost("Create")]
     public async Task<IActionResult> CreateReservation(CreateReservation input)
     {
-        var command = new CreateReservationCommand(input.FirstName, input.LastName, input.Email);
+        var command = new CreateReservationCommand(input.FirstName,
+            input.LastName, input.Email, input.Date, input.NumberOfPeople, input.Table);
         try
         {
             await _mediator.Send(command);
@@ -35,7 +31,44 @@ public class ReservationController: ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.StackTrace);
+            return BadRequest(e.Message);
         }
     }
+    
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetReservation(int id)
+    {
+        var query = new GetReservationByIdQuery(id);
+        try
+        {
+            var reservation = await _mediator.Send(query);
+            return Ok(reservation);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    [HttpPost("GetAvailableSlots")]
+    public async Task<IActionResult> GetAvailableSlots(Inputs.Reservation.GetAvailableSlots input)
+    {
+        if (input.NumberOfPeople <= 0)
+        {
+            return BadRequest("Number of people must be greater than 0");
+        }
+        var query = new GetAvailableSlotsQuery(input.NumberOfPeople, input.Month);
+        try
+        {
+            var availableSlots = await _mediator.Send(query);
+            if (!availableSlots.Any())
+            {
+                return NotFound();
+            }
+            return Ok(availableSlots);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.StackTrace);
+        }
+    } 
 }

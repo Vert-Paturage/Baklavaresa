@@ -1,16 +1,26 @@
+using Domain.Entities;
 using Domain.Repositories;
 
 namespace Application.Reservation.Commands.CreateReservation;
 
-public record CreateReservationCommand(string FirstName, string LastName, string Email) : IRequest<Unit>;
+public record CreateReservationCommand(
+    string FirstName,
+    string LastName,
+    string Email,
+    DateTime Date,
+    int NumberOfPeople,
+    int Table
+    ) : IRequest<Unit>;
 
-public class CreateReservationCommandHandler(IReservationRepository reservationRepository) : IRequestHandler<CreateReservationCommand, Unit>
+public class CreateReservationCommandHandler(IReservationRepository reservationRepository, ITableRepository tableRepository) : IRequestHandler<CreateReservationCommand, Unit>
 {
     private readonly IReservationRepository _reservationRepository = reservationRepository;
+    private readonly ITableRepository _tableRepository = tableRepository;
     public Task<Unit> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
-        Domain.Entities.Reservation reservation = new Domain.Entities.Reservation(request.FirstName, request.LastName, request.Email);
-        // WARNING: MEUCH ??!
+        var table = _tableRepository.GetById(request.Table);
+        var reservation = new Domain.Entities.Reservation(request.FirstName, request.LastName, request.Email,
+            request.Date, request.NumberOfPeople, table);
         _reservationRepository.Create(reservation);
         return Unit.Task;
     }

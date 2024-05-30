@@ -1,12 +1,13 @@
 using Domain.Entities;
+using Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data.Configurations;
 
-internal sealed class ReservationConfiguration: IEntityTypeConfiguration<Reservation>
+internal sealed class ReservationConfiguration: IEntityTypeConfiguration<ReservationDatabase>
 {
-    public void Configure(EntityTypeBuilder<Reservation> builder)
+    public void Configure(EntityTypeBuilder<ReservationDatabase> builder)
     {
         builder.Property(t => t.Id)
             .IsRequired()
@@ -17,5 +18,17 @@ internal sealed class ReservationConfiguration: IEntityTypeConfiguration<Reserva
         builder.Property(t => t.LastName)
             .HasMaxLength(200)
             .IsRequired();
+        builder.Property(t => t.Email)
+            .HasMaxLength(200)
+            .IsRequired();
+        builder.Property(t => t.Date)
+            .IsRequired();
+        builder.Property(t => t.NumberOfPeople)
+            .IsRequired();
+        builder.HasOne(t => t.Table)
+            .WithOne()
+            .HasForeignKey<ReservationDatabase>(t => t.TableId)
+            .OnDelete(DeleteBehavior.Restrict);
+
     }
 }

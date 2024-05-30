@@ -1,0 +1,15 @@
+INSERT INTO Tables (Capacity) VALUES (2);
+INSERT INTO Tables (Capacity) VALUES (4);
+INSERT INTO Tables (Capacity) VALUES (2);
+INSERT INTO Tables (Capacity) VALUES (4);
+INSERT INTO Tables (Capacity) VALUES (6);
+INSERT INTO Tables (Capacity) VALUES (2);
+INSERT INTO Tables (Capacity) VALUES (4);
+INSERT INTO Tables (Capacity) VALUES (6);
+INSERT INTO Tables (Capacity) VALUES (2);
+INSERT INTO Tables (Capacity) VALUES (4);
+INSERT INTO Tables (Capacity) VALUES (6);
+INSERT INTO Tables (Capacity) VALUES (4);
+INSERT INTO Tables (Capacity) VALUES (6);
+INSERT INTO Tables (Capacity) VALUES (8);
+INSERT INTO Tables (Capacity) VALUES (8);
