@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 
 import Calendar from '../../types/calendar.type';
+import { map } from 'rxjs';
 
 @Component({
 	selector: 'app-reservation',
@@ -30,8 +31,7 @@ export class ReservationComponent {
 	constructor(private apiService: ApiService) {
 		const today: Date = new Date();
 		this.Calendar = {
-			month: today.getMonth(),
-			year: today.getFullYear(),
+			Date: today,
 			PeopleNumber: 0
 		};
 	}
@@ -57,7 +57,11 @@ export class ReservationComponent {
 	// API
 
 	getCalendar(calendar: Calendar): void {
-		this.Days = this.apiService.getCalendar(calendar);
+		this.apiService.getCalendar(calendar).subscribe(map	=> {
+			this.Days = map;
+		});
+		console.log('Retour :');
+		console.log(this.Days);
 	}
 
 	// Render

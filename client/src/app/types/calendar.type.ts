@@ -1,6 +1,5 @@
 type Calendar = {
-	month: number;
-	year: number;
+	Date: Date;
 	PeopleNumber: number;
 };
 
