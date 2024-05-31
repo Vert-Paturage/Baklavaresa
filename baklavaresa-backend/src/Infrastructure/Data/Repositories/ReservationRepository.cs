@@ -32,7 +32,7 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
 
-    public Task<IList<Reservation>> GetReservationsByDateAdmin(DateTime slot)
+    public Task<IList<Reservation>> GetReservationsByDate(DateTime slot)
     {
         var dbReservation = _context.Reservations
             .Include(r => r.Table)
@@ -40,15 +40,13 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
 
-     public Task<IList<Reservation>> GetReservationsByDate(DateTime slot)
+     public Task<IList<Reservation>> GetReservationsBySlot(DateTime slotStart, DateTime slotEnd)
     {
-        var slotEnd = slot.AddHours(1);
         var dbReservation = _context.Reservations.
             Include(r => r.Table)
-            .Where(r => r.Date >= slot && r.Date < slotEnd).ToList();
+            .Where(r => r.Date >= slotStart && r.Date < slotEnd).ToList();
         return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
-
 
     public Task Delete(Reservation reservation)
     {

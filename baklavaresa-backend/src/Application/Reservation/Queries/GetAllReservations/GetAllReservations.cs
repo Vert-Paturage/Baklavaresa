@@ -11,6 +11,6 @@ internal class GetAllReservationsQueryHandler(IReservationRepository reservation
     public async Task<IList<Domain.Entities.Reservation>> Handle(GetAllReservationsQuery request, CancellationToken cancellationToken)
     {
         var slotDate = new DateTime(request.date.Year, request.date.Month, request.date.Day, 0, 0, 0);
-        return await _reservationRepository.GetReservationsByDateAdmin(slotDate);
+        return await _reservationRepository.GetReservationsByDate(slotDate);
     }
 }
