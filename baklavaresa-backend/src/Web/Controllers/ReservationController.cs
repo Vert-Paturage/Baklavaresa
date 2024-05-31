@@ -1,7 +1,6 @@
 using Application.Reservation.Commands.CreateReservation;
 using Application.Reservation.Queries.GetAvailableSlots;
 using Application.Reservation.Queries.GetReservationById;
-using Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Web.Inputs.Reservation;
@@ -57,7 +56,7 @@ public class ReservationController: ControllerBase
         {
             return BadRequest("Number of people must be greater than 0");
         }
-        var query = new GetAvailableSlotsQuery(input.NumberOfPeople, input.Month);
+        var query = new GetAvailableSlotsQuery(input.NumberOfPeople, input.Date);
         try
         {
             var availableSlots = await _mediator.Send(query);

@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 
 import Calendar from '../../types/calendar.type';
-import { map } from 'rxjs';
+import Day from '../../types/day.type';
 
 @Component({
 	selector: 'app-reservation',
@@ -26,7 +26,7 @@ export class ReservationComponent {
 	SelectedDay: number | null = null;
 	SelectedSchedule: Date | null = null;
 
-	Days: Map<Date, Date[]> = new Map();
+	Days: Day[] = [];
 
 	constructor(private apiService: ApiService) {
 		const today: Date = new Date();
@@ -47,27 +47,26 @@ export class ReservationComponent {
 		this.getCalendar(this.Calendar);
 		setTimeout(() => {
 			this.renderDays();
-		}, 1); // 8-) attention dos d'ane
+		}, 100); // 8-) attention dos d'ane
 	}
 
 	onDateSelected(day: number) {
 		this.SelectedDay = day;
+		console.log(this.Days[day-1].day);
 	}
 
 	// API
 
 	getCalendar(calendar: Calendar): void {
-		this.apiService.getCalendar(calendar).subscribe(map	=> {
+		this.apiService.getCalendar(calendar).subscribe(map => {
 			this.Days = map;
 		});
-		console.log('Retour :');
-		console.log(this.Days);
 	}
 
 	// Render
 
 	renderDays() {
-		let offset: number = this.Days.keys().next().value.getDay();
+		let offset: number = this.Days[0].day.getDay();
 		if(offset == 0) {
 			offset = 7;
 		}
@@ -75,7 +74,6 @@ export class ReservationComponent {
 		//TODO: refaire tout dans une classe
 
 		let daysGrid: HTMLElement | null = document.getElementById('daysgrid');
-		console.log(daysGrid);
 		if(daysGrid != null) {
 			daysGrid.innerHTML = '<p>L</p><p>M</p><p>M</p><p>J</p><p>V</p><p>S</p><p>D</p>';
 			for(let i = 0; i < Array.from(this.Days.keys()).length; i++) { //vérifier si on peut pas faire mieux
@@ -86,7 +84,7 @@ export class ReservationComponent {
 					dayButton.style.gridColumnStart = `${offset}`;
 				}
 				dayButton.classList.add('day');
-				if(Array.from(this.Days.entries()).at(i)?.[1].length === 0) {
+				if(this.Days[i].slots.length === 0) {
 					dayButton.classList.add('dayHasNoRoom');
 				}
 				dayButton.innerHTML = `${day}`;
@@ -132,7 +130,7 @@ export class ReservationComponent {
 	}
 
 	displayDate(day: number): string {
-		const date: Date = Array.from(this.Days.keys()).at(day-1) as Date;
+		const date: Date = this.Days[day-1].day;
 		return `${this.getDayName(date.getDay())} ${date.getDate()} ${this.getMonthName(date.getMonth())} ${date.getFullYear()}`;
 	}
 }
