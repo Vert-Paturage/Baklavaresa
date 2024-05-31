@@ -21,7 +21,18 @@ import { fr } from 'date-fns/locale';
 
 export class AdminComponent implements OnInit{
 	SelectedDay!: Date;
-  Reservation: Reservation[] = [];
+  Reservation: Reservation[] = [
+    {
+      ID: 1,
+      FirstName: "John",
+      LastName: "Doe",
+      Email: "derya@test.fr",
+      Date: new Date(),
+      NumberOfPeople: 2,
+      NumberOfTables: {ID: 1, Capacity: 4}
+    }
+  ];
+
   SelectedDayString!: string;
 
   constructor(private apiService: ApiService) {
@@ -47,7 +58,9 @@ export class AdminComponent implements OnInit{
   deleteReservation(index: number) {
     const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette réservation ?");
     if (confirmDelete) {
-      this.Reservation.splice(index, 1);
+      this.apiService.deleteReservation(this.Reservation[index].ID).subscribe(() => {
+        this.Reservation.splice(index, 1);
+      });
     }
   }
 }

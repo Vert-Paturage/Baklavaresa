@@ -29,10 +29,28 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
 
-    public Task<IList<Reservation>> GetReservationsByDate(DateTime slot)
+    public Task<IList<Reservation>> GetReservationsByDateAdmin(DateTime slot)
+    {
+        var dbReservation = _context.Reservations.Where(r => r.Date.Date == slot.Date).ToList();
+        return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
+    }
+
+     public Task<IList<Reservation>> GetReservationsByDate(DateTime slot)
     {
         var slotEnd = slot.AddHours(1);
         var dbReservation = _context.Reservations.Where(r => r.Date >= slot && r.Date < slotEnd).ToList();
         return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
+    }
+
+
+    public Task Delete(Reservation reservation)
+    {
+        var dbReservation = _context.Reservations.Find(reservation.Id);
+        if (dbReservation != null)
+        {
+            _context.Reservations.Remove(dbReservation);
+            return _context.SaveChangesAsync();
+        }
+        throw new Domain.Exceptions.Reservation.ReservationNotFoundException(reservation.Id);
     }
 }

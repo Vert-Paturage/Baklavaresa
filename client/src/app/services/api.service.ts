@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, input } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
@@ -29,7 +29,7 @@ export class ApiService {
 	}
 
 	getCalendarAdmin(date: Date): Observable<Reservation[]> {
-		return this.http.post<Reservation[]>('/api/Reservation/GetAllReservations', {Date: date});
+		return this.http.get<Reservation[]>('/api/Reservation/GetAllReservations', {params: {input: date.toISOString()}});
 	}
 
 	getCalendarStub(calendar: Calendar): Map<Date, Date[]> {
@@ -47,6 +47,10 @@ export class ApiService {
 			}
 		}
 		return stub;
+	}
+
+	deleteReservation(id: number): Observable<string> {
+		return this.http.post<string>('/api/Reservation/Delete', {ID: id});
 	}
 
 	private getRandomSchedule(day: number): Date {

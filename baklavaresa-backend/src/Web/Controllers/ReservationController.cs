@@ -73,18 +73,16 @@ public class ReservationController: ControllerBase
         }
     } 
 
-     [HttpPost("GetAllReservations")]
-    public async Task<IActionResult> GetAllReservations(Inputs.Reservation.GetAvailableSlots input)
+    [HttpGet("GetAllReservations")]
+    public async Task<IActionResult> GetAllReservations(DateTime input)
     {
-        System.Diagnostics.Debug.WriteLine(input);
-        var query = new GetAllReservationsQuery(input.Date);
+        Console.WriteLine("salut c'est derya");
+        Console.WriteLine(input);
+        System.Diagnostics.Debug.WriteLine("salut c'est derya");
+        var query = new GetAllReservationsQuery(input);
         try
         {
             var availableSlots = await _mediator.Send(query);
-            if (!availableSlots.Any())
-            {
-                return NotFound();
-            }
             return Ok(availableSlots);
         }
         catch (Exception e)

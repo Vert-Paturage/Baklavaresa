@@ -8,4 +8,7 @@ public interface IReservationRepository
     Task<Reservation> GetById(int id);
     Task<IList<Reservation>> GetAllForMonth(DateTime month);
     Task<IList<Reservation>> GetReservationsByDate(DateTime slot);
+
+    Task<IList<Reservation>> GetReservationsByDateAdmin(DateTime slot);
+    Task Delete(Reservation reservation);
 }

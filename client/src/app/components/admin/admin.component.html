@@ -1,7 +1,6 @@
-<p>Admin works</p>
 <div>
   <mat-form-field>
-    <mat-label>Choose a date</mat-label>
+    <mat-label>Choisissez une date</mat-label>
     <input matInput [(ngModel)]="SelectedDay" [matDatepicker]="picker" (dateChange)="onDateChange($event)">
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -30,6 +29,7 @@
 	  <td>{{ reservation.FirstName }}</td>
 	  <td>{{ reservation.LastName }}</td>
 	  <td>{{ reservation.Email }}</td>
+	  <td>{{ reservation.NumberOfTables.ID }}</td>
 	  <td>
 		<button (click)="deleteReservation(i)" class="btn btn-danger">Supprimer</button>
 	  </td>
