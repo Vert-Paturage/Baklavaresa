@@ -1,4 +1,5 @@
 using Application.Reservation.Commands.CreateReservation;
+using Application.Reservation.Queries.GetAllReservations;
 using Application.Reservation.Queries.GetAvailableSlots;
 using Application.Reservation.Queries.GetReservationById;
 using MediatR;
@@ -57,6 +58,26 @@ public class ReservationController: ControllerBase
             return BadRequest("Number of people must be greater than 0");
         }
         var query = new GetAvailableSlotsQuery(input.NumberOfPeople, input.Date);
+        try
+        {
+            var availableSlots = await _mediator.Send(query);
+            if (!availableSlots.Any())
+            {
+                return NotFound();
+            }
+            return Ok(availableSlots);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.StackTrace);
+        }
+    } 
+
+     [HttpPost("GetAllReservations")]
+    public async Task<IActionResult> GetAllReservations(Inputs.Reservation.GetAvailableSlots input)
+    {
+        System.Diagnostics.Debug.WriteLine(input);
+        var query = new GetAllReservationsQuery(input.Date);
         try
         {
             var availableSlots = await _mediator.Send(query);

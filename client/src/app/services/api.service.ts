@@ -28,6 +28,10 @@ export class ApiService {
 		);
 	}
 
+	getCalendarAdmin(date: Date): Observable<Reservation[]> {
+		return this.http.post<Reservation[]>('/api/Reservation/GetAllReservations', {Date: date});
+	}
+
 	getCalendarStub(calendar: Calendar): Map<Date, Date[]> {
 		// 1st of may 2024
 		const date: Date = new Date(2024, 4, 1);
