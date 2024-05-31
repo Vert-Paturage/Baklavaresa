@@ -8,6 +8,5 @@ public class CreateReservation
     public string LastName { get; set; }
     public string Email { get; set; } 
     public DateTime Date { get; set; }    
-    public int Table { get; set; }
     public int NumberOfPeople { get; set; }
 }
