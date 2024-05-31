@@ -18,6 +18,10 @@ public class CreateReservationCommandHandler(IReservationRepository reservationR
     public Task<Unit> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
         var table = _tableRepository.GetTablesByCapacity(request.NumberOfPeople).Result.FirstOrDefault();
+        if (table == null)
+        {
+            throw new Domain.Exceptions.Table.NoTablesAvailableException(request.Date, request.NumberOfPeople);
+        }
         var reservation = new Domain.Entities.Reservation(request.FirstName, request.LastName, request.Email,
             request.Date, request.NumberOfPeople, table);
         _reservationRepository.Create(reservation);
