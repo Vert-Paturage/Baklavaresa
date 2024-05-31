@@ -1,3 +1,4 @@
+using Application.Reservation.Queries.GetAllTables;
 using Application.Table.Commands.CreateTable;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -30,4 +31,19 @@ public class TableController: ControllerBase
            return BadRequest(e.Message);
        }
    }
+
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAllTables()
+    {
+        var query = new GetAllTablesQuery();
+        try
+        {
+            var tables = await _mediator.Send(query);
+            return Ok(tables);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }

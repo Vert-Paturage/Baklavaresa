@@ -76,9 +76,7 @@ public class ReservationController: ControllerBase
     [HttpGet("GetAllReservations")]
     public async Task<IActionResult> GetAllReservations(DateTime input)
     {
-        Console.WriteLine("salut c'est derya");
-        Console.WriteLine(input);
-        System.Diagnostics.Debug.WriteLine("salut c'est derya");
+        System.Diagnostics.Debug.WriteLine(input);
         var query = new GetAllReservationsQuery(input);
         try
         {
