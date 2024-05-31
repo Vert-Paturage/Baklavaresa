@@ -9,7 +9,7 @@
 
 }
 
-#peoplenumbermodule {
+#datemodule {
 	margin: 1rem;
 	display: flex;
 	flex-direction: column;
@@ -96,3 +96,8 @@
 .dayHasNoRoom {
 	color: var(--color-secondary);
 }
+
+.table thead th {
+    border-bottom: 1px solid black; 
+}
+

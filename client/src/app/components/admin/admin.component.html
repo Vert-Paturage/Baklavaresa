@@ -1,39 +1,41 @@
-<div>
-  <mat-form-field>
-    <mat-label>Choisissez une date</mat-label>
-    <input matInput [(ngModel)]="SelectedDay" [matDatepicker]="picker" (dateChange)="onDateChange($event)">
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-</div>
+<div id="wrapper">
+	<div id="datemodule">
+		<mat-form-field>
+			<mat-label>Choisissez une date</mat-label>
+			<input matInput [(ngModel)]="SelectedDay" [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+			<mat-hint>MM/DD/YYYY</mat-hint>
+			<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+			<mat-datepicker #picker></mat-datepicker>
+		</mat-form-field>
+	</div>
 
-<div>
-<h2>Réservations du {{ SelectedDayString }}</h2>
-<table class="table table-bordered">
-  <thead>
-	<tr>
-	  <th>Date</th>
-	  <th>Nombre de personnes</th>
-	  <th>Nom</th>
-	  <th>Prénom</th>
-	  <th>Adresse mail</th>
-	  <th>Numéro de table</th>
-	  <th>Actions</th>
-	</tr>
-  </thead>
-  <tbody>
-	<tr *ngFor="let reservation of Reservation; let i = index">
-	  <td>{{ reservation.Date }}</td>
-	  <td>{{ reservation.NumberOfPeople }}</td>
-	  <td>{{ reservation.FirstName }}</td>
-	  <td>{{ reservation.LastName }}</td>
-	  <td>{{ reservation.Email }}</td>
-	  <td>{{ reservation.NumberOfTables.ID }}</td>
-	  <td>
-		<button (click)="deleteReservation(i)" class="btn btn-danger">Supprimer</button>
-	  </td>
-	</tr>
-  </tbody>
-</table>
+	<div>
+	<h2>Réservations du {{ SelectedDayString }}</h2>
+	<table class="table table-bordered">
+	<thead>
+		<tr>
+		<th>Date</th>
+		<th>Nombre de personnes</th>
+		<th>Nom</th>
+		<th>Prénom</th>
+		<th>Adresse mail</th>
+		<th>Numéro de table</th>
+		<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let reservation of Reservation; let i = index">
+		<td>{{ reservation.Date | date: 'dd/MM/yyyy' }}</td>
+		<td>{{ reservation.NumberOfPeople }}</td>
+		<td>{{ reservation.FirstName }}</td>
+		<td>{{ reservation.LastName }}</td>
+		<td>{{ reservation.Email }}</td>
+		<td>{{ reservation.NumberOfTables.ID }}</td>
+		<td>
+			<button (click)="deleteReservation(i)" class="p-2"><img class="h-5 w-5" src="../../../assets/img/delete.jpg"/></button>
+		</td>
+		</tr>
+	</tbody>
+	</table>
+	</div>
 </div>
