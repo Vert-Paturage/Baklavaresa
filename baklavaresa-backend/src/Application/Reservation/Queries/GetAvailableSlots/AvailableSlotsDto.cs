@@ -1,3 +1,7 @@
 namespace Application.Reservation.Queries.GetAvailableSlots;
 
-public class AvailableSlotsDto : Dictionary<DateTime, IEnumerable<DateTime>> { }
+public class AvailableSlotsDto
+{
+    public DateTime Day { get; set; }
+    public IEnumerable<DateTime> Slots { get; set; }
+}
