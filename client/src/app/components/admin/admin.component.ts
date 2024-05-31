@@ -23,7 +23,7 @@ export class AdminComponent implements OnInit{
 	SelectedDay!: Date;
   Reservation: Reservation[] = [
     {
-      ID: 1,
+      ID: 6,
       FirstName: "John",
       LastName: "Doe",
       Email: "derya@test.fr",
@@ -43,6 +43,9 @@ export class AdminComponent implements OnInit{
 
   onDateChange(event: any): void {
     const selectedDate = event.value;
+    this.apiService.createReservation(this.Reservation[0]).subscribe(() => {
+      console.log("Reservation created");
+    });
     this.SelectedDay = selectedDate;
     this.apiService.getCalendarAdmin(this.SelectedDay).subscribe(map => {
       this.Reservation = map;
