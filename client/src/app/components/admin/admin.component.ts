@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import Table from '../../types/table.type';
 
 @Component({
   selector: 'admin',
@@ -22,6 +23,8 @@ import { fr } from 'date-fns/locale';
 export class AdminComponent implements OnInit{
 	SelectedDay!: Date;
   SelectedDayString!: string;
+  TableNumber!: number;
+  TableSeats!: number;
   Reservation: Reservation[] = [
     {
       ID: 6,
@@ -34,18 +37,35 @@ export class AdminComponent implements OnInit{
     }
   ];
 
+  Table: Table[] = [
+    {
+      ID: 1,
+      Capacity: 2
+    },
+    {
+      ID: 2,
+      Capacity: 4
+    },
+    {
+      ID: 3,
+      Capacity: 6
+    }
+  ];
 
-    constructor(private apiService: ApiService, private datePipe: DatePipe) {
-  	}
+
+  constructor(private apiService: ApiService, private datePipe: DatePipe) {
+  }
   
+  ngOnInit(): void {
+    this.apiService.getAllTables().subscribe(table => {
+      this.Table = table;
+    });
+  }
 
   formatDate(date: string): string {
     const parsedDate = new Date(date);
     return format(parsedDate, 'EEEE d MMMM yyyy', { locale: fr });
   }
-
-    ngOnInit(): void {
-    }
 
   onDateChange(event: any): void {
     const selectedDate = event.value;
@@ -65,6 +85,19 @@ export class AdminComponent implements OnInit{
       this.apiService.deleteReservation(this.Reservation[index].ID).subscribe(() => {
         this.Reservation.splice(index, 1);
       });
+    }
+  }
+
+  addTable() {
+    this.apiService.addTable(this.TableSeats).subscribe(() => {
+      console.log("Table created");
+    });
+  }
+
+  deleteTable(index: number) {
+    const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette table ?");
+    if (confirmDelete) {
+      this.Table.splice(index, 1);
     }
   }
 }

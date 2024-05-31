@@ -5,9 +5,11 @@ import { Observable, map } from 'rxjs';
 import Reservation from '../types/reservation.type';
 import Calendar from '../types/calendar.type';
 import Day from '../types/day.type';
+import Table from '../types/table.type';
 
 @Injectable()
 export class ApiService {
+
 	constructor(private http: HttpClient) {}
 
 	createReservation(reservation: Reservation): Observable<string> {
@@ -30,6 +32,14 @@ export class ApiService {
 
 	getCalendarAdmin(date: Date): Observable<Reservation[]> {
 		return this.http.get<Reservation[]>('/api/Reservation/GetAllReservations', {params: {input: date.toISOString()}});
+	}
+
+	getAllTables(): Observable<Table[]> {
+		return this.http.get<Table[]>('/api/Table/GetAll');
+	}
+
+	addTable(tableCapacity: number): Observable<string> {
+		return this.http.post<string>('/api/Table/Create', tableCapacity);
 	}
 
 	getCalendarStub(calendar: Calendar): Map<Date, Date[]> {
