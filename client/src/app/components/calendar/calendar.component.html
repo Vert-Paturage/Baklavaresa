@@ -7,14 +7,23 @@
 	<p>L</p><p>M</p><p>M</p><p>J</p><p>V</p><p>S</p><p>D</p>
 	@for(day of this.days; track $index)
 	{
-		<button
-		id="day{{day.day.getDate()}}"
-		class="day"
-		[ngClass]="{'dayHasNoRoom': day.slots.length == 0}"
-		[ngClass]="{'dayIsSelected': day == this.selectedDay}"
-		[ngStyle]="{'grid-column-start': day.day.getDate() == 1 ? offset : 'auto'}"
-		(click)="onDayChange(day)">
-			{{day.day.getDate()}}
-		</button>
+		@if (day.slots.length == 0) {
+			<p
+			id="day{{day.day.getDate()}}"
+			class="dayHasNoRoom"
+			[ngStyle]="{'grid-column-start': day.day.getDate() == 1 ? offset : 'auto'}">
+				{{day.day.getDate()}}
+			</p>
+		}
+		@else {
+			<button
+			id="day{{day.day.getDate()}}"
+			class="day"
+			[ngClass]="{'dayIsSelected': day == this.selectedDay}"
+			[ngStyle]="{'grid-column-start': day.day.getDate() == 1 ? offset : 'auto'}"
+			(click)="onDayChange(day)">
+				{{day.day.getDate()}}
+			</button>
+		}
 	}
 </div>

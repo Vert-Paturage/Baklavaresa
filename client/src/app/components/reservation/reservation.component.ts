@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 
 import { CalendarComponent } from '../calendar/calendar.component';
+import { ScheduleSelectorComponent } from '../scheduleselector/scheduleselector.component';
 
 import { ApiService } from '../../services/api.service';
 
@@ -13,7 +14,7 @@ import Day from '../../types/day.type';
 @Component({
 	selector: 'app-reservation',
 	standalone: true,
-	imports: [FormsModule, ReactiveFormsModule, CommonModule, CalendarComponent],
+	imports: [FormsModule, ReactiveFormsModule, CommonModule, CalendarComponent, ScheduleSelectorComponent],
 	templateUrl: './reservation.component.html',
 	styleUrls: ['./reservation.component.css'],
 	providers: [ApiService]
@@ -52,6 +53,10 @@ export class ReservationComponent {
 
 	onDateSelected(day: Day) {
 		this.SelectedDay = day;
+	}
+
+	onScheduleSelected(schedule: Date) {
+		this.SelectedSchedule = schedule;
 	}
 
 	// API
@@ -97,5 +102,22 @@ export class ReservationComponent {
 
 	displayDate(day: Date): string {
 		return `${this.getDayName(day.getDay())} ${day.getDate()} ${this.getMonthName(day.getMonth())} ${day.getFullYear()}`;
+	}
+
+	getReservationCurrentStateMessage(): string {
+		var result: string = "";
+		if(this.Calendar.PeopleNumber != 0)
+		{
+			result += `Réservation pour ${this.Calendar.PeopleNumber} personne${this.Calendar.PeopleNumber === 1 ? '' : 's'}`;
+			if(this.SelectedDay != null)
+			{
+				result += ` le ${this.displayDate(this.SelectedDay.day)}`;
+				if(this.SelectedSchedule != null)
+				{
+					result += ` à ${this.SelectedSchedule.getHours()}:${this.SelectedSchedule.getMinutes() < 10 ? '0' + this.SelectedSchedule.getMinutes() : this.SelectedSchedule.getMinutes()}`;
+				}
+			}
+		}
+		return result;
 	}
 }
