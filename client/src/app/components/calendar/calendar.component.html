@@ -1,0 +1,20 @@
+<div id="monthyearswitch">
+	<button id="previousmonthbutton">&lt;</button>
+	<p>{{this.monthName}} {{this.year}}</p>
+	<button id="nextmonthbutton">&gt;</button>
+</div>
+<div id="daysgrid">
+	<p>L</p><p>M</p><p>M</p><p>J</p><p>V</p><p>S</p><p>D</p>
+	@for(day of this.days; track $index)
+	{
+		<button
+		id="day{{day.day.getDate()}}"
+		class="day"
+		[ngClass]="{'dayHasNoRoom': day.slots.length == 0}"
+		[ngClass]="{'dayIsSelected': day == this.selectedDay}"
+		[ngStyle]="{'grid-column-start': day.day.getDate() == 1 ? offset : 'auto'}"
+		(click)="onDayChange(day)">
+			{{day.day.getDate()}}
+		</button>
+	}
+</div>

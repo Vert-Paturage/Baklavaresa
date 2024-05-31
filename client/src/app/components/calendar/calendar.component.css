@@ -1,0 +1,40 @@
+#monthyearswitch {
+	display: flex;
+	justify-content: space-between;
+
+	margin: 1rem 1.5rem;
+}
+
+#daysgrid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: repeat(7, 1fr);
+	grid-gap: 0.5rem;
+
+	margin: 1rem;
+}
+
+.day {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	padding: 0.5rem;
+
+	font-size: 1.25rem;
+}
+
+.day:hover {
+	background-color: var(--color-primary);
+	border-radius: 0.5rem;
+	cursor: pointer;
+}
+
+.dayHasNoRoom {
+	color: var(--color-secondary);
+}
+
+.dayIsSelected {
+	background-color: var(--color-secondary);
+	border-radius: 0.5rem;
+}
