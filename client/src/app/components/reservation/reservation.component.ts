@@ -6,6 +6,7 @@ import { ApiService } from '../../services/api.service';
 
 import Calendar from '../../types/calendar.type';
 import Day from '../../types/day.type';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
 	selector: 'app-reservation',
@@ -38,16 +39,14 @@ export class ReservationComponent {
 
 	// On selection functions
 
-	onNumberOfPersonChange(buttonValue: number) {
+	async onNumberOfPersonChange(buttonValue: number) {
 		if(buttonValue == this.Calendar.PeopleNumber) {
 			return;
 		}
 		this.Calendar.PeopleNumber = buttonValue;
 		this.SelectedDay = null;
-		this.getCalendar(this.Calendar);
-		setTimeout(() => {
-			this.renderDays();
-		}, 100); // 8-) attention dos d'ane
+		await this.getCalendar(this.Calendar);
+		this.renderDays();
 	}
 
 	onDateSelected(day: number) {
@@ -57,10 +56,8 @@ export class ReservationComponent {
 
 	// API
 
-	getCalendar(calendar: Calendar): void {
-		this.apiService.getCalendar(calendar).subscribe(map => {
-			this.Days = map;
-		});
+	async getCalendar(calendar: Calendar): Promise<void> {
+		this.Days = await firstValueFrom(this.apiService.getCalendar(calendar));
 	}
 
 	// Render
