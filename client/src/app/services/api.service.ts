@@ -30,7 +30,7 @@ export class ApiService {
 		);
 	}
 
-	getReservationAdmin(date: Date): Observable<Reservation[]> {
+	getReservationByDate(date: Date): Observable<Reservation[]> {
     
 		const nextDayUTCDate = new Date(date);
 		nextDayUTCDate.setUTCDate(nextDayUTCDate.getUTCDate() + 1);
@@ -55,12 +55,21 @@ export class ApiService {
 		);
 	}
 
-	getAllTables(): Observable<Table[]> {
-		return this.http.get<Table[]>('/api/Table/GetAll');
+	deleteReservation(id: number): Observable<any> {
+		return this.http.delete<string>('/api/Reservation/Delete', {params: {id: id }})
 	}
 
-	addTable(tableCapacity: number): Observable<string> {
+
+	deleteTable(id: number): Observable<any> {
+		return this.http.delete<string>('/api/Table/Delete', {params: {id: id }})
+	}
+
+	createTable(tableCapacity: number): Observable<string> {
 		return this.http.post<string>('/api/Table/Create', tableCapacity);
+	}
+
+	getAllTables(): Observable<Table[]> {
+		return this.http.get<Table[]>('/api/Table/GetAll');
 	}
 
 	getCalendarStub(calendar: Calendar): Map<Date, Date[]> {
@@ -78,10 +87,6 @@ export class ApiService {
 			}
 		}
 		return stub;
-	}
-
-	deleteReservation(id: number): Observable<any> {
-		return this.http.delete<string>('/api/Reservation/Delete', {params: {id: id }})
 	}
 
 	private getRandomSchedule(day: number): Date {

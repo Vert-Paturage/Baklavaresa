@@ -45,7 +45,7 @@ export class AdminComponent implements OnInit{
   onDateChange(event: any): void {
     const selectedDate = event.value;
     this.SelectedDay = selectedDate;
-    this.apiService.getReservationAdmin(this.SelectedDay).subscribe(res => {
+    this.apiService.getReservationByDate(this.SelectedDay).subscribe(res => {
       this.Reservation = res as Reservation[];
     });
     this.SelectedDayString = this.formatDate(selectedDate);
@@ -62,7 +62,7 @@ export class AdminComponent implements OnInit{
   }
 
   addTable() {
-    this.apiService.addTable(this.TableSeats).subscribe(() => {
+    this.apiService.createTable(this.TableSeats).subscribe(() => {
       console.log("Table created");
     });
   }
