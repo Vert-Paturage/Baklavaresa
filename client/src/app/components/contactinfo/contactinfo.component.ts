@@ -1,15 +1,18 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 
-import { ApiService } from "../../services/api.service";
+import { ApiService } from '../../services/api.service';
 
 import Reservation from "../../types/reservation.type";
+import { CommonModule } from "@angular/common";
 
 @Component({
 	standalone: true,
+	imports: [CommonModule],
 	selector: "app-contactinfo",
 	templateUrl: "./contactinfo.component.html",
-	styleUrl: "./contactinfo.component.css"
+	styleUrl: "./contactinfo.component.css",
+	providers: [ApiService]
 })
 export class ContactInfoComponent {
 	Reservation: Reservation | null = null;
