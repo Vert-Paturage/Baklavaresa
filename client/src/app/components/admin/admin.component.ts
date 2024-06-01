@@ -70,7 +70,9 @@ export class AdminComponent implements OnInit{
   deleteTable(index: number) {
     const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette table ?");
     if (confirmDelete) {
-      this.Table.splice(index, 1);
+      this.apiService.deleteTable(this.Table[index].id).subscribe(() => {
+        this.Table.splice(index, 1);
+      });
     }
   }
 }
