@@ -48,14 +48,14 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
 
-    public Task Delete(Reservation reservation)
+    public Task Delete(int reservationID)
     {
-        var dbReservation = _context.Reservations.Find(reservation.Id);
+        var dbReservation = _context.Reservations.Find(reservationID);
         if (dbReservation != null)
         {
             _context.Reservations.Remove(dbReservation);
             return _context.SaveChangesAsync();
         }
-        throw new Domain.Exceptions.Reservation.ReservationNotFoundException(reservation.Id);
+        throw new Domain.Exceptions.Reservation.ReservationNotFoundException(reservationID);
     }
 }

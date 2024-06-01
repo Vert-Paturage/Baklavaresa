@@ -56,16 +56,17 @@ export class ApiService {
 	}
 
 	deleteReservation(id: number): Observable<any> {
-		return this.http.delete<string>('/api/Reservation/Delete', {params: {id: id }})
+		return this.http.delete<string>('/api/Reservation/' + id)
 	}
 
 
 	deleteTable(id: number): Observable<any> {
-		return this.http.delete<string>('/api/Table/Delete', {params: {id: id }})
+		return this.http.delete<string>('/api/Table/' + id)
 	}
 
 	createTable(tableCapacity: number): Observable<string> {
-		return this.http.post<string>('/api/Table/Create', tableCapacity);
+		const body = { capacity: tableCapacity };
+		return this.http.post<string>('/api/Table/Create', body);
 	}
 
 	getAllTables(): Observable<Table[]> {

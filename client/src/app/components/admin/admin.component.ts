@@ -63,12 +63,14 @@ export class AdminComponent implements OnInit{
 
   addTable() {
     this.apiService.createTable(this.TableSeats).subscribe(() => {
-      console.log("Table created");
+      console.log("Table created" + this.TableSeats);
+      this.Table.push({id: this.Table[this.Table.length - 1].id+1, capacity: this.TableSeats});
     });
   }
 
   deleteTable(index: number) {
     const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette table ?");
+    console.log(this.Table[index].id);
     if (confirmDelete) {
       this.apiService.deleteTable(this.Table[index].id).subscribe(() => {
         this.Table.splice(index, 1);
