@@ -30,8 +30,33 @@ export class ApiService {
 		);
 	}
 
-	getCalendarAdmin(date: Date): Observable<Reservation[]> {
-		return this.http.get<Reservation[]>('/api/Reservation/GetAllReservations', {params: {input: date.toISOString()}});
+	getReservationAdmin(date: Date): Observable<Reservation[]> {
+		console.log(date.toDateString());
+    
+    // Ajouter un jour à la date actuelle
+    const nextDayUTCDate = new Date(date);
+    nextDayUTCDate.setUTCDate(nextDayUTCDate.getUTCDate() + 1);
+    
+    // Obtenir la représentation de la date en format ISO 8601
+    const utcDateString = nextDayUTCDate.toISOString().split('T')[0]; // Extrait la partie de la date seulement
+
+		console.log(utcDateString);
+		return this.http.get<Reservation[]>('/api/Reservation/GetAllReservations', {params: {input: utcDateString }})
+		.pipe(
+			map((reservations: Reservation[]) => {
+				return reservations.map(reservation => {
+					return {
+						id: reservation.id,
+						firstName: reservation.firstName,
+						lastName: reservation.lastName,
+						email: reservation.email,
+						date: reservation.date,
+						numberOfPeople: reservation.numberOfPeople,
+						table: reservation.table
+					};
+				});
+			})
+		);
 	}
 
 	getAllTables(): Observable<Table[]> {
@@ -59,8 +84,8 @@ export class ApiService {
 		return stub;
 	}
 
-	deleteReservation(id: number): Observable<string> {
-		return this.http.post<string>('/api/Reservation/Delete', {ID: id});
+	deleteReservation(id: number): Observable<any> {
+		return this.http.delete<string>('/api/Reservation/Delete', {params: {id: id }})
 	}
 
 	private getRandomSchedule(day: number): Date {
