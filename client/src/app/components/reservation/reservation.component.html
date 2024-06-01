@@ -44,4 +44,9 @@
 			<p>{{getReservationCurrentStateMessage()}}</p>
 		}
 	</div>
+
+	@if(SelectedDay != null && SelectedSchedule != null)
+	{
+		<button id="validationbutton" (click)="goToContactInfo()">Valider</button>
+	}
 </div>

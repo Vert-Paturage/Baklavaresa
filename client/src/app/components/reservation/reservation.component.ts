@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { CalendarComponent } from '../calendar/calendar.component';
@@ -16,7 +17,13 @@ import { getDayName, getMonthName } from '../../utils/dateStringHandler';
 @Component({
 	selector: 'app-reservation',
 	standalone: true,
-	imports: [FormsModule, ReactiveFormsModule, CommonModule, CalendarComponent, ScheduleSelectorComponent],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		CommonModule,
+		CalendarComponent,
+		ScheduleSelectorComponent
+	],
 	templateUrl: './reservation.component.html',
 	styleUrls: ['./reservation.component.css'],
 	providers: [ApiService]
@@ -34,7 +41,7 @@ export class ReservationComponent {
 
 	Days: Day[] = [];
 
-	constructor(private apiService: ApiService) {
+	constructor(private apiService: ApiService, private router: Router) {
 		const today: Date = new Date();
 		this.Calendar = {
 			Date: today,
@@ -90,5 +97,12 @@ export class ReservationComponent {
 
 	getSelectedMonthName(): string {
 		return getMonthName(this.Calendar.Date.getMonth());
+	}
+
+	goToContactInfo(): void {
+		if(this.SelectedDay != null && this.SelectedSchedule != null)
+		{
+			this.router.navigate(['/reservation/validate'], { state: this.SelectedSchedule });
+		}
 	}
 }
