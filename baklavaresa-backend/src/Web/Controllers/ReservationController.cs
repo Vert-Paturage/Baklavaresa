@@ -1,4 +1,5 @@
 using Application.Reservation.Commands.CreateReservation;
+using Application.Reservation.Commands.DeleteReservation;
 using Application.Reservation.Queries.GetAllReservations;
 using Application.Reservation.Queries.GetAvailableSlots;
 using Application.Reservation.Queries.GetReservationById;
@@ -28,6 +29,21 @@ public class ReservationController: ControllerBase
         {
             await _mediator.Send(command);
             return Ok(); 
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteReservation(int id)
+    {
+        var command = new DeleteReservationCommand(id);
+        try
+        {
+            await _mediator.Send(command);
+            return Ok();
         }
         catch (Exception e)
         {
@@ -80,7 +96,7 @@ public class ReservationController: ControllerBase
         var query = new GetAllReservationsQuery(input);
         try
         {
-            var availableSlots = await _mediator.Send(query);
+            IList<AllReservationsDto> availableSlots = await _mediator.Send(query);
             return Ok(availableSlots);
         }
         catch (Exception e)
