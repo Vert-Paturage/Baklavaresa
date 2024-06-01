@@ -7,7 +7,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Table from '../../types/table.type';
 
@@ -25,35 +25,10 @@ export class AdminComponent implements OnInit{
   SelectedDayString!: string;
   TableNumber!: number;
   TableSeats!: number;
-  Reservation: Reservation[] = [
-    {
-      ID: 6,
-      FirstName: "John",
-      LastName: "Doe",
-      Email: "derya@test.fr",
-      Date: new Date(),
-      NumberOfPeople: 2,
-      NumberOfTables: {ID: 1, Capacity: 2}
-    }
-  ];
+  Reservation: Reservation[] = [];
+  Table: Table[] = [];
 
-  Table: Table[] = [
-    {
-      ID: 1,
-      Capacity: 2
-    },
-    {
-      ID: 2,
-      Capacity: 4
-    },
-    {
-      ID: 3,
-      Capacity: 6
-    }
-  ];
-
-
-  constructor(private apiService: ApiService, private datePipe: DatePipe) {
+  constructor(private apiService: ApiService) {
   }
   
   ngOnInit(): void {
@@ -69,20 +44,26 @@ export class AdminComponent implements OnInit{
 
   onDateChange(event: any): void {
     const selectedDate = event.value;
-    // this.apiService.createReservation(this.Reservation[0]).subscribe(() => {
-    //   console.log("Reservation created");
-    // });
     this.SelectedDay = selectedDate;
-    this.apiService.getCalendarAdmin(this.SelectedDay).subscribe(map => {
-      this.Reservation = map;
+    this.apiService.getReservationAdmin(this.SelectedDay).subscribe(res => {
+      this.Reservation = res as Reservation[];
     });
     this.SelectedDayString = this.formatDate(selectedDate);
+    
+    console.log(this.Reservation.length);
+    setTimeout(() => {
+      console.log(this.Reservation);
+      this.Reservation.forEach(reservation => {
+        console.log(`ID: ${reservation.id}, Date: ${reservation.date}, FirstName: ${reservation.firstName}, LastName: ${reservation.lastName}, Email: ${reservation.email}, NumberOfPeople: ${reservation.numberOfPeople}, NumberOfTables: ${reservation.table}`);
+      });}, 1000);
+
   }
 
   deleteReservation(index: number) {
     const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette réservation ?");
     if (confirmDelete) {
-      this.apiService.deleteReservation(this.Reservation[index].ID).subscribe(() => {
+      console.log(this.Reservation[index].id);
+      this.apiService.deleteReservation(this.Reservation[index].id).subscribe(() => {
         this.Reservation.splice(index, 1);
       });
     }
