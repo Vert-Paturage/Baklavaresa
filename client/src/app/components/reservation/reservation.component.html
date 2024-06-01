@@ -18,7 +18,7 @@
 		{
 			<div id="calendarmodule">
 				<Calendar
-					[monthName]="getMonthName(this.Days[0].day.getMonth())"
+					[monthName]="getSelectedMonthName()"
 					[year]="this.Days[0].day.getFullYear()"
 					[days]="this.Days"
 					[offset]="this.Days[0].day.getDay()"

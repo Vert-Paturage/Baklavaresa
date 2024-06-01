@@ -11,6 +11,8 @@ import { ApiService } from '../../services/api.service';
 import Calendar from '../../types/calendar.type';
 import Day from '../../types/day.type';
 
+import { getDayName, getMonthName } from '../../utils/dateStringHandler';
+
 @Component({
 	selector: 'app-reservation',
 	standalone: true,
@@ -65,43 +67,8 @@ export class ReservationComponent {
 		this.Days = await firstValueFrom(this.apiService.getCalendar(calendar));
 	}
 
-	// Utils
-
-	getMonthName(month: number) {
-		const monthNames = [
-			'Janvier',
-			'Février',
-			'Mars',
-			'Avril',
-			'Mai',
-			'Juin',
-			'Juillet',
-			'Août',
-			'Septembre',
-			'Octobre',
-			'Novembre',
-			'Décembre'
-		];
-
-		return monthNames[month];
-	}
-
-	getDayName(dayIndex: number) {
-		const dayNames = [
-			'Dimanche',
-			'Lundi',
-			'Mardi',
-			'Mercredi',
-			'Jeudi',
-			'Vendredi',
-			'Samedi'
-		];
-
-		return dayNames[dayIndex];
-	}
-
 	displayDate(day: Date): string {
-		return `${this.getDayName(day.getDay())} ${day.getDate()} ${this.getMonthName(day.getMonth())} ${day.getFullYear()}`;
+		return `${getDayName(day.getDay())} ${day.getDate()} ${getMonthName(day.getMonth())} ${day.getFullYear()}`;
 	}
 
 	getReservationCurrentStateMessage(): string {
@@ -119,5 +86,9 @@ export class ReservationComponent {
 			}
 		}
 		return result;
+	}
+
+	getSelectedMonthName(): string {
+		return getMonthName(this.Calendar.Date.getMonth());
 	}
 }

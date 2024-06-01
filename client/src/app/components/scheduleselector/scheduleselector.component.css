@@ -1,17 +1,28 @@
-#scheduleList {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-}
-
-.schedule {
+#scheduledate {
 	display: flex;
-	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 
 	margin: 1rem;
-	padding: 1rem;
+}
 
+#schedulelist {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 1rem;
+	margin: 1rem;
+}
+
+.schedule {
+	padding: 0.25rem 0.5rem;
 	background-color: var(--color-primary);
 	border-radius: 0.5rem;
+}
+
+.schedule:hover {
+	background-color: var(--color-secondary);
+}
+
+.scheduleIsSelected {
+	background-color: var(--color-secondary);
 }
