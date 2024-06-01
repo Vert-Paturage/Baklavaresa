@@ -31,14 +31,10 @@ export class ApiService {
 	}
 
 	getReservationAdmin(date: Date): Observable<Reservation[]> {
-		console.log(date.toDateString());
     
-    // Ajouter un jour à la date actuelle
-    const nextDayUTCDate = new Date(date);
-    nextDayUTCDate.setUTCDate(nextDayUTCDate.getUTCDate() + 1);
-    
-    // Obtenir la représentation de la date en format ISO 8601
-    const utcDateString = nextDayUTCDate.toISOString().split('T')[0]; // Extrait la partie de la date seulement
+		const nextDayUTCDate = new Date(date);
+		nextDayUTCDate.setUTCDate(nextDayUTCDate.getUTCDate() + 1);
+    	const utcDateString = nextDayUTCDate.toISOString().split('T')[0];
 
 		console.log(utcDateString);
 		return this.http.get<Reservation[]>('/api/Reservation/GetAllReservations', {params: {input: utcDateString }})

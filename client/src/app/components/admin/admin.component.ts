@@ -49,14 +49,6 @@ export class AdminComponent implements OnInit{
       this.Reservation = res as Reservation[];
     });
     this.SelectedDayString = this.formatDate(selectedDate);
-    
-    console.log(this.Reservation.length);
-    setTimeout(() => {
-      console.log(this.Reservation);
-      this.Reservation.forEach(reservation => {
-        console.log(`ID: ${reservation.id}, Date: ${reservation.date}, FirstName: ${reservation.firstName}, LastName: ${reservation.lastName}, Email: ${reservation.email}, NumberOfPeople: ${reservation.numberOfPeople}, NumberOfTables: ${reservation.table}`);
-      });}, 1000);
-
   }
 
   deleteReservation(index: number) {
