@@ -9,10 +9,12 @@ export class SnackbarService {
 
   constructor(private snackBar: MatSnackBar) { }
 
-  showSnackbar(content: string, action: string) {
+  showSnackbar(content: string, type: string, action: string = 'Fermer') {
+    let style = 'snackbar-' + type;
+    console.log(style);
     let sb = this.snackBar.open(content, action, {
-      duration: 4000,
-      panelClass: ['custom-style'],
+      duration: 10000,
+      panelClass: [`${style}`],
       verticalPosition: 'top',
       horizontalPosition: 'right',
     });

@@ -56,27 +56,38 @@ export class AdminComponent implements OnInit{
     const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette réservation ?");
     if (confirmDelete) {
       console.log(this.Reservation[index].id);
-      this.apiService.deleteReservation(this.Reservation[index].id).subscribe(() => {
-        this.Reservation.splice(index, 1);
-        this.snackBar.showSnackbar("Réservation supprimée", "Fermer");
-      });
+      this.apiService.deleteReservation(this.Reservation[index].id).subscribe(
+        (response) => {
+          this.Reservation.splice(index, 1);
+          this.snackBar.showSnackbar("Réservation supprimée", 'success');
+        },
+        (error) => this.snackBar.showSnackbar(error.error, 'error')
+      );
     }
   }
 
   addTable() {
-    this.apiService.createTable(this.TableSeats).subscribe(() => {
-      console.log("Table created" + this.TableSeats);
-      this.Table.push({id: this.Table[this.Table.length - 1].id+1, capacity: this.TableSeats});
-    });
+    this.apiService.createTable(this.TableSeats).subscribe(
+      (response) => {
+        console.log("Table created" + this.TableSeats);
+        this.Table.push({id: this.Table[this.Table.length - 1].id+1, capacity: this.TableSeats});
+        this.snackBar.showSnackbar("Table ajoutée", 'error');
+      },
+      (error) => this.snackBar.showSnackbar(error.error, 'error')
+    );
   }
 
   deleteTable(index: number) {
     const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette table ?");
     console.log(this.Table[index].id);
     if (confirmDelete) {
-      this.apiService.deleteTable(this.Table[index].id).subscribe(() => {
-        this.Table.splice(index, 1);
-      });
+      this.apiService.deleteTable(this.Table[index].id).subscribe(
+        (response) => {
+          this.Table.splice(index, 1);
+          this.snackBar.showSnackbar("Table supprimée", 'success');
+        },
+        (error) => this.snackBar.showSnackbar(error.error, 'error')
+      );
     }
   }
 }
