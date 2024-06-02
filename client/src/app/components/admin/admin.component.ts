@@ -22,8 +22,8 @@ import { SnackbarService } from '../../services/snackbar.service';
 })
 
 export class AdminComponent implements OnInit{
-	SelectedDay!: Date;
-  SelectedDayString!: string;
+	SelectedDay: Date = new Date();
+  SelectedDayString: string = "jour " + this.formatDate(new Date().toISOString());
   TableNumber!: number;
   TableSeats!: number;
   Reservation: Reservation[] = [];
@@ -36,6 +36,7 @@ export class AdminComponent implements OnInit{
     this.apiService.getAllTables().subscribe(table => {
       this.Table = table;
     });
+    this.retrieveReservationByDate(new Date());
   }
 
   formatDate(date: string): string {
@@ -46,10 +47,15 @@ export class AdminComponent implements OnInit{
   onDateChange(event: any): void {
     const selectedDate = event.value;
     this.SelectedDay = selectedDate;
-    this.apiService.getReservationByDate(this.SelectedDay).subscribe(res => {
+    this.retrieveReservationByDate(this.SelectedDay);
+    this.SelectedDayString = this.formatDate(selectedDate);
+  }
+
+  retrieveReservationByDate(date: Date) {
+    this.apiService.getReservationByDate(date).subscribe(res => {
       this.Reservation = res as Reservation[];
     });
-    this.SelectedDayString = this.formatDate(selectedDate);
+    
   }
 
   deleteReservation(index: number) {
@@ -67,11 +73,20 @@ export class AdminComponent implements OnInit{
   }
 
   addTable() {
+    if(this.TableSeats == null || this.TableSeats == undefined) {
+      this.snackBar.showSnackbar("La capacité de la table ne peut pas être nulle", 'error');
+      return;
+    }
+    if(this.TableSeats <= 0) {
+      this.snackBar.showSnackbar("La capacité de la table doit être supérieure à 0", 'error');
+      return;
+    }
     this.apiService.createTable(this.TableSeats).subscribe(
       (response) => {
         console.log("Table created" + this.TableSeats);
         this.Table.push({id: this.Table[this.Table.length - 1].id+1, capacity: this.TableSeats});
         this.snackBar.showSnackbar("Table ajoutée", 'success');
+        this.TableSeats = 0;
       },
       (error) => this.snackBar.showSnackbar(error.error, 'error')
     );
