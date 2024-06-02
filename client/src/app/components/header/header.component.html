@@ -1,13 +1,11 @@
-<header class="bg-gray-300 text-pink-500">
-    <div class="container mx-auto flex items-center justify-between px-4">
-      <div class="flex items-center space-x-4">
-        <div>
-          <img src="../../../assets/baklavalogo.png" alt="Logo" class="h-16 w-16" routerLink="/">
-        </div>
-        <nav>
-          <a class="font-semibold text-black hover:text-pink-500 ml-4" routerLink="admin">Admin</a>
-          <a class="font-semibold text-black hover:text-pink-500 ml-4" routerLink="reservation">Réservation</a>
-        </nav>
-      </div>
-    </div>
-</header>
+<div id="title" routerLink="">
+	<img src="../../../assets/baklavalogo.png" alt="Logo" class="h-32 w-32" routerLink="/">
+	<h1>Baklava</h1>
+</div>
+<div id="menu">
+	<nav id="links">
+		<a routerLink="reservation" routerLinkActive="active-link">Réservation</a>
+		<a routerLink="menu" routerLinkActive="active-link">Menu</a>
+		<a routerLink="about" routerLinkActive="active-link">Restaurant</a>
+	</nav>
+</div>

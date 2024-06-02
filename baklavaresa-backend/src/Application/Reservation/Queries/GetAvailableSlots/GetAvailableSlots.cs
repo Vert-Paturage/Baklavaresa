@@ -2,13 +2,13 @@ using Domain.Repositories;
 
 namespace Application.Reservation.Queries.GetAvailableSlots;
 
-public record GetAvailableSlotsQuery(int NumberOfPeople, DateTime Month): IRequest<IEnumerable<AvailableSlotsDto>>;
+public record GetAvailableSlotsQuery(int NumberOfPeople, DateTime Month): IRequest<List<AvailableSlotsDto>>;
 
-internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationRepository, ITableRepository tableRepository) : IRequestHandler<GetAvailableSlotsQuery, IEnumerable<AvailableSlotsDto>>
+internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationRepository, ITableRepository tableRepository) : IRequestHandler<GetAvailableSlotsQuery, List<AvailableSlotsDto>>
 {
     private readonly IReservationRepository _reservationRepository = reservationRepository;
     private readonly ITableRepository _tableRepository = tableRepository;
-    public async Task<IEnumerable<AvailableSlotsDto>> Handle(GetAvailableSlotsQuery request, CancellationToken cancellationToken)
+    public async Task<List<AvailableSlotsDto>> Handle(GetAvailableSlotsQuery request, CancellationToken cancellationToken)
     {
         var availableSlots = new List<AvailableSlotsDto>();
         var tables = await _tableRepository.GetAll();

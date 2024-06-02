@@ -51,6 +51,7 @@ public class ReservationController: ControllerBase
     [HttpPost("GetAvailableSlots")]
     public async Task<IActionResult> GetAvailableSlots(Inputs.Reservation.GetAvailableSlots input)
     {
+        System.Diagnostics.Debug.WriteLine(input);
         if (input.NumberOfPeople <= 0)
         {
             return BadRequest("Number of people must be greater than 0");
