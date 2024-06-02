@@ -71,7 +71,7 @@ export class AdminComponent implements OnInit{
       (response) => {
         console.log("Table created" + this.TableSeats);
         this.Table.push({id: this.Table[this.Table.length - 1].id+1, capacity: this.TableSeats});
-        this.snackBar.showSnackbar("Table ajoutée", 'error');
+        this.snackBar.showSnackbar("Table ajoutée", 'success');
       },
       (error) => this.snackBar.showSnackbar(error.error, 'error')
     );
