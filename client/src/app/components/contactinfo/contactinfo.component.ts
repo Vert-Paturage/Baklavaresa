@@ -19,30 +19,30 @@ import { first } from "rxjs";
 export class ContactInfoComponent {
 	schedule: Date | null = null;
 	Reservation: Reservation = {
-		FirstName: "",
-		LastName: "",
-		Email: "",
-		Date: new Date(),
-		NumberOfPeople: 0
+		firstName: "",
+		lastName: "",
+		email: "",
+		date: new Date(),
+		numberOfPeople: 0,
+		id: 0,
+		table: 0
 	};
 	  
 
 	constructor(private api: ApiService, private router: Router) {
 		const navigation = this.router.getCurrentNavigation();
+		console.log("Navigation: ", navigation);
 		if (navigation != null) {
-			const state = navigation.extras.state;
-			if (state instanceof Date) {
-				this.schedule = state;
-				console.log("Schedule: ", this.schedule);
+			const nav = navigation.extractedUrl;
+			if(nav != null) {
+				this.Reservation.date = nav.queryParams['state'];
+				this.Reservation.numberOfPeople = nav.queryParams['people'];
 			}
 		}
 	}
 
 	submitReservation() {
-		if (this.schedule != null) {
-			this.Reservation.Date = this.schedule;
-			this.Reservation.NumberOfPeople = 1;
-			
+		if (this.Reservation.date != null && this.Reservation.numberOfPeople > 0 && this.Reservation.firstName != null && this.Reservation.lastName != null && this.Reservation.email) {
 			console.log("Reservation: ", this.Reservation);
 			if (this.Reservation != null) {
 				const response = this.api.createReservation(this.Reservation);

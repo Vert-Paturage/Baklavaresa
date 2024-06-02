@@ -13,6 +13,7 @@ import Calendar from '../../types/calendar.type';
 import Day from '../../types/day.type';
 
 import { getDayName, getMonthName } from '../../utils/dateStringHandler';
+import { state } from '@angular/animations';
 
 @Component({
 	selector: 'app-reservation',
@@ -102,7 +103,7 @@ export class ReservationComponent {
 	goToContactInfo(): void {
 		if(this.SelectedDay != null && this.SelectedSchedule != null)
 		{
-			this.router.navigate(['/reservation/validate'], { state: this.SelectedSchedule });
+			this.router.navigate(['/reservation/validate'], { queryParams: {state: this.SelectedSchedule, people: this.Calendar.PeopleNumber } });
 		}
 	}
 }
