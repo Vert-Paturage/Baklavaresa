@@ -5,18 +5,27 @@ import { ApiService } from '../../services/api.service';
 
 import Reservation from "../../types/reservation.type";
 import { CommonModule } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { first } from "rxjs";
 
 @Component({
 	standalone: true,
-	imports: [CommonModule],
+	imports: [FormsModule, ReactiveFormsModule, CommonModule],
 	selector: "app-contactinfo",
 	templateUrl: "./contactinfo.component.html",
 	styleUrl: "./contactinfo.component.css",
 	providers: [ApiService]
 })
 export class ContactInfoComponent {
-	Reservation: Reservation | null = null;
 	schedule: Date | null = null;
+	Reservation: Reservation = {
+		FirstName: "",
+		LastName: "",
+		Email: "",
+		Date: new Date(),
+		NumberOfPeople: 0
+	};
+	  
 
 	constructor(private api: ApiService, private router: Router) {
 		const navigation = this.router.getCurrentNavigation();
@@ -30,9 +39,15 @@ export class ContactInfoComponent {
 	}
 
 	submitReservation() {
-		if(this.Reservation != null) {
-			const response = this.api.createReservation(this.Reservation);
-			console.log("Response: ", response);
+		if (this.schedule != null) {
+			this.Reservation.Date = this.schedule;
+			this.Reservation.NumberOfPeople = 1;
+			
+			console.log("Reservation: ", this.Reservation);
+			if (this.Reservation != null) {
+				const response = this.api.createReservation(this.Reservation);
+				console.log("Response: ", response);
+			}
 		}
 	}
 }
