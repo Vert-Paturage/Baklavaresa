@@ -1,82 +1,136 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
-import { ApiService } from '../../services/api.service';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import Reservation from '../../types/reservation.type';
+import { ApiService } from '../../services/api.service';
+
+import Calendar from '../../types/calendar.type';
+import Day from '../../types/day.type';
 
 @Component({
-  selector: 'app-reservation',
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, RouterOutlet],
-  templateUrl: './reservation.component.html',
-  styleUrls: ['./reservation.component.css'], // Correction de styleUrl en styleUrls
-  providers: [ApiService]
+	selector: 'app-reservation',
+	standalone: true,
+	imports: [FormsModule, ReactiveFormsModule, CommonModule],
+	templateUrl: './reservation.component.html',
+	styleUrls: ['./reservation.component.css'],
+	providers: [ApiService]
 })
-export class ReservationComponent implements OnInit {
-  form!: FormGroup;
-  numberOfPerson: number = 2;
-  availableDate$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]); // Initialise le tableau des dates disponibles
-  availableSchedule$: BehaviorSubject<{ [date: string]: string[] }> = new BehaviorSubject<{ [date: string]: string[] }>({}); // Initialise un objet pour stocker les horaires disponibles pour chaque date
 
-  dateSelected: string | null = null;
-  scheduleSelected: string | null = null;
+export class ReservationComponent {
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private apiService: ApiService
-  ) {}
+	// Variables
 
-  selectSchedule(date: string, horaire: string) {
-    this.dateSelected = date;
-    this.scheduleSelected = horaire;
-  }
+	MaxPeopleNumberPerReservation: number = 8;
 
-  ngOnInit(): void {
-    // Utilisation de BehaviorSubject pour émettre les valeurs initiales
-    this.availableDate$.next(['2024-06-07', '2024-05-08', '2024-05-09']);
-    this.availableSchedule$.next({
-      '2024-06-07': ['10:00', '12:00', '15:00', '16:00', '17:00'],
-      '2024-05-08': ['11:00', '13:00', '16:00'],
-      '2024-05-09': ['09:00', '14:00', '17:00']
-    });
+	Calendar: Calendar;
+	SelectedDay: number | null = null;
+	SelectedSchedule: Date | null = null;
 
-    this.form = this.formBuilder.group({
-      prenom: ['', Validators.required],
-      nom: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
-    });
-  }
+	Days: Day[] = [];
 
-  onSubmit() {
-    if (this.form.valid) {
-      const reservation: Reservation = {
-        ID : 0,
-        Date : {
-          Date: this.dateSelected as string,
-          Time: this.scheduleSelected as string
-        },
-        NumberOfPeople : this.numberOfPerson,
-        Tables : [],
-        FirstName : this.form.get('prenom')?.value,
-        LastName : this.form.get('nom')?.value,
-        Email : this.form.get('email')?.value
-      };
+	constructor(private apiService: ApiService) {
+		const today: Date = new Date();
+		this.Calendar = {
+			Date: today,
+			PeopleNumber: 0
+		};
+	}
 
-      console.log(reservation);
+	// On selection functions
 
-      const retour: Observable<string> = this.apiService.createReservation(reservation);
+	onNumberOfPersonChange(buttonValue: number) {
+		if(buttonValue == this.Calendar.PeopleNumber) {
+			return;
+		}
+		this.Calendar.PeopleNumber = buttonValue;
+		this.SelectedDay = null;
+		this.getCalendar(this.Calendar);
+		setTimeout(() => {
+			this.renderDays();
+		}, 100); // 8-) attention dos d'ane
+	}
 
-      //get pipe from value
-      retour.subscribe(value => console.log(value));
+	onDateSelected(day: number) {
+		this.SelectedDay = day;
+		console.log(this.Days[day-1].day);
+	}
 
-      alert('Votre réservation a été ajoutée avec succès !');
+	// API
 
-      this.form.reset();
-    } else {
-      alert('Veuillez remplir correctement tous les champs du formulaire.');
-    }
-  }
+	getCalendar(calendar: Calendar): void {
+		this.apiService.getCalendar(calendar).subscribe(map => {
+			this.Days = map;
+		});
+	}
+
+	// Render
+
+	renderDays() {
+		let offset: number = this.Days[0].day.getDay();
+		if(offset == 0) {
+			offset = 7;
+		}
+
+		//TODO: refaire tout dans une classe
+
+		let daysGrid: HTMLElement | null = document.getElementById('daysgrid');
+		if(daysGrid != null) {
+			daysGrid.innerHTML = '<p>L</p><p>M</p><p>M</p><p>J</p><p>V</p><p>S</p><p>D</p>';
+			for(let i = 0; i < Array.from(this.Days.keys()).length; i++) { //vérifier si on peut pas faire mieux
+				let day: number = i+1;
+				let dayButton: HTMLElement = document.createElement('button');
+				dayButton.id = `day${day}`;
+				if(dayButton.id == 'day1') {
+					dayButton.style.gridColumnStart = `${offset}`;
+				}
+				dayButton.classList.add('day');
+				if(this.Days[i].slots.length === 0) {
+					dayButton.classList.add('dayHasNoRoom');
+				}
+				dayButton.innerHTML = `${day}`;
+				dayButton.onclick = () => this.onDateSelected(day);
+				daysGrid.appendChild(dayButton);
+			}
+		}
+	}
+
+	// Utils
+
+	getMonthName(month: number) {
+		const monthNames = [
+			'Janvier',
+			'Février',
+			'Mars',
+			'Avril',
+			'Mai',
+			'Juin',
+			'Juillet',
+			'Août',
+			'Septembre',
+			'Octobre',
+			'Novembre',
+			'Décembre'
+		];
+
+		return monthNames[month];
+	}
+
+	getDayName(dayIndex: number) {
+		const dayNames = [
+			'Dimanche',
+			'Lundi',
+			'Mardi',
+			'Mercredi',
+			'Jeudi',
+			'Vendredi',
+			'Samedi'
+		];
+
+		return dayNames[dayIndex];
+	}
+
+	displayDate(day: number): string {
+		const date: Date = this.Days[day-1].day;
+		return `${this.getDayName(date.getDay())} ${date.getDate()} ${this.getMonthName(date.getMonth())} ${date.getFullYear()}`;
+	}
 }

@@ -1,7 +1,7 @@
 
 type Table = {
-    ID: number;
-    Capacity: number;
+    id: number;
+    capacity: number;
 };
 
 export default Table;
