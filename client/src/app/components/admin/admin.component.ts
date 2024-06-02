@@ -23,7 +23,7 @@ import { SnackbarService } from '../../services/snackbar.service';
 
 export class AdminComponent implements OnInit{
 	SelectedDay: Date = new Date();
-  SelectedDayString: string = "jour " + this.formatDate(new Date().toISOString());
+  SelectedDayString: string = "jour : " + this.formatDate(new Date().toISOString());
   TableNumber!: number;
   TableSeats!: number;
   Reservation: Reservation[] = [];
@@ -33,11 +33,16 @@ export class AdminComponent implements OnInit{
   }
   
   ngOnInit(): void {
+    this.refreshData();
+  }
+
+  refreshData() {
     this.apiService.getAllTables().subscribe(table => {
       this.Table = table;
     });
-    this.retrieveReservationByDate(new Date());
+    this.retrieveReservationByDate(this.SelectedDay);
   }
+
 
   formatDate(date: string): string {
     const parsedDate = new Date(date);
@@ -64,8 +69,9 @@ export class AdminComponent implements OnInit{
       console.log(this.Reservation[index].id);
       this.apiService.deleteReservation(this.Reservation[index].id).subscribe(
         (response) => {
-          this.Reservation.splice(index, 1);
+          //this.Reservation.splice(index, 1);
           this.snackBar.showSnackbar("Réservation supprimée", 'success');
+          this.refreshData();
         },
         (error) => this.snackBar.showSnackbar(error.error, 'error')
       );
@@ -84,9 +90,10 @@ export class AdminComponent implements OnInit{
     this.apiService.createTable(this.TableSeats).subscribe(
       (response) => {
         console.log("Table created" + this.TableSeats);
-        this.Table.push({id: this.Table[this.Table.length - 1].id+1, capacity: this.TableSeats});
+        //this.Table.push({id: this.Table[this.Table.length - 1].id+1, capacity: this.TableSeats});
         this.snackBar.showSnackbar("Table ajoutée", 'success');
         this.TableSeats = 0;
+        this.refreshData();
       },
       (error) => this.snackBar.showSnackbar(error.error, 'error')
     );
@@ -98,8 +105,9 @@ export class AdminComponent implements OnInit{
     if (confirmDelete) {
       this.apiService.deleteTable(this.Table[index].id).subscribe(
         (response) => {
-          this.Table.splice(index, 1);
+          //this.Table.splice(index, 1);
           this.snackBar.showSnackbar("Table supprimée", 'success');
+          this.refreshData();
         },
         (error) => this.snackBar.showSnackbar(error.error, 'error')
       );
