@@ -10,6 +10,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { format, set } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Table from '../../types/table.type';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'admin',
@@ -28,7 +29,7 @@ export class AdminComponent implements OnInit{
   Reservation: Reservation[] = [];
   Table: Table[] = [];
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private snackBar: SnackbarService) {
   }
   
   ngOnInit(): void {
@@ -57,6 +58,7 @@ export class AdminComponent implements OnInit{
       console.log(this.Reservation[index].id);
       this.apiService.deleteReservation(this.Reservation[index].id).subscribe(() => {
         this.Reservation.splice(index, 1);
+        this.snackBar.showSnackbar("Réservation supprimée", "Fermer");
       });
     }
   }
