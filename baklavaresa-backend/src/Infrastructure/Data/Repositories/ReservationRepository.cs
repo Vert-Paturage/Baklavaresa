@@ -58,4 +58,11 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         }
         throw new Domain.Exceptions.Reservation.ReservationNotFoundException(reservationID);
     }
+
+     public Task<List<Reservation>> GetReservationByTableId(int tableId)
+    {
+        var dbReservation = _context.Reservations.Include(r => r.Table).Where(r => r.TableId == tableId).ToList();
+        return Task.FromResult(dbReservation.Select(r => r.ToDomainModel()).ToList());
+    }
+
 }
