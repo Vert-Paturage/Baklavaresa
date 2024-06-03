@@ -3,36 +3,9 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "baklava": {
+    "baklavaresa-frontend": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "inlineTemplate": false,
-          "inlineStyle": false,
-          "skipTests": true
-        },
-        "@schematics/angular:class": {
-          "skipTests": true
-        },
-        "@schematics/angular:directive": {
-          "skipTests": true
-        },
-        "@schematics/angular:guard": {
-          "skipTests": true
-        },
-        "@schematics/angular:interceptor": {
-          "skipTests": true
-        },
-        "@schematics/angular:pipe": {
-          "skipTests": true
-        },
-        "@schematics/angular:resolver": {
-          "skipTests": true
-        },
-        "@schematics/angular:service": {
-          "skipTests": true
-        }
-      },
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -40,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/baklava",
+            "outputPath": "dist/baklavaresa-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -52,8 +25,8 @@
               "src/assets"
             ],
             "styles": [
-			  "src/custom-theme.scss",
-              "src/styles.css"
+              "src/styles.css",
+			  "src/custom-theme.scss"
             ],
             "scripts": []
           },
@@ -85,27 +58,43 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "baklava:build:production"
+              "buildTarget": "baklavaresa-frontend:build:production"
             },
             "development": {
-              "buildTarget": "baklava:build:development"
+              "buildTarget": "baklavaresa-frontend:build:development"
             }
           },
-          "options": {
-            "proxyConfig": "src/proxy.conf.json"
-          },
+		  "options": {
+			"proxyConfig": "src/proxy.conf.json"
+		  },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "baklava:build"
+            "buildTarget": "baklavaresa-frontend:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": [],
+            "karmaConfig": "karma.conf.js"
           }
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "895fb86c-ed55-452b-8d8e-1119bce88c78"
   }
 }
