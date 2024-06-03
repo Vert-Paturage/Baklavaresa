@@ -1,4 +1,5 @@
 using Domain.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.UnitTests;
 
@@ -8,6 +9,10 @@ public class ReservationCreation: IClassFixture<Dependencies>
    
    public ReservationCreation(Dependencies dependencies)
    {
-       _reservationRepository = dependencies.;
+       _reservationRepository = dependencies.ServiceProvider.GetRequiredService<IReservationRepository>();
+   }
+
+   public void Dispose()
+   {
    }
 }

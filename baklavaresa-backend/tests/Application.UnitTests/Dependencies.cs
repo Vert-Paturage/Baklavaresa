@@ -6,8 +6,8 @@ namespace Application.UnitTests;
 
 public class Dependencies
 {
-    protected readonly IServiceCollection Services;
     public IServiceProvider ServiceProvider { get; private set; }
+    protected readonly IServiceCollection Services;
     public Dependencies()
     {
         Services = new ServiceCollection();
