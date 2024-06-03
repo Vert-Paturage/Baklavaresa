@@ -1,4 +1,5 @@
 using Domain.Repositories;
+using System;
 
 namespace Application.Table.Commands.CreateTable;
 
@@ -10,7 +11,7 @@ public class CreateTableCommandHandler(ITableRepository tableRepository) : IRequ
     public Task<Unit> Handle(CreateTableCommand request, CancellationToken cancellationToken)
     {
         var table = new Domain.Entities.Table(request.Capacity);
-        tableRepository.Create(table);
+        _tableRepository.Create(table);
         return Unit.Task;
     }
 }

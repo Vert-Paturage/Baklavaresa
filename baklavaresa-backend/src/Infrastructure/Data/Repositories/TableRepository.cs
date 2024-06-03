@@ -37,6 +37,18 @@ public class TableRepository(DatabaseContext context) : ITableRepository
         return context.SaveChangesAsync();
     }
 
+    //delete table by id
+    public Task Delete(int tableId)
+    {
+        var dbTable = _context.Tables.Find(tableId);
+        if (dbTable == null)
+        {
+            throw new Domain.Exceptions.Table.TableNotFoundException(tableId);
+        }
+        _context.Tables.Remove(dbTable);
+        return _context.SaveChangesAsync();
+    }
+
     public Task<Table> GetAvailableTable(DateTime slot, int requestNumberOfPeople)
     {
         var reservations = _context.Reservations.Where(r => r.Date == slot).ToList();

@@ -1,7 +1,79 @@
-<p>Admin works</p>
-
-<div class="openinghours">
-	<p></p>
-</div>
-
-<!-- module calendrier -->
+<div id="wrapper">
+	<div id="datemodule" class="centered">
+	  <mat-form-field>
+		<mat-label>Choisissez une date</mat-label>
+		<input matInput [(ngModel)]="SelectedDay" [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+		<mat-hint>MM/DD/YYYY</mat-hint>
+		<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+		<mat-datepicker #picker></mat-datepicker>
+	  </mat-form-field>
+	</div>
+  
+	<div id="reservations-section">
+	  <h2>Réservations du {{ SelectedDayString }}</h2>
+	  <table class="table table-bordered">
+		<thead>
+		  <tr>
+			<th>Horaires</th>
+			<th>Nombre de personnes</th>
+			<th>Nom</th>
+			<th>Prénom</th>
+			<th>Adresse mail</th>
+			<th>Numéro de table</th>
+			<th>Actions</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr *ngFor="let reservation of Reservation; let i = index">
+			<td>{{ reservation.date | date: 'HH:mm' }}</td>
+			<td>{{ reservation.numberOfPeople }}</td>
+			<td>{{ reservation.firstName }}</td>
+			<td>{{ reservation.lastName }}</td>
+			<td>{{ reservation.email }}</td>
+			<td>{{ reservation.table }}</td>
+			<td>
+			  <button (click)="deleteReservation(i)" class="p-2">
+				<img class="h-5 w-5" src="../../../assets/img/delete.jpg" />
+			  </button>
+			</td>
+		  </tr>
+		</tbody>
+	  </table>
+	</div>
+  
+	<div id="tables-section">
+	  <h2>Tables</h2>
+	  <table class="table table-bordered">
+		<thead>
+		  <tr>
+			<th>Numéro de table</th>
+			<th>Nombre de places</th>
+			<th>Actions</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr *ngFor="let table of Table; let i = index">
+			<td>{{ table.id }}</td>
+			<td>{{ table.capacity }}</td>
+			<td>
+			  <button (click)="deleteTable(i)" class="p-2">
+				<img class="h-5 w-5" src="../../../assets/img/delete.jpg" />
+			  </button>
+			</td>
+		  </tr>
+		</tbody>
+	  </table>
+  
+	  <div id="add-table-section">
+		<h2>Ajouter une table</h2>
+		<mat-form-field>
+		  <mat-label>Nombre de places</mat-label>
+		  <input matInput [(ngModel)]="TableSeats" type="number">
+		</mat-form-field>
+		<button (click)="addTable()" class="p-2">
+		  <img class="h-5 w-5" src="../../../assets/img/add.png" />
+		</button>
+	  </div>
+	</div>
+  </div>
+  
