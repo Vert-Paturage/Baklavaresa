@@ -70,3 +70,10 @@
 #hiddenwrapper {
 	display: flex;
 }
+
+#monthyearswitch {
+	display: flex;
+	justify-content: space-between;
+
+	margin: 1rem 1.5rem;
+}

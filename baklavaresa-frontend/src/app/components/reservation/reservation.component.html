@@ -17,9 +17,12 @@
 		@if (Calendar.PeopleNumber != 0)
 		{
 			<div id="calendarmodule">
+				<div id="monthyearswitch">
+					<button id="previousmonthbutton" (click)="switchMonth(-1)">&lt;</button>
+					<p>{{getSelectedMonthName()}} {{this.Calendar.Date.getFullYear()}}</p>
+					<button id="nextmonthbutton" (click)="switchMonth(1)">&gt;</button>
+				</div>
 				<Calendar
-					[monthName]="getSelectedMonthName()"
-					[year]="this.Days[0].day.getFullYear()"
 					[days]="this.Days"
 					[offset]="this.Days[0].day.getDay()"
 					(onDateSelected)="onDateSelected($event)"

@@ -105,4 +105,9 @@ export class ReservationComponent {
 			this.router.navigate(['/reservation/validate'], { queryParams: {state: this.SelectedSchedule, people: this.Calendar.PeopleNumber } });
 		}
 	}
+
+	switchMonth(direction: number): void {
+		this.Calendar.Date.setMonth(this.Calendar.Date.getMonth() + direction);
+		this.getCalendar(this.Calendar);
+	}
 }

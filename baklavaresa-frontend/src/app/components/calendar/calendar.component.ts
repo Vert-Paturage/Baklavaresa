@@ -12,8 +12,6 @@ import Day from '../../types/day.type';
 	styleUrl: './calendar.component.css'
 })
 export class CalendarComponent {
-	@Input() monthName: string | undefined;
-	@Input() year: number | undefined;
 	@Input() days: Day[] | undefined;
 	@Input() offset: number | undefined;
 	@Output() onDateSelected = new EventEmitter<Day>();
@@ -22,7 +20,7 @@ export class CalendarComponent {
 
 	constructor() {}
 
-	onDayChange(day: Day) {
+	onDayChange(day: Day): void {
 		this.selectedDay = day;
 		this.onDateSelected.emit(day);
 	}
