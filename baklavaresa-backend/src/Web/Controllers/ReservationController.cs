@@ -21,6 +21,10 @@ public class ReservationController: ControllerBase
     [HttpPost("Create")]
     public async Task<IActionResult> CreateReservation(CreateReservation input)
     {
+        if (input.NumberOfPeople <= 0)
+        {
+            return BadRequest("Number of people must be greater than 0");
+        }
         var command = new CreateReservationCommand(input.FirstName,
             input.LastName, input.Email, input.Date, input.NumberOfPeople);
         try

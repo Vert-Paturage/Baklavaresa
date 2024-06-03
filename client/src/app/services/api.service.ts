@@ -5,12 +5,13 @@ import { Observable, map } from 'rxjs';
 import Reservation from '../types/reservation.type';
 import Calendar from '../types/calendar.type';
 import Day from '../types/day.type';
+import ReservationRequest from '../types/reservationRequest';
 
 @Injectable()
 export class ApiService {
 	constructor(private http: HttpClient) {}
 
-	createReservation(reservation: Reservation): Observable<string> {
+	createReservation(reservation: ReservationRequest): Observable<string> {
 		return this.http.post<string>('/api/Reservation/Create', reservation);
 	}
 
@@ -33,7 +34,7 @@ export class ApiService {
 		const date: Date = new Date(2024, 4, 1);
 
 		const offset: number = Math.floor(Math.random() * 7);
-		
+
 		const stub: Map<Date, Date[]> = new Map();
 		for (let i = 1; i <= 31; i++) {
 			const toSet: Date = new Date(date.getFullYear(), date.getMonth(), i);
