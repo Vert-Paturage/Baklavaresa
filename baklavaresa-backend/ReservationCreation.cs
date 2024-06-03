@@ -1,7 +1,9 @@
+using System.Runtime.CompilerServices;
 using Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
-namespace Application.UnitTests;
+namespace Application.UseCases;
 
 public class ReservationCreation: IClassFixture<Dependencies>
 {
@@ -12,7 +14,9 @@ public class ReservationCreation: IClassFixture<Dependencies>
        _reservationRepository = dependencies.ServiceProvider.GetRequiredService<IReservationRepository>();
    }
 
-   public void Dispose()
+   [Fact]
+   public void ShouldCreateReservation()
    {
+      Assert.Fail(); 
    }
 }

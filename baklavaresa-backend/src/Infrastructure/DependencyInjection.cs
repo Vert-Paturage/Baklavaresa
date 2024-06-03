@@ -19,6 +19,12 @@ public static class DependencyInjection
             options.UseSqlite(connectionString);
         });
     }
+
+    public static void SetupInMemoryDatabase(this IServiceCollection services, string inMemoryDbName)
+    {
+        services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase(databaseName: inMemoryDbName));
+    }
+
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IReservationRepository, ReservationRepository>();
