@@ -24,7 +24,7 @@
     font-family: var(--font-primary);
     font-weight: 600;
     font-size: 1.5rem;
-	margin-left: auto
+	margin-left: auto;
 }
 
 #links a {
@@ -37,7 +37,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: -1rem; /* Distance initiale par rapport au lien */
+    bottom: -1rem;
     width: 0.5rem;
     height: 0.5rem;
     background-color: currentColor;
@@ -49,4 +49,9 @@
 #links a:hover::after,
 #links a.active-link::after {
     opacity: 1;
+}
+
+#logo {
+	width: 20%;
+	height: 20%;
 }

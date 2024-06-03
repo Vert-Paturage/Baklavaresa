@@ -2,7 +2,7 @@ app-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
-	height: 10vh;
+	min-height: 10vh;
 
 	background-color: var(--color-primary);
 	color: var(--color-secondary);
@@ -13,7 +13,7 @@ app-footer {
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-around;
-	height: 10vh;
+	min-height: 10vh;
 
 	background-color: var(--color-secondary);
 	color: var(--color-primary);
