@@ -4,7 +4,10 @@
 	justify-content: center;
 	height: 80vh;
 
-	/*background image à inclure*/
+	background-image: url('../../../assets/home_background.png');
+	background-size: contain;
+	background-position: right;
+	background-repeat: no-repeat;
 }
 
 #subwrapper {
