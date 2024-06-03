@@ -12,3 +12,5 @@ bin
 obj
 *.http
 
+Database.db-shm
+Database.db-wal
