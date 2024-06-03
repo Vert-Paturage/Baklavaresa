@@ -8,8 +8,7 @@ public record CreateReservationCommand(
     string LastName,
     string Email,
     DateTime Date,
-    int NumberOfPeople,
-    int Table
+    int NumberOfPeople
     ) : IRequest<Unit>;
 
 public class CreateReservationCommandHandler(IReservationRepository reservationRepository, ITableRepository tableRepository) : IRequestHandler<CreateReservationCommand, Unit>
