@@ -17,6 +17,14 @@ public class CreateReservationCommandHandler(IReservationRepository reservationR
     private readonly ITableRepository _tableRepository = tableRepository;
     public Task<Unit> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
+        if (request.Date < DateTime.Now)
+        {
+            throw new Domain.Exceptions.Reservation.InvalidReservationDateException(request.Date);
+        }
+        if (request.NumberOfPeople <= 0)
+        {
+            throw new Domain.Exceptions.Reservation.InvalidNumberOfPeopleException(request.NumberOfPeople);
+        }
         var table = _tableRepository.GetTablesByCapacity(request.NumberOfPeople).Result.FirstOrDefault();
         if (table == null)
         {
