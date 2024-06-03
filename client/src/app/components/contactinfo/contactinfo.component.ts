@@ -1,11 +1,10 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
+import { CommonModule } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { ApiService } from '../../services/api.service';
 
-import Reservation from "../../types/reservation.type";
-import { CommonModule } from "@angular/common";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import ReservationRequest from "../../types/reservationRequest";
 
 @Component({

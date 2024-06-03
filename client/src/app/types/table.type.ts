@@ -1,4 +1,3 @@
-
 type Table = {
     id: number;
     capacity: number;

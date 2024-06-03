@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
-import Reservation from '../../types/reservation.type';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { format, set } from 'date-fns';
+import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import Table from '../../types/table.type';
+
 import { SnackbarService } from '../../services/snackbar.service';
+import { ApiService } from '../../services/api.service';
+
+import Reservation from '../../types/reservation.type';
+import Table from '../../types/table.type';
 
 @Component({
   selector: 'admin',

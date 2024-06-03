@@ -13,7 +13,6 @@ import Calendar from '../../types/calendar.type';
 import Day from '../../types/day.type';
 
 import { getDayName, getMonthName } from '../../utils/dateStringHandler';
-import { state } from '@angular/animations';
 
 @Component({
 	selector: 'app-reservation',
