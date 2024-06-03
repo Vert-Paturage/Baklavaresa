@@ -1,13 +1,13 @@
 import Table from "./table.type";
 
 type Reservation = {
-	ID: number;
-	FirstName: string;
-	LastName: string;
-	Email: string;
-	Date: Date;
-	NumberOfPeople: number;
-	NumberOfTables: Table;
+	id: number;
+	firstName: string;
+	lastName: string;
+	email: string;
+	date: Date;
+	numberOfPeople: number;
+	table: number;
 };
 
 export default Reservation;

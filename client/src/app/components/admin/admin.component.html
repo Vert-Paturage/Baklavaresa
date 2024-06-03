@@ -14,7 +14,7 @@
 	  <table class="table table-bordered">
 		<thead>
 		  <tr>
-			<th>Date</th>
+			<th>Horaires</th>
 			<th>Nombre de personnes</th>
 			<th>Nom</th>
 			<th>Prénom</th>
@@ -25,12 +25,12 @@
 		</thead>
 		<tbody>
 		  <tr *ngFor="let reservation of Reservation; let i = index">
-			<td>{{ reservation.Date | date: 'dd/MM/yyyy' }}</td>
-			<td>{{ reservation.NumberOfPeople }}</td>
-			<td>{{ reservation.FirstName }}</td>
-			<td>{{ reservation.LastName }}</td>
-			<td>{{ reservation.Email }}</td>
-			<td>{{ reservation.NumberOfTables.ID }}</td>
+			<td>{{ reservation.date | date: 'HH:mm' }}</td>
+			<td>{{ reservation.numberOfPeople }}</td>
+			<td>{{ reservation.firstName }}</td>
+			<td>{{ reservation.lastName }}</td>
+			<td>{{ reservation.email }}</td>
+			<td>{{ reservation.table }}</td>
 			<td>
 			  <button (click)="deleteReservation(i)" class="p-2">
 				<img class="h-5 w-5" src="../../../assets/img/delete.jpg" />
@@ -53,8 +53,8 @@
 		</thead>
 		<tbody>
 		  <tr *ngFor="let table of Table; let i = index">
-			<td>{{ table.ID }}</td>
-			<td>{{ table.Capacity }}</td>
+			<td>{{ table.id }}</td>
+			<td>{{ table.capacity }}</td>
 			<td>
 			  <button (click)="deleteTable(i)" class="p-2">
 				<img class="h-5 w-5" src="../../../assets/img/delete.jpg" />

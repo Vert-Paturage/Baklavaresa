@@ -10,7 +10,7 @@ internal class DeleteReservationCommandHandler(IReservationRepository reservatio
     private readonly IReservationRepository _reservationRepository = reservationRepository;
     public async Task Handle(DeleteReservationCommand request, CancellationToken cancellationToken)
     {
-        var reservation = await _reservationRepository.GetById(request.Id);
-        await _reservationRepository.Delete(reservation);
+        var reservationID = request.Id;
+        await _reservationRepository.Delete(reservationID);
     }
 }

@@ -8,7 +8,8 @@ public record CreateReservationCommand(
     string LastName,
     string Email,
     DateTime Date,
-    int NumberOfPeople
+    int NumberOfPeople,
+    int Table
     ) : IRequest<Unit>;
 
 public class CreateReservationCommandHandler(IReservationRepository reservationRepository, ITableRepository tableRepository) : IRequestHandler<CreateReservationCommand, Unit>
@@ -20,7 +21,7 @@ public class CreateReservationCommandHandler(IReservationRepository reservationR
         var table = _tableRepository.GetTablesByCapacity(request.NumberOfPeople).Result.FirstOrDefault();
         if (table == null)
         {
-            throw new Exception("No table available for this number of people");
+            throw new Domain.Exceptions.Table.NoTablesAvailableException(request.Date, request.NumberOfPeople);
         }
         var reservation = new Domain.Entities.Reservation(request.FirstName, request.LastName, request.Email,
             request.Date, request.NumberOfPeople, table);

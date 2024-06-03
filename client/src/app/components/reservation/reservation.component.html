@@ -17,30 +17,36 @@
 		@if (Calendar.PeopleNumber != 0)
 		{
 			<div id="calendarmodule">
-				<div id="monthyearswitch">
-					<button id="previousmonthbutton">&lt;</button>
-					<p>{{getMonthName(Calendar.Date.getMonth())}} {{Calendar.Date.getFullYear()}}</p>
-					<button id="nextmonthbutton">&gt;</button>
-				</div>
-				<div id="daysgrid">
-				</div>
+				<Calendar
+					[monthName]="getSelectedMonthName()"
+					[year]="this.Days[0].day.getFullYear()"
+					[days]="this.Days"
+					[offset]="this.Days[0].day.getDay()"
+					(onDateSelected)="onDateSelected($event)"
+				/>
 			</div>
 
-			<!--@if (SelectedDay != null)
+			@if (SelectedDay != null)
 			{
 				<div id="schedulemodule">
-					@for (schedule of Schedules; track $index) {
-						<button class="schedule">{{schedule}}</button>
-					}
+					<ScheduleSelector
+						[schedules]="this.SelectedDay.slots"
+						(onScheduleSelected)="onScheduleSelected($event)"
+					/>
 				</div>
-			}-->
+			}
 		}
 	</div>
 
 	<div id="recap">
 		@if (Calendar.PeopleNumber != 0)
 		{
-			<p>Réservation pour {{Calendar.PeopleNumber}} personnes @if(this.SelectedDay != null) {le {{this.displayDate(this.SelectedDay)}} @if(this.SelectedSchedule != null) {à {{this.SelectedSchedule}}}}</p>
+			<p>{{getReservationCurrentStateMessage()}}</p>
 		}
 	</div>
+
+	@if(SelectedDay != null && SelectedSchedule != null)
+	{
+		<button id="validationbutton" (click)="goToContactInfo()">Valider</button>
+	}
 </div>

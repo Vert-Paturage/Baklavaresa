@@ -7,9 +7,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Table from '../../types/table.type';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'admin',
@@ -21,46 +22,27 @@ import Table from '../../types/table.type';
 })
 
 export class AdminComponent implements OnInit{
-	SelectedDay!: Date;
-  SelectedDayString!: string;
+	SelectedDay: Date = new Date();
+  SelectedDayString: string = "jour : " + this.formatDate(new Date().toISOString());
   TableNumber!: number;
   TableSeats!: number;
-  Reservation: Reservation[] = [
-    {
-      ID: 6,
-      FirstName: "John",
-      LastName: "Doe",
-      Email: "derya@test.fr",
-      Date: new Date(),
-      NumberOfPeople: 2,
-      NumberOfTables: {ID: 1, Capacity: 2}
-    }
-  ];
+  Reservation: Reservation[] = [];
+  Table: Table[] = [];
 
-  Table: Table[] = [
-    {
-      ID: 1,
-      Capacity: 2
-    },
-    {
-      ID: 2,
-      Capacity: 4
-    },
-    {
-      ID: 3,
-      Capacity: 6
-    }
-  ];
-
-
-  constructor(private apiService: ApiService, private datePipe: DatePipe) {
+  constructor(private apiService: ApiService, private snackBar: SnackbarService) {
   }
   
   ngOnInit(): void {
+    this.refreshData();
+  }
+
+  refreshData() {
     this.apiService.getAllTables().subscribe(table => {
       this.Table = table;
     });
+    this.retrieveReservationByDate(this.SelectedDay);
   }
+
 
   formatDate(date: string): string {
     const parsedDate = new Date(date);
@@ -69,35 +51,66 @@ export class AdminComponent implements OnInit{
 
   onDateChange(event: any): void {
     const selectedDate = event.value;
-    // this.apiService.createReservation(this.Reservation[0]).subscribe(() => {
-    //   console.log("Reservation created");
-    // });
     this.SelectedDay = selectedDate;
-    this.apiService.getCalendarAdmin(this.SelectedDay).subscribe(map => {
-      this.Reservation = map;
-    });
+    this.retrieveReservationByDate(this.SelectedDay);
     this.SelectedDayString = this.formatDate(selectedDate);
+  }
+
+  retrieveReservationByDate(date: Date) {
+    this.apiService.getReservationByDate(date).subscribe(res => {
+      this.Reservation = res as Reservation[];
+    });
+    
   }
 
   deleteReservation(index: number) {
     const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette réservation ?");
     if (confirmDelete) {
-      this.apiService.deleteReservation(this.Reservation[index].ID).subscribe(() => {
-        this.Reservation.splice(index, 1);
-      });
+      console.log(this.Reservation[index].id);
+      this.apiService.deleteReservation(this.Reservation[index].id).subscribe(
+        (response) => {
+          //this.Reservation.splice(index, 1);
+          this.snackBar.showSnackbar("Réservation supprimée", 'success');
+          this.refreshData();
+        },
+        (error) => this.snackBar.showSnackbar(error.error, 'error')
+      );
     }
   }
 
   addTable() {
-    this.apiService.addTable(this.TableSeats).subscribe(() => {
-      console.log("Table created");
-    });
+    if(this.TableSeats == null || this.TableSeats == undefined) {
+      this.snackBar.showSnackbar("La capacité de la table ne peut pas être nulle", 'error');
+      return;
+    }
+    if(this.TableSeats <= 0) {
+      this.snackBar.showSnackbar("La capacité de la table doit être supérieure à 0", 'error');
+      return;
+    }
+    this.apiService.createTable(this.TableSeats).subscribe(
+      (response) => {
+        console.log("Table created" + this.TableSeats);
+        //this.Table.push({id: this.Table[this.Table.length - 1].id+1, capacity: this.TableSeats});
+        this.snackBar.showSnackbar("Table ajoutée", 'success');
+        this.TableSeats = 0;
+        this.refreshData();
+      },
+      (error) => this.snackBar.showSnackbar(error.error, 'error')
+    );
   }
 
   deleteTable(index: number) {
     const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette table ?");
+    console.log(this.Table[index].id);
     if (confirmDelete) {
-      this.Table.splice(index, 1);
+      this.apiService.deleteTable(this.Table[index].id).subscribe(
+        (response) => {
+          //this.Table.splice(index, 1);
+          this.snackBar.showSnackbar("Table supprimée", 'success');
+          this.refreshData();
+        },
+        (error) => this.snackBar.showSnackbar(error.error, 'error')
+      );
     }
   }
 }

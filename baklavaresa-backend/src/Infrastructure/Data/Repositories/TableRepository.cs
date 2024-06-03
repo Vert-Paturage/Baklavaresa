@@ -2,7 +2,6 @@ using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Persistence;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Data.Repositories;
 
@@ -36,5 +35,32 @@ public class TableRepository(DatabaseContext context) : ITableRepository
         var dbTable = new TableDatabase(table);
         _context.Tables.Add(dbTable);
         return context.SaveChangesAsync();
+    }
+
+    //delete table by id
+    public Task Delete(int tableId)
+    {
+        var dbTable = _context.Tables.Find(tableId);
+        if (dbTable == null)
+        {
+            throw new Domain.Exceptions.Table.TableNotFoundException(tableId);
+        }
+        _context.Tables.Remove(dbTable);
+        return _context.SaveChangesAsync();
+    }
+
+    public Task<Table> GetAvailableTable(DateTime slot, int requestNumberOfPeople)
+    {
+        var reservations = _context.Reservations.Where(r => r.Date == slot).ToList();
+        var reservedTables = reservations.Select(r => r.TableId).ToList();
+        var availableTables = _context.Tables.Where(t => !reservedTables.Contains(t.Id)).ToList();
+        var availableTablesForNumberOfPeople = availableTables.Where(t => t.Capacity >= requestNumberOfPeople).ToList();
+        // sort by pertinence (smallest table that can accommodate the number of people)
+        availableTablesForNumberOfPeople = availableTablesForNumberOfPeople.OrderBy(t => t.Capacity).ToList();
+        if (availableTablesForNumberOfPeople.Count == 0)
+        {
+            throw new Domain.Exceptions.Table.NoTablesAvailableException(slot, requestNumberOfPeople);
+        }
+        return Task.FromResult(availableTablesForNumberOfPeople.OrderBy(t => t.Capacity).First().ToDomainModel());
     }
 }

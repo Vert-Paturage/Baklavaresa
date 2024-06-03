@@ -1,16 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+
+import { CalendarComponent } from '../calendar/calendar.component';
+import { ScheduleSelectorComponent } from '../scheduleselector/scheduleselector.component';
 
 import { ApiService } from '../../services/api.service';
 
 import Calendar from '../../types/calendar.type';
 import Day from '../../types/day.type';
 
+import { getDayName, getMonthName } from '../../utils/dateStringHandler';
+import { state } from '@angular/animations';
+
 @Component({
 	selector: 'app-reservation',
 	standalone: true,
-	imports: [FormsModule, ReactiveFormsModule, CommonModule],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		CommonModule,
+		CalendarComponent,
+		ScheduleSelectorComponent
+	],
 	templateUrl: './reservation.component.html',
 	styleUrls: ['./reservation.component.css'],
 	providers: [ApiService]
@@ -23,12 +37,12 @@ export class ReservationComponent {
 	MaxPeopleNumberPerReservation: number = 8;
 
 	Calendar: Calendar;
-	SelectedDay: number | null = null;
+	SelectedDay: Day | null = null;
 	SelectedSchedule: Date | null = null;
 
 	Days: Day[] = [];
 
-	constructor(private apiService: ApiService) {
+	constructor(private apiService: ApiService, private router: Router) {
 		const today: Date = new Date();
 		this.Calendar = {
 			Date: today,
@@ -38,99 +52,58 @@ export class ReservationComponent {
 
 	// On selection functions
 
-	onNumberOfPersonChange(buttonValue: number) {
+	async onNumberOfPersonChange(buttonValue: number) {
 		if(buttonValue == this.Calendar.PeopleNumber) {
 			return;
 		}
 		this.Calendar.PeopleNumber = buttonValue;
 		this.SelectedDay = null;
-		this.getCalendar(this.Calendar);
-		setTimeout(() => {
-			this.renderDays();
-		}, 100); // 8-) attention dos d'ane
+		await this.getCalendar(this.Calendar);
 	}
 
-	onDateSelected(day: number) {
+	onDateSelected(day: Day) {
 		this.SelectedDay = day;
-		console.log(this.Days[day-1].day);
+	}
+
+	onScheduleSelected(schedule: Date) {
+		this.SelectedSchedule = schedule;
 	}
 
 	// API
 
-	getCalendar(calendar: Calendar): void {
-		this.apiService.getCalendar(calendar).subscribe(map => {
-			this.Days = map;
-		});
+	async getCalendar(calendar: Calendar): Promise<void> {
+		this.Days = await firstValueFrom(this.apiService.getCalendar(calendar));
 	}
 
-	// Render
+	displayDate(day: Date): string {
+		return `${getDayName(day.getDay())} ${day.getDate()} ${getMonthName(day.getMonth())} ${day.getFullYear()}`;
+	}
 
-	renderDays() {
-		let offset: number = this.Days[0].day.getDay();
-		if(offset == 0) {
-			offset = 7;
-		}
-
-		//TODO: refaire tout dans une classe
-
-		let daysGrid: HTMLElement | null = document.getElementById('daysgrid');
-		if(daysGrid != null) {
-			daysGrid.innerHTML = '<p>L</p><p>M</p><p>M</p><p>J</p><p>V</p><p>S</p><p>D</p>';
-			for(let i = 0; i < Array.from(this.Days.keys()).length; i++) { //vérifier si on peut pas faire mieux
-				let day: number = i+1;
-				let dayButton: HTMLElement = document.createElement('button');
-				dayButton.id = `day${day}`;
-				if(dayButton.id == 'day1') {
-					dayButton.style.gridColumnStart = `${offset}`;
+	getReservationCurrentStateMessage(): string {
+		var result: string = "";
+		if(this.Calendar.PeopleNumber != 0)
+		{
+			result += `Réservation pour ${this.Calendar.PeopleNumber} personne${this.Calendar.PeopleNumber === 1 ? '' : 's'}`;
+			if(this.SelectedDay != null)
+			{
+				result += ` le ${this.displayDate(this.SelectedDay.day)}`;
+				if(this.SelectedSchedule != null)
+				{
+					result += ` à ${this.SelectedSchedule.getHours()}:${this.SelectedSchedule.getMinutes() < 10 ? '0' + this.SelectedSchedule.getMinutes() : this.SelectedSchedule.getMinutes()}`;
 				}
-				dayButton.classList.add('day');
-				if(this.Days[i].slots.length === 0) {
-					dayButton.classList.add('dayHasNoRoom');
-				}
-				dayButton.innerHTML = `${day}`;
-				dayButton.onclick = () => this.onDateSelected(day);
-				daysGrid.appendChild(dayButton);
 			}
 		}
+		return result;
 	}
 
-	// Utils
-
-	getMonthName(month: number) {
-		const monthNames = [
-			'Janvier',
-			'Février',
-			'Mars',
-			'Avril',
-			'Mai',
-			'Juin',
-			'Juillet',
-			'Août',
-			'Septembre',
-			'Octobre',
-			'Novembre',
-			'Décembre'
-		];
-
-		return monthNames[month];
+	getSelectedMonthName(): string {
+		return getMonthName(this.Calendar.Date.getMonth());
 	}
 
-	getDayName(dayIndex: number) {
-		const dayNames = [
-			'Dimanche',
-			'Lundi',
-			'Mardi',
-			'Mercredi',
-			'Jeudi',
-			'Vendredi',
-			'Samedi'
-		];
-
-		return dayNames[dayIndex];
-	}
-
-	displayDate(day: number): string {
-		const date: Date = this.Days[day-1].day;
-		return `${this.getDayName(date.getDay())} ${date.getDate()} ${this.getMonthName(date.getMonth())} ${date.getFullYear()}`;
+	goToContactInfo(): void {
+		if(this.SelectedDay != null && this.SelectedSchedule != null)
+		{
+			this.router.navigate(['/reservation/validate'], { queryParams: {state: this.SelectedSchedule, people: this.Calendar.PeopleNumber } });
+		}
 	}
 }

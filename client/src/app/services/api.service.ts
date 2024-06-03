@@ -5,6 +5,7 @@ import { Observable, map } from 'rxjs';
 import Reservation from '../types/reservation.type';
 import Calendar from '../types/calendar.type';
 import Day from '../types/day.type';
+import ReservationRequest from '../types/reservationRequest';
 import Table from '../types/table.type';
 
 @Injectable()
@@ -12,7 +13,7 @@ export class ApiService {
 
 	constructor(private http: HttpClient) {}
 
-	createReservation(reservation: Reservation): Observable<string> {
+	createReservation(reservation: ReservationRequest): Observable<string> {
 		return this.http.post<string>('/api/Reservation/Create', reservation);
 	}
 
@@ -30,16 +31,47 @@ export class ApiService {
 		);
 	}
 
-	getCalendarAdmin(date: Date): Observable<Reservation[]> {
-		return this.http.get<Reservation[]>('/api/Reservation/GetAllReservations', {params: {input: date.toISOString()}});
+	getReservationByDate(date: Date): Observable<Reservation[]> {
+    
+		const nextDayUTCDate = new Date(date);
+		nextDayUTCDate.setUTCDate(nextDayUTCDate.getUTCDate() + 1);
+    	const utcDateString = nextDayUTCDate.toISOString().split('T')[0];
+
+		console.log(utcDateString);
+		return this.http.get<Reservation[]>('/api/Reservation/GetAllReservations', {params: {input: utcDateString }})
+		.pipe(
+			map((reservations: Reservation[]) => {
+				return reservations.map(reservation => {
+					return {
+						id: reservation.id,
+						firstName: reservation.firstName,
+						lastName: reservation.lastName,
+						email: reservation.email,
+						date: reservation.date,
+						numberOfPeople: reservation.numberOfPeople,
+						table: reservation.table
+					};
+				});
+			})
+		);
+	}
+
+	deleteReservation(id: number): Observable<any> {
+		return this.http.delete<string>('/api/Reservation/' + id)
+	}
+
+
+	deleteTable(id: number): Observable<any> {
+		return this.http.delete<string>('/api/Table/' + id)
+	}
+
+	createTable(tableCapacity: number): Observable<string> {
+		const body = { capacity: tableCapacity };
+		return this.http.post<string>('/api/Table/Create', body);
 	}
 
 	getAllTables(): Observable<Table[]> {
 		return this.http.get<Table[]>('/api/Table/GetAll');
-	}
-
-	addTable(tableCapacity: number): Observable<string> {
-		return this.http.post<string>('/api/Table/Create', tableCapacity);
 	}
 
 	getCalendarStub(calendar: Calendar): Map<Date, Date[]> {
@@ -47,7 +79,7 @@ export class ApiService {
 		const date: Date = new Date(2024, 4, 1);
 
 		const offset: number = Math.floor(Math.random() * 7);
-		
+
 		const stub: Map<Date, Date[]> = new Map();
 		for (let i = 1; i <= 31; i++) {
 			const toSet: Date = new Date(date.getFullYear(), date.getMonth(), i);
@@ -57,10 +89,6 @@ export class ApiService {
 			}
 		}
 		return stub;
-	}
-
-	deleteReservation(id: number): Observable<string> {
-		return this.http.post<string>('/api/Reservation/Delete', {ID: id});
 	}
 
 	private getRandomSchedule(day: number): Date {
