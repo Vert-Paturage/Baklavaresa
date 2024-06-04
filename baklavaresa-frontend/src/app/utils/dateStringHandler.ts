@@ -1,3 +1,5 @@
+import { formatDate } from "@angular/common";
+
 export function getMonthName(month: number) {
 	const monthNames = [
 		'Janvier',
@@ -32,6 +34,5 @@ export function getDayName(dayIndex: number) {
 }
 
 export function getUTCISOString(date: Date): string {
-	const timezoneOffset = date.getTimezoneOffset() * 60000;
-	return new Date(date.getTime() - timezoneOffset).toISOString().slice(0, -1);
+	return formatDate(date, 'yyyy-MM-ddTHH:mm:ss', 'en-US');
 }
