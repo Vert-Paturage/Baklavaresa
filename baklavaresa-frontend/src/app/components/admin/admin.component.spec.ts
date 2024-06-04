@@ -13,13 +13,11 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatNativeDateModule } from '@angular/material/core';
 
-
 describe('AdminComponent', () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
   let apiService: ApiService;
   let snackbarService: SnackbarService;
-
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -42,7 +40,6 @@ describe('AdminComponent', () => {
     }).compileComponents();
   });
 
-
   beforeEach(() => {
     fixture = TestBed.createComponent(AdminComponent);
     component = fixture.componentInstance;
@@ -60,17 +57,27 @@ describe('AdminComponent', () => {
     expect(component.formatDate(date.toISOString())).toBe('lundi 1 janvier 2024');
   });
 
-    it('should update SelectedDay and retrieve reservations on date change', () => {
-        const event = { value: new Date('2024-01-01') };
-    
-        spyOn(component, 'retrieveReservationByDate');
+  it('should update SelectedDay and retrieve reservations on date change', () => {
+    const event = { value: new Date('2024-01-01') };
 
-        component.onDateChange(event);
-    
-        expect(component.SelectedDay).toEqual(new Date('2024-01-01'));
-    
-        expect(component.retrieveReservationByDate).toHaveBeenCalledWith(new Date('2024-01-01'));
-    
-        expect(component.SelectedDayString).toEqual('lundi 1 janvier 2024'); 
-    });
+    spyOn(component, 'retrieveReservationByDate');
+
+    component.onDateChange(event);
+
+    expect(component.SelectedDay).toEqual(new Date('2024-01-01'));
+
+    expect(component.retrieveReservationByDate).toHaveBeenCalledWith(new Date('2024-01-01'));
+
+    expect(component.SelectedDayString).toEqual('lundi 1 janvier 2024'); 
+  });
+
+ 
+  it('should call retrieveReservationByDate on init', fakeAsync(() => {
+    spyOn(component, 'retrieveReservationByDate');
+
+    component.ngOnInit();
+    tick();
+
+    expect(component.retrieveReservationByDate).toHaveBeenCalled();
+  }));
 });
