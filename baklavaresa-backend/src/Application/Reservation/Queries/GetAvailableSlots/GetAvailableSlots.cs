@@ -25,7 +25,16 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
         for (var day = 1; day <= DateTime.DaysInMonth(request.Month.Year, request.Month.Month); day++)
         {
             var date = new DateTime(request.Month.Year, request.Month.Month, day);
-            if (date < _clockService.Now || !RestaurantInfo.OpenDays.Contains(date.DayOfWeek)) continue;
+            if (date < _clockService.Now || !RestaurantInfo.OpenDays.Contains(date.DayOfWeek))
+            {
+                availableSlots.Add(
+                    new AvailableSlotsDto()
+                    {
+                        Day = date,
+                        Slots = new List<DateTime>()
+                    });
+                continue;
+            }
             var slots = new List<DateTime>();
             foreach (var hours in RestaurantInfo.LunchHours)
             {
