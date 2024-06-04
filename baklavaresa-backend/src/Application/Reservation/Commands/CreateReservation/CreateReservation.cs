@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+using Application.Services;
 using Domain.Entities;
 using Domain.Repositories;
 
@@ -9,15 +11,21 @@ public record CreateReservationCommand(
     string Email,
     DateTime Date,
     int NumberOfPeople
-    ) : IRequest<Unit>;
+    ) : IRequest<int>;
 
-public class CreateReservationCommandHandler(IReservationRepository reservationRepository, ITableRepository tableRepository) : IRequestHandler<CreateReservationCommand, Unit>
+public partial class CreateReservationCommandHandler(IReservationRepository reservationRepository, ITableRepository tableRepository,IClockService clockService) : IRequestHandler<CreateReservationCommand, int>
 {
     private readonly IReservationRepository _reservationRepository = reservationRepository;
     private readonly ITableRepository _tableRepository = tableRepository;
-    public Task<Unit> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
+    private readonly IClockService _clockService = clockService;
+    public Task<int> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
-        if (request.Date < DateTime.Now)
+        if (request.FirstName == null || request.LastName == null || request.FirstName.Length == 0 || request.LastName.Length == 0)
+        {
+            throw new Domain.Exceptions.Reservation.InvalidNameException();
+        }
+        
+        if (request.Date < _clockService.Now)
         {
             throw new Domain.Exceptions.Reservation.InvalidReservationDateException(request.Date);
         }
@@ -25,6 +33,12 @@ public class CreateReservationCommandHandler(IReservationRepository reservationR
         {
             throw new Domain.Exceptions.Reservation.InvalidNumberOfPeopleException(request.NumberOfPeople);
         }
+        var emailRegex = EmailRegex();
+        if (request.Email == null || !emailRegex.IsMatch(request.Email))
+        {
+            throw new Domain.Exceptions.Reservation.InvalidEmailException(request.Email);
+        }
+       
         var table = _tableRepository.GetTablesByCapacity(request.NumberOfPeople).Result.FirstOrDefault();
         if (table == null)
         {
@@ -32,7 +46,10 @@ public class CreateReservationCommandHandler(IReservationRepository reservationR
         }
         var reservation = new Domain.Entities.Reservation(request.FirstName, request.LastName, request.Email,
             request.Date, request.NumberOfPeople, table);
-        _reservationRepository.Create(reservation);
-        return Unit.Task;
+        var id = _reservationRepository.Create(reservation);
+        return id;
     }
+
+    [GeneratedRegex(@"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$")]
+    private static partial Regex EmailRegex();
 }

@@ -1,6 +1,6 @@
 namespace Application.Services;
 
-public class IClockService
+public interface IClockService
 {
     public DateTime Now { get; } 
 }

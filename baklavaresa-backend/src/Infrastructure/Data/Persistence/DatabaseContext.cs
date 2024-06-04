@@ -1,9 +1,10 @@
 using Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Infrastructure.Data.Persistence;
 
-public class DatabaseContext: DbContext 
+public class DatabaseContext: DbContext, IDatabase
 {
     public DatabaseContext() { }
 
@@ -19,4 +20,13 @@ public class DatabaseContext: DbContext
     
     internal DbSet<ReservationDatabase> Reservations { get; set; }
     internal DbSet<TableDatabase> Tables { get; set; }
+    public void Clear()
+    {
+        Reservations.RemoveRange(Reservations);
+        Tables.RemoveRange(Tables);
+        SaveChanges();
+        
+        ChangeTracker.Clear();
+        Database.EnsureDeleted();
+    }
 }
