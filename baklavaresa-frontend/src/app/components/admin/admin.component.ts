@@ -71,7 +71,6 @@ export class AdminComponent implements OnInit{
       console.log(this.Reservation[index].id);
       this.apiService.deleteReservation(this.Reservation[index].id).subscribe(
         (response) => {
-          //this.Reservation.splice(index, 1);
           this.snackBar.showSnackbar("Réservation supprimée", 'success');
           this.refreshData();
         },
@@ -92,7 +91,6 @@ export class AdminComponent implements OnInit{
     this.apiService.createTable(this.TableSeats).subscribe(
       (response) => {
         console.log("Table created" + this.TableSeats);
-        //this.Table.push({id: this.Table[this.Table.length - 1].id+1, capacity: this.TableSeats});
         this.snackBar.showSnackbar("Table ajoutée", 'success');
         this.TableSeats = 0;
         this.refreshData();
@@ -107,7 +105,6 @@ export class AdminComponent implements OnInit{
     if (confirmDelete) {
       this.apiService.deleteTable(this.Table[index].id).subscribe(
         (response) => {
-          //this.Table.splice(index, 1);
           this.snackBar.showSnackbar("Table supprimée", 'success');
           this.refreshData();
         },
