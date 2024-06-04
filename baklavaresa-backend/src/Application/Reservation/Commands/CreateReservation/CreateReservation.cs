@@ -13,11 +13,12 @@ public record CreateReservationCommand(
     int NumberOfPeople
     ) : IRequest<int>;
 
-public partial class CreateReservationCommandHandler(IReservationRepository reservationRepository, ITableRepository tableRepository,IClockService clockService) : IRequestHandler<CreateReservationCommand, int>
+public partial class CreateReservationCommandHandler(IReservationRepository reservationRepository, ITableRepository tableRepository,IClockService clockService, IEmailService emailService) : IRequestHandler<CreateReservationCommand, int>
 {
     private readonly IReservationRepository _reservationRepository = reservationRepository;
     private readonly ITableRepository _tableRepository = tableRepository;
     private readonly IClockService _clockService = clockService;
+    private readonly IEmailService _emailService = emailService;
     public Task<int> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
         if (request.FirstName == null || request.LastName == null || request.FirstName.Length == 0 || request.LastName.Length == 0)
@@ -47,6 +48,10 @@ public partial class CreateReservationCommandHandler(IReservationRepository rese
         var reservation = new Domain.Entities.Reservation(request.FirstName, request.LastName, request.Email,
             request.Date, request.NumberOfPeople, table);
         var id = _reservationRepository.Create(reservation);
+        
+        // Send email
+        _emailService.Send(request.Email, $"Your reservation has been created with id {id}");
+        
         return id;
     }
 

@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.UseCasesTests.Admin;
 
-public class DeleteReservation: IClassFixture<Dependencies>
+public class DeleteReservation : IClassFixture<Dependencies>, IDisposable
 {
     private readonly IReservationRepository _reservationRepository;
        private readonly IClockService _clockService;
@@ -40,6 +40,10 @@ public class DeleteReservation: IClassFixture<Dependencies>
            _reservationRepository.Create(new Domain.Entities.Reservation("Alice", "Johnson", "alice.johnson@lecnam.net", _clockService.Now.AddHours(3), 4, table4)).Wait();
            
            //id =_reservationRepository.Create(new Domain.Entities.Reservation("Bob2", "Smith2", "bob.smith2@lecnam.net", _clockService.Now.AddHours(12), 2, table1)).Result;
+       }
+       public void Dispose()
+       {
+           _database.Clear();
        }
        [Fact]
        public async Task ShouldDeleteReservation()

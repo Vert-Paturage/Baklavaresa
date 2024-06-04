@@ -8,6 +8,7 @@ using Domain.Repositories;
 using Infrastructure.Data.Persistence;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Org.BouncyCastle.Crypto.Signers;
 
 namespace Application.UseCasesTests.Reservation;
 
@@ -15,6 +16,7 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
 {
    private readonly IReservationRepository _reservationRepository;
    private readonly IClockService _clockService;
+   private readonly IEmailService _emailService;
    private readonly IMediator _mediator;
    private readonly IDatabase _database;
    public CreateReservation(Dependencies dependencies)
@@ -23,6 +25,7 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
        _reservationRepository = dependencies.ServiceProvider.GetRequiredService<IReservationRepository>();
        _mediator = dependencies.ServiceProvider.GetRequiredService<IMediator>();
        _clockService = dependencies.ServiceProvider.GetRequiredService<IClockService>();
+         _emailService = dependencies.ServiceProvider.GetRequiredService<IEmailService>();
        
        // Seed tables
        var tableRepository = dependencies.ServiceProvider.GetRequiredService<ITableRepository>();
@@ -57,6 +60,11 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
     Assert.Equal(date, reservation.Date);
     Assert.Equal(numberOfPeople, reservation.NumberOfPeople);
     Assert.NotNull(reservation.Table);
+    // Assert email was sent
+    var emailSent = ((FakeEmailService)_emailService).Emails.LastOrDefault();
+    Assert.NotNull(emailSent);
+    Assert.Equal(email, emailSent.To);
+    Assert.NotEmpty(emailSent.Body);
    }
    
    [Fact]
