@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { se } from "date-fns/locale";
 
 @Injectable({
 	providedIn: 'root'

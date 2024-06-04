@@ -12,7 +12,7 @@ export class AdminGuard {
 		if (this.auth.hasValidSecretKey()) {
 			return true;
 		} else {
-			this.router.navigate(['/']);
+			this.router.navigate(['/admin/secret']);
 			return false;
 		}
 	}
