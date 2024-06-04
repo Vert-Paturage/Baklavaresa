@@ -1,3 +1,3 @@
 namespace Domain.Exceptions.Reservation;
 
-public class InvalidEmailException(string email) : Exception($"Invalid email: {email}");
+public class InvalidEmailException(string email) : Exception($"Email {email} invalide.");

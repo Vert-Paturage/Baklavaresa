@@ -1,3 +1,3 @@
 namespace Domain.Exceptions.Reservation;
 
-public class InvalidNameException() : Exception("First name and last name are required");
+public class InvalidNameException() : Exception("Le prénom et le nom sont obligatoires.");
