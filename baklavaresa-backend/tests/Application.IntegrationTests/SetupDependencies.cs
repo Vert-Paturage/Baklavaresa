@@ -1,4 +1,5 @@
-﻿using Infrastructure;
+﻿using Application.Services;
+using Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Integration

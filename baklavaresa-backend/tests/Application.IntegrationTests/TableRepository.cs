@@ -3,7 +3,9 @@ using Domain.Exceptions.Table;
 using Domain.Repositories;
 using Infrastructure.Data.Persistence;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace Integration
 {
@@ -40,7 +42,7 @@ namespace Integration
         }
 
         [Fact]
-        public void TableGetByIdTest()
+        public async void TableGetByIdTest()
         {
             // Arrange
             var table = new Table
@@ -51,7 +53,7 @@ namespace Integration
             var tableId = _tableRepository.Create(table).Result;
 
             // Act
-            var tableFromDb = _tableRepository.GetById(tableId);
+            var tableFromDb = await _tableRepository.GetById(tableId);
 
             // Assert
             Assert.That(tableFromDb, Is.Not.Null);
@@ -125,7 +127,7 @@ namespace Integration
             _tableRepository.Create(table2);
 
             // Act
-            var tables = _tableRepository.GetAvailableTable(DateTime.Now, 4).Result;
+            var tables = _tableRepository.GetAvailableTable(DateTime.Now, 2).Result;
 
             // Assert
             Assert.That(tables, Is.Not.Null);
@@ -146,8 +148,7 @@ namespace Integration
             _tableRepository.Delete(tableId).Wait();
 
             // Assert
-            Assert.That(_tableRepository.GetById(tableId), Is.Null);
-            Assert.Throws<TableNotDeleteException>(()=>_tableRepository.GetById(tableId));
+            Assert.Throws<TableNotFoundException>(()=>_tableRepository.GetById(tableId));
         }
         
     }

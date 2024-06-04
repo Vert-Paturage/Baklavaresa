@@ -21,7 +21,7 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
     {
         var dbReservation = _context.Reservations
             .Include(r => r.Table)
-            .FirstOrDefault(r => r.Id == id);
+            .FirstOrDefault(r => r.Id == id); 
         if (dbReservation == null)
         {
             throw new Domain.Exceptions.Reservation.ReservationNotFoundException(id);

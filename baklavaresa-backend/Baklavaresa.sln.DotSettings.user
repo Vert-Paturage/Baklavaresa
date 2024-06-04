@@ -1,12 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	
-	
-	
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dffebaa7_002D8ef3_002D49b1_002D87ec_002D7aac3b72919c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetAvailableSlots_WithPassedSlots_ShouldReturnEmptySlots #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b13a0c5b_002D7597_002D4830_002D9632_002Da29921f1c9c3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TableGetAvailableTableTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
-    &lt;Project Location="/home/wydra/Documents/cnam/test/Baklavaresa/baklavaresa-backend/tests/Application.UseCasesTests" Presentation="&amp;lt;Application.UseCasesTests&amp;gt;" /&gt;
     &lt;Project Location="/home/wydra/Documents/cnam/test/Baklavaresa/baklavaresa-backend/tests/Application.IntegrationTests" Presentation="&amp;lt;Application.IntegrationTests&amp;gt;" /&gt;
+    &lt;Project Location="/home/wydra/Documents/cnam/test/Baklavaresa/baklavaresa-backend/tests/Application.UseCasesTests" Presentation="&amp;lt;Application.UseCasesTests&amp;gt;" /&gt;
   &lt;/Or&gt;
-&lt;/SessionState&gt;</s:String>
-	</wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
