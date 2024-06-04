@@ -62,8 +62,8 @@ public class TableChoice: IClassFixture<Dependencies>, IDisposable
     [Fact]
     public async Task TableChoice_WithGreaterCapacity_ShouldAssignTable()
     {
-        var good_table = await _tableRepository.Create(new Domain.Entities.Table(4));
-        await _tableRepository.Create(new Domain.Entities.Table(2));
+        await _tableRepository.Create(new Domain.Entities.Table(4));
+        var good_table = await _tableRepository.Create(new Domain.Entities.Table(2));
         await _tableRepository.Create(new Domain.Entities.Table(6));
         await _tableRepository.Create(new Domain.Entities.Table(8));
 
@@ -87,6 +87,31 @@ public class TableChoice: IClassFixture<Dependencies>, IDisposable
         int numberOfPeople = 10;
         
         var command = new CreateReservationCommand(_firstName, _lastName, _email, _date, numberOfPeople);
+        
+        await Assert.ThrowsAsync<NoTablesAvailableException>(async () => await _mediator.Send(command));
+    }
+    
+    [Fact]
+    public async Task TableChoice_WithNoTables_ShouldNotAssignTable()
+    {
+        int numberOfPeople = 2;
+        
+        var command = new CreateReservationCommand(_firstName, _lastName, _email, _date, numberOfPeople);
+        
+        await Assert.ThrowsAsync<NoTablesAvailableException>(async () => await _mediator.Send(command));
+    }
+    
+    [Fact]
+    public async Task TableChoice_TableAlreadyBooked_ShouldNotAssignTable()
+    {
+        var table = await _tableRepository.Create(new Domain.Entities.Table(2));
+        
+        int numberOfPeople = 2;
+        
+        var command = new CreateReservationCommand(_firstName, _lastName, _email, _date, numberOfPeople);
+        await _mediator.Send(command);
+        
+        command = new CreateReservationCommand(_firstName, _lastName, _email, _date, numberOfPeople);
         
         await Assert.ThrowsAsync<NoTablesAvailableException>(async () => await _mediator.Send(command));
     }

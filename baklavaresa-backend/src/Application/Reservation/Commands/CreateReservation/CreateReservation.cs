@@ -19,7 +19,7 @@ public partial class CreateReservationCommandHandler(IReservationRepository rese
     private readonly ITableRepository _tableRepository = tableRepository;
     private readonly IClockService _clockService = clockService;
     private readonly IEmailService _emailService = emailService;
-    public Task<int> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
         if (request.FirstName == null || request.LastName == null || request.FirstName.Length == 0 || request.LastName.Length == 0)
         {
@@ -39,18 +39,19 @@ public partial class CreateReservationCommandHandler(IReservationRepository rese
         {
             throw new Domain.Exceptions.Reservation.InvalidEmailException(request.Email);
         }
-       
-        var table = _tableRepository.GetTablesByCapacity(request.NumberOfPeople).Result.FirstOrDefault();
-        if (table == null)
+
+        var tables = _tableRepository.GetAvailableTable(request.Date, request.NumberOfPeople).Result;
+        if (tables == null || tables.Count == 0)
         {
             throw new Domain.Exceptions.Table.NoTablesAvailableException(request.Date, request.NumberOfPeople);
         }
+        var table = tables.First();
         var reservation = new Domain.Entities.Reservation(request.FirstName, request.LastName, request.Email,
             request.Date, request.NumberOfPeople, table);
-        var id = _reservationRepository.Create(reservation);
+        var id = await _reservationRepository.Create(reservation);
         
         // Send email
-        _emailService.Send(request.Email, $"Your reservation has been created with id {id}");
+        _emailService.Send(request.Email, $"Hi {request.FirstName},\nYour reservation for the {request.Date} has been confirmed.\nYour reservation number is {id}.\n\nThank you!");
         
         return id;
     }
