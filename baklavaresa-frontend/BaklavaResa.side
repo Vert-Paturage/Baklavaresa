@@ -419,6 +419,314 @@
       ],
       "value": ""
     }]
+  }, {
+    "id": "fc2e1875-10bb-4afe-a74a-bd4f00cfae54",
+    "name": "Ajouter puis supprimer une table",
+    "commands": [{
+      "id": "664ba96d-3400-4a75-bedd-67bc83817213",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "54e3809f-1ffb-448b-8c1d-04699718a0cb",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "2062x1118",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "eca44147-ea51-4659-8947-13ea1a573c82",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Accès administrateur",
+      "targets": [
+        ["linkText=Accès administrateur", "linkText"],
+        ["css=app-footer > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Accès administrateur')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/admin/secret')]", "xpath:href"],
+        ["xpath=//app-footer/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Accès administrateur')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "74a841e5-7dfb-4eeb-90ed-645634bfd3de",
+      "comment": "",
+      "command": "click",
+      "target": "css=#mat-mdc-form-field-label-2 > mat-label",
+      "targets": [
+        ["css=#mat-mdc-form-field-label-2 > mat-label", "css:finder"],
+        ["xpath=//label[@id='mat-mdc-form-field-label-2']/mat-label", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/mat-form-field/div/div[2]/div/label/mat-label", "xpath:position"],
+        ["xpath=//mat-label[contains(.,'Nombre de places')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2f885e78-39e9-4c55-9640-a55e084a0b33",
+      "comment": "",
+      "command": "type",
+      "target": "id=mat-input-1",
+      "targets": [
+        ["id=mat-input-1", "id"],
+        ["css=#mat-input-1", "css:finder"],
+        ["xpath=//input[@id='mat-input-1']", "xpath:attributes"],
+        ["xpath=//div[@id='inputwrapper']/mat-form-field/div/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/mat-form-field/div/div[2]/div/input", "xpath:position"]
+      ],
+      "value": "4"
+    }, {
+      "id": "e203d3bb-75fd-4dd9-9131-33ffe46eb5e6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.p-2:nth-child(2) > .h-5",
+      "targets": [
+        ["css=.p-2:nth-child(2) > .h-5", "css:finder"],
+        ["xpath=//div[@id='inputwrapper']/button/img", "xpath:idRelative"],
+        ["xpath=//div/button/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d8e9283c-992a-4eeb-ab19-7b01fe59b322",
+      "comment": "",
+      "command": "chooseOkOnNextConfirmation",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f928ba2f-ca62-4366-a3d7-95a83fb79cf3",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(3) .h-5",
+      "targets": [
+        ["css=tr:nth-child(3) .h-5", "css:finder"],
+        ["xpath=//div[@id='tables-section']/table/tbody/tr[3]/td[3]/button/img", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[3]/button/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "82d74d01-7d8a-475e-9014-928c714e9b5c",
+      "comment": "",
+      "command": "assertConfirmation",
+      "target": "Êtes-vous sûr de vouloir supprimer cette table ?",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ae990737-f1f8-455f-9cea-ba6af7e9c99b",
+      "comment": "",
+      "command": "webdriverChooseOkOnVisibleConfirmation",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "b3da12ff-7690-4084-aac4-3f5361ea5ca2",
+    "name": "Switch date and show reservations for the day",
+    "commands": [{
+      "id": "11474c73-d0d5-40ad-b054-40dec3d301cd",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "86a590c9-d0a7-4c13-b5a4-8c440d01c06c",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Accès administrateur",
+      "targets": [
+        ["linkText=Accès administrateur", "linkText"],
+        ["css=app-footer > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Accès administrateur')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/admin/secret')]", "xpath:href"],
+        ["xpath=//app-footer/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Accès administrateur')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fe013edc-708a-4c65-902c-7bea855a82ba",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.mat-mdc-button-touch-target",
+      "targets": [
+        ["css=.mat-mdc-button-touch-target", "css:finder"],
+        ["xpath=//div[@id='datemodule']/mat-form-field/div/div[2]/div[2]/mat-datepicker-toggle/button/span[3]", "xpath:idRelative"],
+        ["xpath=//span[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0717496f-c524-40e4-a26f-15f3067d4c41",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mat-mdc-button-touch-target",
+      "targets": [
+        ["css=.mat-mdc-button-touch-target", "css:finder"],
+        ["xpath=//div[@id='datemodule']/mat-form-field/div/div[2]/div[2]/mat-datepicker-toggle/button/span[3]", "xpath:idRelative"],
+        ["xpath=//span[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a736afc4-58f5-41df-95c0-f91e14885264",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.cdk-focused > .mat-mdc-button-touch-target",
+      "targets": [
+        ["css=.cdk-focused > .mat-mdc-button-touch-target", "css:finder"],
+        ["xpath=//div[@id='datemodule']/mat-form-field/div/div[2]/div[2]/mat-datepicker-toggle/button/span[3]", "xpath:idRelative"],
+        ["xpath=//span[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "adc00686-9727-4541-bf36-b4d15300daa1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mat-calendar-body-active > .mat-calendar-body-cell-content",
+      "targets": [
+        ["css=.mat-calendar-body-active > .mat-calendar-body-cell-content", "css:finder"],
+        ["xpath=//mat-calendar[@id='mat-datepicker-0']/div/mat-month-view/table/tbody/tr[2]/td[4]/button/span", "xpath:idRelative"],
+        ["xpath=//td[4]/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'5')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "14c20d62-3c63-4940-8538-67ca7252e199",
+    "name": "Aller sur la page contact puis accéder à la page réservation depuis là",
+    "commands": [{
+      "id": "42262058-270b-4f0c-9bb2-eeeda9e9c585",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c5bcf33d-9957-484b-96d6-f207e6c0c3f2",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1335x912",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "37961f33-1a07-4774-9581-57c2c3c342c9",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Restaurant",
+      "targets": [
+        ["linkText=Restaurant", "linkText"],
+        ["css=a:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Restaurant')]", "xpath:link"],
+        ["xpath=//nav[@id='links']/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/about')]", "xpath:href"],
+        ["xpath=//a[3]", "xpath:position"],
+        ["xpath=//a[contains(.,'Restaurant')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "df5f1b05-7c26-40bb-bd26-e6cb29735a64",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=Restaurant",
+      "targets": [
+        ["linkText=Restaurant", "linkText"],
+        ["css=a:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Restaurant')]", "xpath:link"],
+        ["xpath=//nav[@id='links']/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/about')]", "xpath:href"],
+        ["xpath=//a[3]", "xpath:position"],
+        ["xpath=//a[contains(.,'Restaurant')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "cf6b1791-1b6f-48bf-9c6c-bdf8e2c24e50",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "linkText=Restaurant",
+      "targets": [
+        ["linkText=Restaurant", "linkText"],
+        ["css=.active-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Restaurant')]", "xpath:link"],
+        ["xpath=//nav[@id='links']/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/about')]", "xpath:href"],
+        ["xpath=//a[3]", "xpath:position"],
+        ["xpath=//a[contains(.,'Restaurant')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "96ca6345-ae94-4eda-807f-23cd6e1e3763",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//div[@id='wrapper']/div[3]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Réserver en ligne')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "4c9d0da4-223b-4196-814d-632a65a495e4",
+    "name": "Redirection itinéraire google maps",
+    "commands": [{
+      "id": "8be89bcd-91ce-40a9-8278-7d18ac9fb788",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5e69c014-b7d3-495f-a0ac-110fa2cf90d8",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1335x912",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "72b2f63d-a2ed-47ab-bdf9-9227b7034a22",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Restaurant",
+      "targets": [
+        ["linkText=Restaurant", "linkText"],
+        ["css=a:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Restaurant')]", "xpath:link"],
+        ["xpath=//nav[@id='links']/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/about')]", "xpath:href"],
+        ["xpath=//a[3]", "xpath:position"],
+        ["xpath=//a[contains(.,'Restaurant')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ba803999-b256-457d-9345-7f783769eb68",
+      "comment": "",
+      "command": "selectFrame",
+      "target": "index=0",
+      "targets": [
+        ["index=0"]
+      ],
+      "value": ""
+    }, {
+      "id": "4be75d62-c821-4151-bfc0-b99f36ebdf97",
+      "comment": "",
+      "command": "click",
+      "target": "css=.navigate-icon",
+      "targets": [
+        ["css=.navigate-icon", "css:finder"],
+        ["xpath=//div[@id='mapDiv']/div/div[3]/div[3]/div/div/div/div/div[2]/div/a/div", "xpath:idRelative"],
+        ["xpath=//a/div", "xpath:position"]
+      ],
+      "value": "",
+      "opensWindow": true,
+      "windowHandleName": "win116",
+      "windowTimeout": 2000
+    }, {
+      "id": "c1966532-f6a4-487e-baa0-326a703e1464",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${win116}",
+      "targets": [],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "8425c6e6-e900-4a59-8a4c-fe469057237a",
