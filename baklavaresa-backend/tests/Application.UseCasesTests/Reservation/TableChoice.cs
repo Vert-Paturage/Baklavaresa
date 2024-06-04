@@ -54,7 +54,7 @@ public class TableChoice: IClassFixture<Dependencies>, IDisposable
             
         var command = new CreateReservationCommand(_firstName, _lastName, _email, _date, numberOfPeople);
         var id = await _mediator.Send(command);
-        var reservation = await _reservationRepository.GetById(id);
+        var reservation = await _reservationRepository.GetReservationById(id);
             
         Assert.Equal(goodTable, reservation.Table.Id);
     }
@@ -71,7 +71,7 @@ public class TableChoice: IClassFixture<Dependencies>, IDisposable
         
         var command = new CreateReservationCommand(_firstName, _lastName, _email, _date, numberOfPeople);
         var id = await _mediator.Send(command);
-        var reservation = await _reservationRepository.GetById(id);
+        var reservation = await _reservationRepository.GetReservationById(id);
         
         Assert.Equal(good_table, reservation.Table.Id);
     }

@@ -52,7 +52,7 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
     
     var command = new CreateReservationCommand(firstName, lastName, email, date, numberOfPeople);
     var id = await _mediator.Send(command);
-    var reservation = await _reservationRepository.GetById(id);
+    var reservation = await _reservationRepository.GetReservationById(id);
     
     // Assert
     Assert.Equal(firstName, reservation.FirstName);
