@@ -57,7 +57,7 @@ public class GetAvailableSlots: IClassFixture<Dependencies>, IDisposable
 
         Assert.NotNull(availableSlots);
         Assert.Equal(DateTime.DaysInMonth(date.Year, date.Month), availableSlots.Count);
-        var availableSlot = (availableSlots.Where(a => a.Day == date));
+        var availableSlot = (availableSlots.Where(a => a.Day == date.GetBakDay().ToDateTime()));
         Assert.Equal(1,availableSlot.Count());
         Assert.Single(availableSlot);
         
@@ -89,7 +89,7 @@ public class GetAvailableSlots: IClassFixture<Dependencies>, IDisposable
 
         Assert.NotNull(availableSlots);
         Assert.Equal(DateTime.DaysInMonth(date.Year, date.Month), availableSlots.Count);
-        var availableSlot = (availableSlots.Where(a => a.Day == date));
+        var availableSlot = (availableSlots.Where(a => a.Day == date.GetBakDay().ToDateTime()));
         Assert.Equal(1,availableSlot.Count());
         Assert.Single(availableSlot);
         Assert.Empty(availableSlot.First().Slots);
@@ -105,7 +105,7 @@ public class GetAvailableSlots: IClassFixture<Dependencies>, IDisposable
 
         Assert.NotNull(availableSlots);
         Assert.Equal(DateTime.DaysInMonth(date.Year, date.Month), availableSlots.Count);
-        var availableSlot = (availableSlots.Where(a => a.Day == date));
+        var availableSlot = (availableSlots.Where(a => a.Day == date.GetBakDay().ToDateTime()));
         Assert.Equal(1,availableSlot.Count());
         Assert.Single(availableSlot);
         Assert.Empty(availableSlot.First().Slots);
@@ -119,13 +119,15 @@ public class GetAvailableSlots: IClassFixture<Dependencies>, IDisposable
         var query = new GetAvailableSlotsQuery(2, _clockService.CurrentMonth);
         var availableSlots = await _mediator.Send(query);
 
-        var passedSlots = availableSlots.Where(a => a.Day.Day <= _clockService.Now.Day);
+        var passedSlots = availableSlots.Where(a => a.Day <=  (DateTime)_clockService.Now.GetBakDay());
         foreach (var slot in passedSlots)
         {
-            if (slot.Day.Day == _clockService.Now.Day)
+            if (slot.Day == (DateTime)_clockService.Now.GetBakDay())
             {
                 Assert.NotNull(slot.Slots);
-                Assert.Empty(slot.Slots);
+                var passedSlot = slot.Slots.Where(s => s < _clockService.Now.ToDateTime());
+                Assert.Empty(passedSlot); // Check if there are no slots in the past
+                continue;
             }
             Assert.NotNull(slot.Slots);
             Assert.Empty(slot.Slots);

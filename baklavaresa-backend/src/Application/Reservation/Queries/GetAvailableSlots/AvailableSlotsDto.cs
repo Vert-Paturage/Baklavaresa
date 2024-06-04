@@ -1,3 +1,5 @@
+using Domain.Dates;
+
 namespace Application.Reservation.Queries.GetAvailableSlots;
 
 public class AvailableSlotsDto

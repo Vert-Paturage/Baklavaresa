@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Application.Services;
+using Domain.Dates;
 using Domain.Entities;
 using Domain.Repositories;
 
@@ -9,7 +10,7 @@ public record CreateReservationCommand(
     string FirstName,
     string LastName,
     string Email,
-    DateTime Date,
+    BakDate Date,
     int NumberOfPeople
     ) : IRequest<int>;
 

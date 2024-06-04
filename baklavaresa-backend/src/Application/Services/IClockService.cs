@@ -1,7 +1,9 @@
+using Domain.Dates;
+
 namespace Application.Services;
 
 public interface IClockService
 {
-    public DateTime Now { get; } 
-    public DateTime CurrentMonth { get; }
+    public BakDate Now { get; } 
+    public BakMonth CurrentMonth { get; }
 }
