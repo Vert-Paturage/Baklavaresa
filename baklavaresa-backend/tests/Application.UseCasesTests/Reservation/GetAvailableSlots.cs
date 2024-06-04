@@ -1,3 +1,4 @@
+using Application.Reservation.Queries.GetAvailableSlots;
 using Application.Services;
 using Domain.Repositories;
 using Infrastructure.Data.Persistence;
@@ -12,6 +13,12 @@ public class GetAvailableSlots: IClassFixture<Dependencies>, IDisposable
     private readonly IClockService _clockService;
     private readonly IMediator _mediator;
     private readonly IDatabase _database;
+    
+    private string _firstName;
+    private string _lastName;
+    private string _email;
+    private DateTime _date;
+       
     public GetAvailableSlots(Dependencies dependencies)
     {
         _database = dependencies.ServiceProvider.GetRequiredService<IDatabase>();
@@ -25,6 +32,7 @@ public class GetAvailableSlots: IClassFixture<Dependencies>, IDisposable
         tableRepository.Create(new Domain.Entities.Table(2));      
         tableRepository.Create(new Domain.Entities.Table(4));      
         tableRepository.Create(new Domain.Entities.Table(4));      
+        
     }
     
     public void Dispose()
@@ -35,7 +43,11 @@ public class GetAvailableSlots: IClassFixture<Dependencies>, IDisposable
     [Fact]
     public async Task GetAvailableSlots_WithValidData_ShouldReturnAvailableSlots()
     {
-             
+        var numberOfPeople = 2;
+        var month = _clockService.Now;
+        
+        var availableSlots = await _mediator.Send(new GetAvailableSlotsQuery(numberOfPeople, month));
+        
+        
     }
-
 }

@@ -1,4 +1,5 @@
 using Application.Services;
+using Domain;
 using Domain.Exceptions.Reservation;
 using Domain.Repositories;
 
@@ -17,38 +18,42 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
         {
             throw new InvalidNumberOfPeopleException(request.NumberOfPeople);
         }
-        if (request.Month < clockService.CurrentMonth)
-        {
-            // return an empty list if the month is in the past
-            return new List<AvailableSlotsDto>();
-        }
         var availableSlots = new List<AvailableSlotsDto>();
         var tables = await _tableRepository.GetAll();
+        
+        // get all the days in the month of the request except the days that have passed and the one where the restaurant is closed
         for (var day = 1; day <= DateTime.DaysInMonth(request.Month.Year, request.Month.Month); day++)
         {
+            var date = new DateTime(request.Month.Year, request.Month.Month, day);
+            if (date < _clockService.Now || !RestaurantInfo.OpenDays.Contains(date.DayOfWeek)) continue;
             var slots = new List<DateTime>();
-            for (var hour = 10; hour <= 20; hour++)
+            foreach (var hours in RestaurantInfo.LunchHours)
             {
-                var slotDate = new DateTime(request.Month.Year, request.Month.Month, day, hour, 0, 0);
-                var reservations = await _reservationRepository.GetReservationsByDate(slotDate);
-                // Get the list of reserved tables
-                var reservedTables = reservations.Select(r => r.Table.Id).ToList();
-                // Get all tables not in reservedTables
-                var availableTables = tables.Where(t => !reservedTables.Contains(t.Id)).ToList();
-                // Get all tables that can accommodate the number of people
-                var availableTablesForNumberOfPeople = availableTables.Where(t => t.Capacity >= request.NumberOfPeople).ToList();
-                // If no tables are available, skip to the next date
-                if (availableTablesForNumberOfPeople.Count == 0) continue;
-                // the most pertinent table is the one with the smallest capacity
-                slots.Add(new DateTime(request.Month.Year, request.Month.Month, day, hour, 0, 0));
-            }  
+                var slotDate = new DateTime(date.Year, date.Month, date.Day, hours.openingHour.Hours, 0, 0);
+                while (slotDate.TimeOfDay < hours.closingHour)
+                {
+                    var reservations = await _reservationRepository.GetReservationsByDate(slotDate);
+                    // Get the list of reserved tables
+                    var reservedTables = reservations.Select(r => r.Table.Id).ToList();
+                    // Get all tables not in reservedTables
+                    var availableTables = tables.Where(t => !reservedTables.Contains(t.Id)).ToList();
+                    // Get all tables that can accommodate the number of people
+                    var availableTablesForNumberOfPeople = availableTables.Where(t => t.Capacity >= request.NumberOfPeople).ToList();
+                    // If no tables are available, skip to the next date
+                    if (availableTablesForNumberOfPeople.Count == 0) break;
+                    // the most pertinent table is the one with the smallest capacity
+                    slots.Add(slotDate);
+                    slotDate = slotDate.AddMinutes(30);
+                }
+            }
             availableSlots.Add(
                 new AvailableSlotsDto()
                 {
-                    Day = new DateTime(request.Month.Year, request.Month.Month, day),
+                    Day = date,
                     Slots = slots
                 });
         }
+        
         return availableSlots;
     }
 }

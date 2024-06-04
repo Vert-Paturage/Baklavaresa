@@ -37,6 +37,7 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
    
    public void Dispose()
    {
+       ((FakeEmailService)_emailService).Emails.Clear();
        _database.Clear();
    }
    
@@ -79,6 +80,10 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
        var command = new CreateReservationCommand(firstName, lastName, email, date, numberOfPeople);
     
        await Assert.ThrowsAsync<NoTablesAvailableException>(() => _mediator.Send(command));
+       
+       // Assert email was not sent
+       var emailSent = ((FakeEmailService)_emailService).Emails.LastOrDefault();
+       Assert.Null(emailSent);
    }
 
    [Fact]
@@ -93,6 +98,10 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
        var command = new CreateReservationCommand(firstName, lastName, email, date, numberOfPeople);
     
        await Assert.ThrowsAsync<InvalidReservationDateException>(() => _mediator.Send(command));
+       
+       // Assert email was not sent
+       var emailSent = ((FakeEmailService)_emailService).Emails.LastOrDefault();
+       Assert.Null(emailSent);
    }
 
    [Fact]
@@ -107,6 +116,10 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
        var command = new CreateReservationCommand(firstName, lastName, email, date, numberOfPeople);
     
        await Assert.ThrowsAsync<InvalidEmailException>(() => _mediator.Send(command));
+       
+       // Assert email was not sent
+       var emailSent = ((FakeEmailService)_emailService).Emails.LastOrDefault();
+       Assert.Null(emailSent);
    }
 
    [Fact]
@@ -121,6 +134,10 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
        var command = new CreateReservationCommand(firstName, lastName, email, date, numberOfPeople);
     
        await Assert.ThrowsAsync<InvalidNameException>(() => _mediator.Send(command));
+       
+       // Assert email was not sent
+       var emailSent = ((FakeEmailService)_emailService).Emails.LastOrDefault();
+       Assert.Null(emailSent);
    } 
    
    [Fact]
@@ -135,6 +152,10 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
        var command = new CreateReservationCommand(firstName, lastName, email, date, numberOfPeople);
 
        await Assert.ThrowsAsync<Domain.Exceptions.Reservation.InvalidNumberOfPeopleException>(() => _mediator.Send(command));
+       
+       // Assert email was not sent
+       var emailSent = ((FakeEmailService)_emailService).Emails.LastOrDefault();
+       Assert.Null(emailSent);
    }
 
    [Fact]
@@ -149,6 +170,10 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
        var command = new CreateReservationCommand(firstName, lastName, email, date, numberOfPeople);
 
        await Assert.ThrowsAsync<Domain.Exceptions.Reservation.InvalidEmailException>(() => _mediator.Send(command));
+       
+       // Assert email was not sent
+       var emailSent = ((FakeEmailService)_emailService).Emails.LastOrDefault();
+       Assert.Null(emailSent);
    }
 
    [Fact]
@@ -163,5 +188,9 @@ public class CreateReservation: IClassFixture<Dependencies>, IDisposable
        var command = new CreateReservationCommand(firstName, lastName, email, date, numberOfPeople);
 
        await Assert.ThrowsAsync<Domain.Exceptions.Reservation.InvalidNameException>(() => _mediator.Send(command));
+       
+       // Assert email was not sent
+       var emailSent = ((FakeEmailService)_emailService).Emails.LastOrDefault();
+       Assert.Null(emailSent);
    }
 }
