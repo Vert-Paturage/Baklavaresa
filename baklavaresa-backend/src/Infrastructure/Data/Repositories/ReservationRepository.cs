@@ -48,7 +48,7 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
     {
         var dbReservation = _context.Reservations.
             Include(r => r.Table)
-            .Where(r => r.Date >= (DateTime) slotStart && r.Date < slotEnd).ToList();
+            .Where(r => r.Date >= (DateTime) slotStart && r.Date < (DateTime) slotEnd).ToList();
         return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
 

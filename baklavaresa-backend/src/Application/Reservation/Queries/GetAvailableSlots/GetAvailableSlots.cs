@@ -46,7 +46,7 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
                         slotDate = slotDate.AddMinutes(RestaurantInfo.SlotsInterval);
                         continue;
                     }
-                    var reservations = await _reservationRepository.GetReservationsByDate(slotDate);
+                    var reservations = await _reservationRepository.GetReservationsBySlot(slotDate, slotDate.AddMinutes(RestaurantInfo.SlotsInterval));
                     // Get the list of reserved tables
                     var reservedTables = reservations.Select(r => r.Table.Id).ToList();
                     // Get all tables not in reservedTables
@@ -54,8 +54,11 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
                     // Get all tables that can accommodate the number of people
                     var availableTablesForNumberOfPeople = availableTables.Where(t => t.Capacity >= request.NumberOfPeople).ToList();
                     // If no tables are available, skip to the next date
-                    if (availableTablesForNumberOfPeople.Count == 0) break;
-                    // the most pertinent table is the one with the smallest capacity
+                    if (availableTablesForNumberOfPeople.Count == 0)
+                    {
+                        slotDate = slotDate.AddMinutes(RestaurantInfo.SlotsInterval);
+                        continue;
+                    };
                     slots.Add(slotDate);
                     slotDate = slotDate.AddMinutes(RestaurantInfo.SlotsInterval);
                 }
