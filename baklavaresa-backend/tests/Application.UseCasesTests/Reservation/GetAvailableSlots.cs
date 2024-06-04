@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices.JavaScript;
+using Application.Reservation.Queries.GetAvailableSlots;
 using Application.Services;
 using Domain.Repositories;
 using Infrastructure.Data.Persistence;
@@ -9,22 +11,26 @@ namespace Application.UseCasesTests.Reservation;
 public class GetAvailableSlots: IClassFixture<Dependencies>, IDisposable
 {
     private readonly IReservationRepository _reservationRepository;
+    private readonly ITableRepository _tableRepository;
     private readonly IClockService _clockService;
     private readonly IMediator _mediator;
     private readonly IDatabase _database;
+    
+    private string _firstName;
+    private string _lastName;
+    private string _email;
+       
     public GetAvailableSlots(Dependencies dependencies)
     {
         _database = dependencies.ServiceProvider.GetRequiredService<IDatabase>();
         _reservationRepository = dependencies.ServiceProvider.GetRequiredService<IReservationRepository>();
+        _tableRepository = dependencies.ServiceProvider.GetRequiredService<ITableRepository>();
         _mediator = dependencies.ServiceProvider.GetRequiredService<IMediator>();
         _clockService = dependencies.ServiceProvider.GetRequiredService<IClockService>();
-       
-        // Seed tables
-        var tableRepository = dependencies.ServiceProvider.GetRequiredService<ITableRepository>();
-        tableRepository.Create(new Domain.Entities.Table(2));
-        tableRepository.Create(new Domain.Entities.Table(2));      
-        tableRepository.Create(new Domain.Entities.Table(4));      
-        tableRepository.Create(new Domain.Entities.Table(4));      
+        
+        _firstName = "John";
+        _lastName = "Doe";
+        _email = "john.doe@gmail.com";
     }
     
     public void Dispose()
@@ -35,7 +41,23 @@ public class GetAvailableSlots: IClassFixture<Dependencies>, IDisposable
     [Fact]
     public async Task GetAvailableSlots_WithValidData_ShouldReturnAvailableSlots()
     {
-             
-    }
+        await _tableRepository.Create(new Domain.Entities.Table(2));
+        var goodTable = await _tableRepository.Create(new Domain.Entities.Table(2));
+        await _tableRepository.Create(new Domain.Entities.Table(4));
+        var date = _clockService.Now.AddDays(1);
+                
+        var reservation = new Domain.Entities.Reservation(_firstName, _lastName, _email, date, 2, _tableRepository.GetAll().Result[0]);
+        _reservationRepository.Create(reservation);
+        reservation = new Domain.Entities.Reservation(_firstName, _lastName, _email, date, 2, _tableRepository.GetAll().Result[1]);
+        _reservationRepository.Create(reservation);
+        
+        var query = new GetAvailableSlotsQuery(2, date);
+        var availableSlots = await _mediator.Send(query);
 
+        Assert.NotNull(availableSlots);
+        Assert.Equal(DateTime.DaysInMonth(date.Year, date.Month), availableSlots.Count);
+        var availableSlot = (availableSlots.Where(a => a.Day == date));
+        Assert.Single(availableSlot);
+        
+    }
 }
