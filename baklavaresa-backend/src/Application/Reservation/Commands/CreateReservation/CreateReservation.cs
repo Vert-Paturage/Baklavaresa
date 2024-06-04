@@ -52,7 +52,7 @@ public partial class CreateReservationCommandHandler(IReservationRepository rese
         var id = await _reservationRepository.Create(reservation);
         
         // Send email
-        _emailService.Send(request.Email, $"Hi {request.FirstName},\nYour reservation for the {request.Date} has been confirmed.\nYour reservation number is {id}.\n\nThank you!");
+        _emailService.Send(request.Email, $"Hi {request.FirstName},\nYour reservation for the {request.Date.ToString()} has been confirmed.\nYour reservation number is {id}.\n\nThank you!");
         
         return id;
     }
