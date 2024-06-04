@@ -1,17 +1,22 @@
 using Domain.Repositories;
 using System;
+using Domain.Exceptions.Table;
 
 namespace Application.Table.Commands.CreateTable;
 
-public record CreateTableCommand(int Capacity) : IRequest<Unit>;
+public record CreateTableCommand(int Capacity) : IRequest<int>;
 
-public class CreateTableCommandHandler(ITableRepository tableRepository) : IRequestHandler<CreateTableCommand, Unit>
+public class CreateTableCommandHandler(ITableRepository tableRepository) : IRequestHandler<CreateTableCommand, int>
 {
     private readonly ITableRepository _tableRepository = tableRepository;
-    public Task<Unit> Handle(CreateTableCommand request, CancellationToken cancellationToken)
+    public Task<int> Handle(CreateTableCommand request, CancellationToken cancellationToken)
     {
+        if (request.Capacity <= 0)
+        {
+            throw new InvalidTableCapacity(request.Capacity);
+        }
         var table = new Domain.Entities.Table(request.Capacity);
-        _tableRepository.Create(table);
-        return Unit.Task;
+        var id = _tableRepository.Create(table);
+        return id;
     }
 }

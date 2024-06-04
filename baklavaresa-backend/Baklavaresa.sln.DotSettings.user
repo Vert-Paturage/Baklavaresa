@@ -4,6 +4,9 @@
 	
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dffebaa7_002D8ef3_002D49b1_002D87ec_002D7aac3b72919c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetAvailableSlots_WithPassedSlots_ShouldReturnEmptySlots #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Project Location="/home/wydra/Documents/cnam/test/Baklavaresa/baklavaresa-backend/tests/Application.UseCasesTests" Presentation="&amp;lt;Application.UseCasesTests&amp;gt;" /&gt;
+  &lt;Or&gt;
+    &lt;Project Location="/home/wydra/Documents/cnam/test/Baklavaresa/baklavaresa-backend/tests/Application.UseCasesTests" Presentation="&amp;lt;Application.UseCasesTests&amp;gt;" /&gt;
+    &lt;Project Location="/home/wydra/Documents/cnam/test/Baklavaresa/baklavaresa-backend/tests/Application.IntegrationTests" Presentation="&amp;lt;Application.IntegrationTests&amp;gt;" /&gt;
+  &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

@@ -1,3 +1,4 @@
+using Domain.Dates;
 using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Data.Entities;
@@ -20,14 +21,15 @@ public class TableRepository(DatabaseContext context) : ITableRepository
         return Task.FromResult<IList<Table>>(dbTables.Select(t => t.ToDomainModel()).ToList());
     }
 
-    public Table GetById(int requestTable)
+    public Task<Table> GetById(int requestTable)
     {
         var dbTable = _context.Tables.Find(requestTable);
         if (dbTable == null)
         {
             throw new Domain.Exceptions.Table.TableNotFoundException(requestTable);
         }
-        return dbTable.ToDomainModel();
+
+        return Task.FromResult(dbTable.ToDomainModel());
     }
 
     public Task<int> Create(Table table)
@@ -50,9 +52,9 @@ public class TableRepository(DatabaseContext context) : ITableRepository
         return _context.SaveChangesAsync();
     }
 
-    public Task<List<Table>> GetAvailableTable(DateTime slot, int requestNumberOfPeople)
+    public Task<List<Table>> GetAvailableTable(BakDate date, int requestNumberOfPeople)
     {
-        var reservations = _context.Reservations.Where(r => r.Date == slot).ToList();
+        var reservations = _context.Reservations.Where(r => r.Date == (DateTime)date).ToList();
         var reservedTables = reservations.Select(r => r.TableId).ToList();
         var availableTables = _context.Tables.Where(t => !reservedTables.Contains(t.Id)).ToList();
         var availableTablesForNumberOfPeople = availableTables.Where(t => t.Capacity >= requestNumberOfPeople).ToList();

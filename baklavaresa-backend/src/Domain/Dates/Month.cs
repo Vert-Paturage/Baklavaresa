@@ -35,6 +35,16 @@ public class BakMonth
     public static bool operator !=(BakMonth month1, BakMonth month2)
     {
         return !(month1 == month2);
+    } 
+    
+    public static bool operator ==(DateTime month1, BakMonth month2)
+    {
+        return month1.Year == month2.Year && month1.Month == month2.MonthNumber;
+    }
+
+    public static bool operator !=(DateTime month1, BakMonth month2)
+    {
+        return !(month1 == month2);
     }
 
     public override bool Equals(object obj)

@@ -1,3 +1,4 @@
+using Domain.Dates;
 using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Data.Entities;
@@ -27,27 +28,27 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         }
         return Task.FromResult(dbReservation.ToDomainModel());
     }
-    public Task<IList<Reservation>> GetReservationByMonth(DateTime month)
+    public Task<IList<Reservation>> GetReservationByMonth(BakMonth month)
     {
         var dbReservation = _context.Reservations
                 .Include(r => r.Table)
-                .Where(r => r.Date.Month == month.Month).ToList();
+                .Where(r => r.Date ==  month).ToList();
         return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
 
-    public Task<IList<Reservation>> GetReservationsByDate(DateTime slot)
+    public Task<IList<Reservation>> GetReservationsByDate(BakDay day)
     {
         var dbReservation = _context.Reservations
             .Include(r => r.Table)
-            .Where(r => r.Date.Date == slot.Date).ToList();
+            .Where(r => r.Date.Date == day.ToDateTime().Date).ToList();
         return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
 
-     public Task<IList<Reservation>> GetReservationsBySlot(DateTime slotStart, DateTime slotEnd)
+     public Task<IList<Reservation>> GetReservationsBySlot(BakDate slotStart, BakDate slotEnd)
     {
         var dbReservation = _context.Reservations.
             Include(r => r.Table)
-            .Where(r => r.Date >= slotStart && r.Date < slotEnd).ToList();
+            .Where(r => r.Date >= (DateTime) slotStart && r.Date < slotEnd).ToList();
         return Task.FromResult<IList<Reservation>>(dbReservation.Select(r => r.ToDomainModel()).ToList());
     }
 
