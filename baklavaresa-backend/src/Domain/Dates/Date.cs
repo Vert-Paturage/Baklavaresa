@@ -55,4 +55,9 @@ public class BakDate
     public BakDate AddHours(int p0) => ToDateTime().AddHours(p0);
 
     public BakDay GetBakDay() => new BakDay(Year, Month, Day);
+
+    public override string ToString()
+    {
+        return this.ToDateTime().ToString();
+    }
 }
