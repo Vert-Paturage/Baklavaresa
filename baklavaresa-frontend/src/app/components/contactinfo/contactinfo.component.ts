@@ -7,6 +7,8 @@ import { ApiService } from '../../services/api.service';
 
 import ReservationRequest from "../../types/reservationRequest";
 
+import { getUTCISOString } from "../../utils/dateStringHandler";
+
 @Component({
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
@@ -42,8 +44,8 @@ export class ContactInfoComponent {
 
   submitReservation() {
     if (this.Reservation.numberOfPeople > 0 && this.Reservation.firstName != null && this.Reservation.lastName != null && this.Reservation.email) {
-      let date = new Date(this.selectedDate); // je deteste le javascript
-      this.Reservation.date = date.toISOString();
+	  let date = new Date(this.selectedDate);
+      this.Reservation.date = getUTCISOString(date);
       console.log("Reservation: ", this.Reservation);
       if (this.Reservation != null) {
         const response = this.api.createReservation(this.Reservation).subscribe((response: string) => {

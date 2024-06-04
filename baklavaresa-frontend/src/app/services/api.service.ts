@@ -7,6 +7,7 @@ import Calendar from '../types/calendar.type';
 import Day from '../types/day.type';
 import ReservationRequest from '../types/reservationRequest';
 import Table from '../types/table.type';
+import { getUTCISOString } from '../utils/dateStringHandler';
 
 @Injectable()
 export class ApiService {
@@ -32,13 +33,7 @@ export class ApiService {
 	}
 
 	getReservationByDate(date: Date): Observable<Reservation[]> {
-    
-		const nextDayUTCDate = new Date(date);
-		nextDayUTCDate.setUTCDate(nextDayUTCDate.getUTCDate() + 1);
-    	const utcDateString = nextDayUTCDate.toISOString().split('T')[0];
-
-		console.log(utcDateString);
-		return this.http.get<Reservation[]>('/api/Reservation/GetAllReservations', {params: {input: utcDateString }})
+		return this.http.get<Reservation[]>('/api/Reservation/GetAllReservations', {params: {input: getUTCISOString(date) }})
 		.pipe(
 			map((reservations: Reservation[]) => {
 				return reservations.map(reservation => {

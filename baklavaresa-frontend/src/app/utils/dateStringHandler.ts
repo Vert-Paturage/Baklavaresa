@@ -30,3 +30,8 @@ export function getDayName(dayIndex: number) {
 
 	return dayNames[dayIndex];
 }
+
+export function getUTCISOString(date: Date): string {
+	const timezoneOffset = date.getTimezoneOffset() * 60000;
+	return new Date(date.getTime() - timezoneOffset).toISOString().slice(0, -1);
+}
