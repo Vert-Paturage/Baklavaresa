@@ -51,8 +51,7 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_TableId",
                 table: "Reservations",
-                column: "TableId",
-                unique: true);
+                column: "TableId");
         }
 
         /// <inheritdoc />

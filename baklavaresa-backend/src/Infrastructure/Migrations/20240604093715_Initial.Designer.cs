@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240529222512_Initial")]
+    [Migration("20240604093715_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -52,8 +52,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TableId")
-                        .IsUnique();
+                    b.HasIndex("TableId");
 
                     b.ToTable("Reservations");
                 });
@@ -75,8 +74,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Data.Entities.ReservationDatabase", b =>
                 {
                     b.HasOne("Infrastructure.Data.Entities.TableDatabase", "Table")
-                        .WithOne()
-                        .HasForeignKey("Infrastructure.Data.Entities.ReservationDatabase", "TableId")
+                        .WithMany()
+                        .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

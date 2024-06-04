@@ -18,7 +18,9 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
     }
     public Task<Reservation> GetById(int id)
     {
-        var dbReservation = _context.Reservations.Find(id);
+        var dbReservation = _context.Reservations
+            .Include(r => r.Table)
+            .FirstOrDefault(r => r.Id == id);
         if (dbReservation == null)
         {
             throw new Domain.Exceptions.Reservation.ReservationNotFoundException(id);

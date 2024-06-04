@@ -1,15 +1,26 @@
+using Application.Services;
+using Domain.Exceptions.Reservation;
 using Domain.Repositories;
 
 namespace Application.Reservation.Queries.GetAvailableSlots;
 
 public record GetAvailableSlotsQuery(int NumberOfPeople, DateTime Month): IRequest<List<AvailableSlotsDto>>;
 
-internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationRepository, ITableRepository tableRepository) : IRequestHandler<GetAvailableSlotsQuery, List<AvailableSlotsDto>>
+internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationRepository, ITableRepository tableRepository, IClockService clockService) : IRequestHandler<GetAvailableSlotsQuery, List<AvailableSlotsDto>>
 {
     private readonly IReservationRepository _reservationRepository = reservationRepository;
     private readonly ITableRepository _tableRepository = tableRepository;
+    private readonly IClockService _clockService = clockService;
     public async Task<List<AvailableSlotsDto>> Handle(GetAvailableSlotsQuery request, CancellationToken cancellationToken)
     {
+        if (request.NumberOfPeople <= 0)
+        {
+            throw new InvalidNumberOfPeopleException(request.NumberOfPeople);
+        }
+        if (request.Month < clockService.CurrentMonth)
+        {
+            throw new InvalidReservationDateException(request.Month);
+        }
         var availableSlots = new List<AvailableSlotsDto>();
         var tables = await _tableRepository.GetAll();
         for (var day = 1; day <= DateTime.DaysInMonth(request.Month.Year, request.Month.Month); day++)

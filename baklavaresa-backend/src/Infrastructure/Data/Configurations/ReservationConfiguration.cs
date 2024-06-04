@@ -9,6 +9,7 @@ internal sealed class ReservationConfiguration: IEntityTypeConfiguration<Reserva
 {
     public void Configure(EntityTypeBuilder<ReservationDatabase> builder)
     {
+        builder.HasKey(r => r.Id);
         builder.Property(t => t.Id)
             .IsRequired()
             .ValueGeneratedOnAdd();

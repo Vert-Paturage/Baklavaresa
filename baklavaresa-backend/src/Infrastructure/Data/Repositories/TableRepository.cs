@@ -30,11 +30,12 @@ public class TableRepository(DatabaseContext context) : ITableRepository
         return dbTable.ToDomainModel();
     }
 
-    public Task Create(Table table)
+    public Task<int> Create(Table table)
     {
         var dbTable = new TableDatabase(table);
         _context.Tables.Add(dbTable);
-        return context.SaveChangesAsync();
+        context.SaveChanges();
+        return Task.FromResult(dbTable.Id);
     }
 
     //delete table by id
