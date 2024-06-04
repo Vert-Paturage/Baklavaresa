@@ -24,7 +24,7 @@
 				</div>
 				<Calendar
 					[days]="this.Days"
-					[offset]="this.Days[0].day.getDay()"
+					[offset]="this.Days[0].day.getDay() === 0 ? 7 : this.Days[0].day.getDay()"
 					(onDateSelected)="onDateSelected($event)"
 				/>
 			</div>

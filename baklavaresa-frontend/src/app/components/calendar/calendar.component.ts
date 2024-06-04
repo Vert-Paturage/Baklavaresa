@@ -18,6 +18,8 @@ export class CalendarComponent {
 
 	selectedDay: Day | null = null;
 
+	booletbill: boolean = false;
+
 	constructor() {}
 
 	onDayChange(day: Day): void {

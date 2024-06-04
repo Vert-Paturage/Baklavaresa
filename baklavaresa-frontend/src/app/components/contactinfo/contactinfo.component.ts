@@ -47,6 +47,7 @@ export class ContactInfoComponent {
 	  let date = new Date(this.selectedDate);
       this.Reservation.date = getUTCISOString(date);
       console.log("Reservation: ", this.Reservation);
+	  this.Reservation.email = this.Reservation.email.toLowerCase();
       if (this.Reservation != null) {
         const response = this.api.createReservation(this.Reservation).subscribe((response: string) => {
           console.log("Reservation created: ", response);

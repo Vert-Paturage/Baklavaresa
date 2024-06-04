@@ -1,0 +1,36 @@
+form {
+	display: flex;
+	flex-direction: column;
+	width: 40%;
+	margin: 2rem auto;
+	font-size: 1.25rem;
+	color: var(--color-secondary);
+}
+
+form > * {
+	margin-top: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+input {
+	padding: 0.5rem;
+	border: 1px solid var(--color-secondary);
+	border-radius: 0.5rem;
+}
+
+form > button {
+	margin: 1rem;
+	padding: 0.5rem 1rem;
+	align-self: center;
+
+	background-color: var(--color-primary);
+	border: none;
+	border-radius: 0.5rem;
+}
+
+form > button:hover {
+	background-color: var(--color-secondary);
+	color: var(--color-primary);
+}

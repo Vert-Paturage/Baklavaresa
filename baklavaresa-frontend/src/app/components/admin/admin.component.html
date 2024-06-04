@@ -66,13 +66,15 @@
   
 	  <div id="add-table-section">
 		<h2>Ajouter une table</h2>
-		<mat-form-field>
-		  <mat-label>Nombre de places</mat-label>
-		  <input matInput [(ngModel)]="TableSeats" type="number">
-		</mat-form-field>
-		<button (click)="addTable()" class="p-2">
-		  <img class="h-5 w-5" src="../../../assets/img/add.png" />
-		</button>
+		<div id="inputwrapper">
+		  <mat-form-field>
+		    <mat-label>Nombre de places</mat-label>
+		    <input matInput [(ngModel)]="TableSeats" type="number">
+		  </mat-form-field>
+		  <button (click)="addTable()" class="p-2">
+		    <img class="h-5 w-5" src="../../../assets/img/add.png" />
+		  </button>
+		</div>
 	  </div>
 	</div>
   </div>
