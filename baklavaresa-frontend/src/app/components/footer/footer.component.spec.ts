@@ -36,6 +36,6 @@ describe('FooterComponent', () => {
     it('should render the admin link', () => {
         const adminLink = fixture.debugElement.query(By.css('a')).nativeElement;
         expect(adminLink.textContent).toContain('Accès administrateur');
-        expect(adminLink.getAttribute('routerLink')).toBe('admin');
+        expect(adminLink.getAttribute('routerLink')).toBe('admin/secret');
     });
 });
