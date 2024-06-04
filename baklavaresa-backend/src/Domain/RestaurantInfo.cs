@@ -16,4 +16,5 @@ public static class RestaurantInfo
         new Hours(OpeningHourDinner, ClosingHourDinner)
     };
     public static readonly DayOfWeek[] OpenDays = { DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday };
+    public static readonly int SlotsInterval = 30;
 }

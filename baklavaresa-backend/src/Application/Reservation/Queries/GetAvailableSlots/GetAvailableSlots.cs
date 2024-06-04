@@ -30,7 +30,7 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
                 availableSlots.Add(
                     new AvailableSlotsDto()
                     {
-                        Day = date,
+                        Day = new DateTime(date.Year, date.Month, date.Day),
                         Slots = new List<DateTime>()
                     });
                 continue;
@@ -43,7 +43,7 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
                 {
                     if (slotDate < _clockService.Now)
                     {
-                        slotDate = slotDate.AddMinutes(30);
+                        slotDate = slotDate.AddMinutes(RestaurantInfo.SlotsInterval);
                         continue;
                     }
                     var reservations = await _reservationRepository.GetReservationsByDate(slotDate);
@@ -57,13 +57,13 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
                     if (availableTablesForNumberOfPeople.Count == 0) break;
                     // the most pertinent table is the one with the smallest capacity
                     slots.Add(slotDate);
-                    slotDate = slotDate.AddMinutes(30);
+                    slotDate = slotDate.AddMinutes(RestaurantInfo.SlotsInterval);
                 }
             }
             availableSlots.Add(
                 new AvailableSlotsDto()
                 {
-                    Day = date,
+                    Day = new DateTime(date.Year, date.Month, date.Day),
                     Slots = slots
                 });
         }
