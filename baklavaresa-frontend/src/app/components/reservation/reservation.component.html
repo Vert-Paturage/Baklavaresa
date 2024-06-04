@@ -1,42 +1,39 @@
 <div id="wrapper">
-	<div id="peoplenumbermodule">
-		<p id="peoplenumberlabel">Nombre de personnes :</p>
-		<div id="peoplenumberbuttons">
-			@for (x of [].constructor(this.MaxPeopleNumberPerReservation); track $index) {
-				<button
-				class="peoplenumberbutton"
-				[ngClass]="{'selectedtest': $index+1 == Calendar.PeopleNumber}"
-				(click)="onNumberOfPersonChange($index+1)">
-					{{$index+1}}
-				</button>
-			}
-		</div>
-	</div>
-
+    <div id="peoplenumbermodule">
+        <p id="peoplenumberlabel">Nombre de personnes :</p>
+        <div id="peoplenumberbuttons">
+            <ng-container *ngFor="let x of [].constructor(MaxPeopleNumberPerReservation); let i = index">
+                <button
+                    class="peoplenumberbutton"
+                    [ngClass]="{'selectedtest': i + 1 == Calendar.PeopleNumber}"
+                    (click)="onNumberOfPersonChange(i + 1)">
+                    {{ i + 1 }}
+                </button>
+            </ng-container>
+        </div>
+    </div>
 	<div id="hiddenwrapper">
-		@if (Calendar.PeopleNumber != 0)
-		{
-			<div id="calendarmodule">
-				<Calendar
-					[monthName]="getSelectedMonthName()"
-					[year]="this.Days[0].day.getFullYear()"
-					[days]="this.Days"
-					[offset]="this.Days[0].day.getDay()"
-					(onDateSelected)="onDateSelected($event)"
-				/>
-			</div>
+        <ng-container *ngIf="Calendar.PeopleNumber != 0">
+            <div id="calendarmodule" *ngIf="Days && Days.length > 0">
+                <Calendar
+                    [monthName]="getSelectedMonthName()"
+                    [year]="Days[0].day.getFullYear()"
+                    [days]="Days"
+                    [offset]="Days[0].day.getDay()"
+                    (onDateSelected)="onDateSelected($event)">
+			</Calendar>
+            </div>
 
-			@if (SelectedDay != null)
-			{
-				<div id="schedulemodule">
-					<ScheduleSelector
-						[schedules]="this.SelectedDay.slots"
-						(onScheduleSelected)="onScheduleSelected($event)"
-					/>
-				</div>
-			}
-		}
-	</div>
+			<ng-container *ngIf="SelectedDay != null">
+                <div id="schedulemodule">
+                    <ScheduleSelector
+                        [schedules]="SelectedDay.slots"
+                        (onScheduleSelected)="onScheduleSelected($event)">
+                    </ScheduleSelector>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
 
 	<div id="recap">
 		@if (Calendar.PeopleNumber != 0)
