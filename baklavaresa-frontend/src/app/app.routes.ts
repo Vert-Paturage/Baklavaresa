@@ -6,6 +6,7 @@ import { ReservationComponent } from './components/reservation/reservation.compo
 import { ContactInfoComponent } from './components/contactinfo/contactinfo.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { SecretComponent } from './components/secret/secret.component';
+import { AboutComponent } from './components/about/about.component';
 
 import { AdminGuard } from './guards/admin.guard';
 import { RedirectGuard } from './guards/redirect.guard';
@@ -17,5 +18,6 @@ export const routes: Routes = [
 	{ path: 'reservation', component: ReservationComponent },
 	{ path: 'reservation/validate', component: ContactInfoComponent},
 	{ path: 'menu', component: MenuComponent},
+	{ path: 'about', component: AboutComponent},
 	{ path: '**', redirectTo: '', pathMatch: 'full'}
 ];

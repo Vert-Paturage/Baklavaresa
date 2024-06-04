@@ -25,6 +25,14 @@ export class ScheduleSelectorComponent {
 		this.onScheduleSelected.emit(schedule);
 	}
 
+	getNoonSchedules(): Date[] {
+		return this.schedules!.filter(schedule => schedule.getHours() <= 15);
+	}
+
+	getAfternoonSchedules(): Date[] {
+		return this.schedules!.filter(schedule => schedule.getHours() > 15);
+	}
+
 	getDateString(): string {
 		return getDayName(this.schedules![0].getDay() ?? 0)
 			+ " "

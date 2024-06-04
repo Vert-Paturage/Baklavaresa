@@ -6,7 +6,7 @@
 	margin: 1rem;
 }
 
-#schedulelist {
+.schedulelist {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	grid-gap: 1rem;
@@ -25,4 +25,9 @@
 
 .scheduleIsSelected {
 	background-color: var(--color-secondary);
+}
+
+.servicetitle {
+	margin-left: 1rem;
+	color: var(--color-secondary);
 }

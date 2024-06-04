@@ -1,6 +1,7 @@
 <p id="scheduledate">{{getDateString()}}</p>
-<div id="schedulelist">
-@for (schedule of this.schedules; track $index) {
+<h2 class="servicetitle">Midi</h2>
+<div class="schedulelist">
+@for (schedule of this.getNoonSchedules(); track $index) {
 	<button
 		class="schedule"
 		[ngClass]="{'scheduleIsSelected': schedule == this.selectedSchedule}"
@@ -8,4 +9,15 @@
 		{{schedule.getHours()}}:{{schedule.getMinutes() < 10 ? '0' + schedule.getMinutes() : schedule.getMinutes()}}
 	</button>
 }
+</div>
+<h2 class="servicetitle">Soir</h2>
+<div class="schedulelist">
+	@for (schedule of this.getAfternoonSchedules(); track $index) {
+		<button
+			class="schedule"
+			[ngClass]="{'scheduleIsSelected': schedule == this.selectedSchedule}"
+			(click)="onScheduleChange(schedule)">
+			{{schedule.getHours()}}:{{schedule.getMinutes() < 10 ? '0' + schedule.getMinutes() : schedule.getMinutes()}}
+		</button>
+	}
 </div>
