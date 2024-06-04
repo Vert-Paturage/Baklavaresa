@@ -19,7 +19,8 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
         }
         if (request.Month < clockService.CurrentMonth)
         {
-            throw new InvalidReservationDateException(request.Month);
+            // return an empty list if the month is in the past
+            return new List<AvailableSlotsDto>();
         }
         var availableSlots = new List<AvailableSlotsDto>();
         var tables = await _tableRepository.GetAll();
