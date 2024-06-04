@@ -25,7 +25,7 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
         for (var day = 1; day <= DateTime.DaysInMonth(request.Month.Year, request.Month.Month); day++)
         {
             var date = new DateTime(request.Month.Year, request.Month.Month, day);
-            if (date < _clockService.Now || !RestaurantInfo.OpenDays.Contains(date.DayOfWeek))
+            if (date.Day < _clockService.Now.Day || !RestaurantInfo.OpenDays.Contains(date.DayOfWeek))
             {
                 availableSlots.Add(
                     new AvailableSlotsDto()
@@ -41,6 +41,11 @@ internal class GetAvailableSlotsQueryHandler(IReservationRepository reservationR
                 var slotDate = new DateTime(date.Year, date.Month, date.Day, hours.openingHour.Hours, 0, 0);
                 while (slotDate.TimeOfDay < hours.closingHour)
                 {
+                    if (slotDate < _clockService.Now)
+                    {
+                        slotDate = slotDate.AddMinutes(30);
+                        continue;
+                    }
                     var reservations = await _reservationRepository.GetReservationsByDate(slotDate);
                     // Get the list of reserved tables
                     var reservedTables = reservations.Select(r => r.Table.Id).ToList();

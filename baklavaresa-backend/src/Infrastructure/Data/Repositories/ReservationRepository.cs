@@ -16,7 +16,7 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         _context.SaveChanges();
         return Task.FromResult(dbReservation.Id);
     }
-    public Task<Reservation> GetById(int id)
+    public Task<Reservation> GetReservationById(int id)
     {
         var dbReservation = _context.Reservations
             .Include(r => r.Table)
@@ -27,7 +27,7 @@ public class ReservationRepository(Persistence.DatabaseContext context) : IReser
         }
         return Task.FromResult(dbReservation.ToDomainModel());
     }
-    public Task<IList<Reservation>> GetAllForMonth(DateTime month)
+    public Task<IList<Reservation>> GetReservationByMonth(DateTime month)
     {
         var dbReservation = _context.Reservations
                 .Include(r => r.Table)

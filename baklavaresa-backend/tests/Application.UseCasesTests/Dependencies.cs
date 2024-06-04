@@ -17,7 +17,7 @@ public class Dependencies
         Services.ApplicationMediator();
         Services.AddRepositories();
         Services.AddScoped<IEmailService, FakeEmailService>();
-        Services.AddSingleton<IClockService>(new FakeClockService(new DateTime(1970, 1, 1)));
+        Services.AddSingleton<IClockService>(new FakeClockService(new DateTime(1970, 1, 20, 14 ,0, 0)));
         
         Services.SetupInMemoryDatabase(Guid.NewGuid().ToString());
         

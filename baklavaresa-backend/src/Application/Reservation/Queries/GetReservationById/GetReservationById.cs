@@ -9,6 +9,6 @@ internal class GetReservationHandler(IReservationRepository repository) : IReque
     private readonly IReservationRepository _repository = repository;
     public async Task<Domain.Entities.Reservation> Handle(GetReservationByIdQuery request, CancellationToken cancellationToken)
     {
-        return await repository.GetById(request.Id);
+        return await repository.GetReservationById(request.Id);
     }
 }
