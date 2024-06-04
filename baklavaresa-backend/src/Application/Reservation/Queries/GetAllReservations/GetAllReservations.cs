@@ -1,16 +1,17 @@
+using Domain.Dates;
 using Domain.Entities;
 using Domain.Repositories;
 
 namespace Application.Reservation.Queries.GetAllReservations;
 
-public record GetAllReservationsQuery(DateTime date): IRequest<IList<AllReservationsDto>>;
+public record GetAllReservationsQuery(BakDate Date): IRequest<IList<AllReservationsDto>>;
 
 internal class GetAllReservationsQueryHandler(IReservationRepository reservationRepository) : IRequestHandler<GetAllReservationsQuery, IList<AllReservationsDto>>
 {
     private readonly IReservationRepository _reservationRepository = reservationRepository;
     public async Task<IList<AllReservationsDto>> Handle(GetAllReservationsQuery request, CancellationToken cancellationToken)
     {
-        var slotDate = new DateTime(request.date.Year, request.date.Month, request.date.Day, 0, 0, 0);
+        var slotDate = new DateTime(request.Date.Year, request.Date.Month, request.Date.Day, 0, 0, 0);
         var reservations = await _reservationRepository.GetReservationsByDate(slotDate);
 
         return reservations.Select(r => new AllReservationsDto

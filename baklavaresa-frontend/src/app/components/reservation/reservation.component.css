@@ -1,0 +1,99 @@
+#wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-bottom: 1rem;
+}
+
+#peoplenumbermodule {
+	margin: 1rem;
+	display: flex;
+	flex-direction: column;
+
+	width: fit-content;
+	text-align: center;
+
+	background-color: var(--color-quinary);
+	border-radius: 0.5rem;
+}
+
+#peoplenumberlabel {
+	margin: 1rem 1.5rem;
+	font-size: 1.5rem;
+}
+
+#peoplenumberbuttons {
+	display: flex;
+	justify-content: space-evenly;
+
+	margin: 1rem 1.5rem;
+}
+
+.peoplenumberbutton {
+	padding: 0.5rem 1rem;
+	margin: 0.5rem;
+
+	background-color: var(--color-primary);
+	font-size: 1.5rem;
+
+	border: none;
+	border-radius: 0.5rem;
+
+}
+
+.selectedtest {
+	background-color: var(--color-secondary);
+}
+
+#calendarmodule {
+	margin: 1rem;
+	display: flex;
+	flex-direction: column;
+
+	height: fit-content;
+	width: fit-content;
+	text-align: center;
+
+	background-color: var(--color-quinary);
+	border-radius: 0.5rem;
+}
+
+#schedulemodule {
+	margin: 1rem;
+
+	width: fit-content;
+
+	background-color: var(--color-quinary);
+	border-radius: 0.5rem;
+}
+
+#hiddenwrapper {
+	display: flex;
+}
+
+#monthyearswitch {
+	display: flex;
+	justify-content: space-between;
+
+	margin: 1rem 1.5rem;
+}
+
+#recap {
+	color: var(--color-secondary);
+	font-size: 1.25rem;
+}
+
+#validationbutton {
+	margin: 1rem;
+	padding: 0.5rem 1rem;
+
+	background-color: var(--color-primary);
+	font-size: 1.5rem;
+
+	border: none;
+	border-radius: 0.5rem;
+}
+
+#validationbutton:hover {
+	background-color: var(--color-secondary);
+}

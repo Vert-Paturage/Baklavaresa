@@ -23,17 +23,28 @@ public class ReservationController: ControllerBase
     [HttpPost("Create")]
     public async Task<IActionResult> CreateReservation(CreateReservation input)
     {
-        var command = new CreateReservationCommand(input.FirstName,
-            input.LastName, input.Email, input.Date, input.NumberOfPeople);
-        try
+        if (input.NumberOfPeople <= 0)
         {
-            await _mediator.Send(command);
-            return Ok(); 
+            return BadRequest("Number of people must be greater than 0");
         }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+		if(input.FirstName != null && input.LastName != null && input.Email != null)
+		{
+			var command = new CreateReservationCommand(input.FirstName,
+				input.LastName, input.Email, input.Date, input.NumberOfPeople);
+			try
+			{
+				await _mediator.Send(command);
+				return Ok(); 
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+		}
+		else
+		{
+			return BadRequest("Some fields are empty.");
+		}
     }
 
     [HttpDelete("{id}")]

@@ -1,0 +1,59 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css'; 
+
+#wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: var(--color-secondary);
+}
+
+#datemodule {
+	margin: 1rem;
+	display: flex;
+	flex-direction: column;
+
+	width: fit-content;
+	text-align: center;
+
+	background-color: var(--color-quinary);
+	border-radius: 0.5rem;
+}
+
+.table thead th {
+    border-bottom: 1px solid black; 
+}
+
+#tables-section {
+	padding-top: 1rem;
+}
+
+.snackbar-error {
+	--mdc-snackbar-container-color: red !important;
+	--mdc-snackbar-supporting-text-color: white !important;
+	--mat-snack-bar-button-color: rgb(47, 47, 47) !important;
+}
+
+.snackbar-success {
+	--mdc-snackbar-container-color: green !important;
+	--mdc-snackbar-supporting-text-color: white !important;
+	--mat-snack-bar-button-color: rgb(47, 47, 47) !important;
+}
+
+h2 {
+	margin: 1rem;
+	font-family: var(--font-primary);
+	font-weight: 600;
+	font-size: 1.5rem;
+	text-align: center;
+	color: var(--color-secondary);
+}
+
+th, td {
+	padding: 1rem;
+}
+
+#add-table-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}

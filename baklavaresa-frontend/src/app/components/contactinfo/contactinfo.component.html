@@ -1,0 +1,15 @@
+<form (ngSubmit)="submitReservation()" #reservationForm="ngForm">
+	<div id="nameinputwrapper">
+		<label for="nameinput">Nom</label>
+		<input id="nameinput" type="text" name="firstName" [(ngModel)]="Reservation.firstName" placeholder="Nom" required>
+	</div>
+	<div id="surnameinputwrapper">
+		<label for="surnameinput">Prénom</label>
+		<input id="surnameinput" type="text" name="lastName" [(ngModel)]="Reservation.lastName" placeholder="Prénom" required>
+	</div>
+	<div id="emailinputwrapper">
+		<label for="emailinput">E-mail</label>
+		<input id="emailinput" type="text" name="email" [(ngModel)]="Reservation.email" placeholder="E-mail" required>	
+	</div>
+	<button type="submit">Réserver</button>
+</form>

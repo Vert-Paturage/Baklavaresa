@@ -1,3 +1,4 @@
+using Domain.Dates;
 using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Data.Entities;
@@ -20,21 +21,23 @@ public class TableRepository(DatabaseContext context) : ITableRepository
         return Task.FromResult<IList<Table>>(dbTables.Select(t => t.ToDomainModel()).ToList());
     }
 
-    public Table GetById(int requestTable)
+    public Task<Table> GetById(int requestTable)
     {
         var dbTable = _context.Tables.Find(requestTable);
         if (dbTable == null)
         {
             throw new Domain.Exceptions.Table.TableNotFoundException(requestTable);
         }
-        return dbTable.ToDomainModel();
+
+        return Task.FromResult(dbTable.ToDomainModel());
     }
 
-    public Task Create(Table table)
+    public Task<int> Create(Table table)
     {
         var dbTable = new TableDatabase(table);
         _context.Tables.Add(dbTable);
-        return context.SaveChangesAsync();
+        context.SaveChanges();
+        return Task.FromResult(dbTable.Id);
     }
 
     //delete table by id
@@ -49,18 +52,14 @@ public class TableRepository(DatabaseContext context) : ITableRepository
         return _context.SaveChangesAsync();
     }
 
-    public Task<Table> GetAvailableTable(DateTime slot, int requestNumberOfPeople)
+    public Task<List<Table>> GetAvailableTable(BakDate date, int requestNumberOfPeople)
     {
-        var reservations = _context.Reservations.Where(r => r.Date == slot).ToList();
+        var reservations = _context.Reservations.Where(r => r.Date == (DateTime)date).ToList();
         var reservedTables = reservations.Select(r => r.TableId).ToList();
         var availableTables = _context.Tables.Where(t => !reservedTables.Contains(t.Id)).ToList();
         var availableTablesForNumberOfPeople = availableTables.Where(t => t.Capacity >= requestNumberOfPeople).ToList();
         // sort by pertinence (smallest table that can accommodate the number of people)
         availableTablesForNumberOfPeople = availableTablesForNumberOfPeople.OrderBy(t => t.Capacity).ToList();
-        if (availableTablesForNumberOfPeople.Count == 0)
-        {
-            throw new Domain.Exceptions.Table.NoTablesAvailableException(slot, requestNumberOfPeople);
-        }
-        return Task.FromResult(availableTablesForNumberOfPeople.OrderBy(t => t.Capacity).First().ToDomainModel());
+        return Task.FromResult(availableTablesForNumberOfPeople.Select(t => t.ToDomainModel()).ToList());
     }
 }
