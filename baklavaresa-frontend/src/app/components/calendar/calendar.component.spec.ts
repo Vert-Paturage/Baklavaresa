@@ -17,24 +17,12 @@ describe('CalendarComponent', () => {
     fixture.detectChanges();
   });
 
-
-  it('should display the correct month and year', () => {
-    component.monthName = 'January';
-    component.year = 2024;
-    fixture.detectChanges();
-
-    const monthLabel = fixture.nativeElement.querySelector('.month-label');
-    expect(monthLabel.textContent).toBe('January 2024');
-  });
-
   it('should display the correct number of days in a month', () => {
     const februaryDays = [
       { day: new Date(2024, 1, 1), slots: [] },
       { day: new Date(2024, 1, 2), slots: [] },
     ];
     component.days = februaryDays;
-    component.monthName = 'February';
-    component.year = 2024;
     fixture.detectChanges();
 
     const dayElements = fixture.nativeElement.querySelectorAll('.day');
@@ -44,8 +32,6 @@ describe('CalendarComponent', () => {
   it('should emit the selected day on click', () => {
     const selectedDay = { day: new Date(2024, 1, 15), slots: [] };
     component.days = [selectedDay];
-    component.monthName = 'January';
-    component.year = 2024;
     fixture.detectChanges();
 
     const dayElement = fixture.nativeElement.querySelector('#day15');
@@ -61,8 +47,6 @@ describe('CalendarComponent', () => {
       { day: new Date(2024, 1, 3), slots: [] },
     ];
     component.days = daysWithSlots;
-    component.monthName = 'January';
-    component.year = 2024;
     fixture.detectChanges();
   
     const dayWithNoSlots = fixture.nativeElement.querySelector('#day2');
